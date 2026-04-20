@@ -31,7 +31,7 @@
     white-space: nowrap;
     
     font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    /* font-size: .8em; */
+    font-size: 1em;
 
     animation: ticker 15s linear infinite;
 }
