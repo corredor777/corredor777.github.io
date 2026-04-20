@@ -1,0 +1,48 @@
+/**
+* @license
+*
+* Font Family: JetBrains Mono
+* Designed by: JetBrains, Philipp Nurullin, Konstantin Bulenkov
+* URL: https://www.fontshare.com/fonts/jet-brains-mono
+* © 2026 Indian Type Foundry
+*
+* JetBrains Mono Variable (Variable font)
+* JetBrains Mono VariableItalic (Variable font)
+
+*
+*/
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0;
+*
+* available axes:
+'wght' (range from 100.0 to 800.0
+*/
+@font-face {
+  font-family: 'JetBrainsMono-Variable';
+  src: url('../../assets/fonts/JetBrainsMono-Variable.woff2') format('woff2'),
+       url('../../assets/fonts/JetBrainsMono-Variable.woff') format('woff'),
+       url('../../assets/fonts/JetBrainsMono-Variable.ttf') format('truetype');
+  font-weight: 100 800;
+  font-display: swap;
+  font-style: normal;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0;
+*
+* available axes:
+'wght' (range from 100.0 to 800.0
+*/
+@font-face {
+  font-family: 'JetBrainsMono-VariableItalic';
+  src: url('../../assets/fonts/JetBrainsMono-VariableItalic.woff2') format('woff2'),
+       url('../../assets/fonts/JetBrainsMono-VariableItalic.woff') format('woff'),
+       url('../../assets/fonts/JetBrainsMono-VariableItalic.ttf') format('truetype');
+  font-weight: 100 800;
+  font-display: swap;
+  font-style: italic;
+}
+
