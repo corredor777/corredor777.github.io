@@ -1,0 +1,431 @@
+/* Efeito ticker */
+.ticker {
+    width: 100%;
+    display: flex;
+    flex-shrink: 0;
+    overflow: hidden;
+
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+
+    cursor: none!important
+}
+.ticker:hover {
+    color: #fdfdfd;
+    background-color: #202020;
+}
+.ticker-content {
+    will-change: opacity;
+    backface-visibility: hidden;
+
+    /* opacity: 1;
+    animation: opacity 3s ease;  */
+}
+.ticker:hover .ticker-content {
+    /* opacity: 0; */
+    pointer-events: auto;
+}
+#frase-ticker {
+    display: flex;
+    flex-shrink: 0;
+    white-space: nowrap;
+    
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
+    /* font-size: .8em; */
+
+    animation: ticker 15s linear infinite;
+}
+#frase-ticker span {
+    padding-right: 1px;
+}
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+
+body, html {
+    cursor: none;
+
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+
+    background-image: url('../assets/images/backgrounds/illusion4.gif');
+}
+.container {
+    width: 800px;
+    max-width: 800px;
+    height: 100%;
+    max-height: 90vh;
+    margin: 0 auto 10vh auto;
+
+    display: flex;
+    flex-direction: column; /* Empilha Ticker em cima do Layout */
+    overflow: hidden; /* Trava o scroll global */
+    
+    /* border: 1px solid #333; */
+    font-size: .8em;
+}
+
+/* Layout principal */
+.main-layout {
+    cursor:  wait;
+
+    display: flex; /* Coloca sidebar e main lado a lado */
+    flex-grow: 1;  /* Faz essa área ocupar todo o espaço restante da altura */
+    overflow: hidden;
+
+    margin-top: 60px;
+}
+
+/* Center Image */
+.center-image {
+    margin: 0 30px;
+
+    text-align: center;
+}
+.center-image img {
+    max-width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    padding: 30px 50px 30px 0;
+
+    flex-shrink: 0;
+
+    border-right: 1px dotted #444;
+}
+#sidebar-content, #main-content {
+    margin-top: 30px;
+}
+.logo {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.logo img {
+    width: 100%;
+    height: auto;
+    display: block;   /* Remove espaços indesejados abaixo da imagem */
+    max-width: 100%;
+}
+.bio {
+    width: 100%;
+    margin: 50px auto 20px auto;
+
+    text-align: center;
+
+}
+.bio-stamp {
+    width: auto;
+    margin: 10px 20px;
+}
+.bio-stamp img {
+    margin: 0 auto;
+}
+#credits {
+    font-weight: bold;
+}
+
+/* Conteúdo */
+.content {
+    flex-grow: 1;
+    padding: 30px 0;
+
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cccccc transparent;
+    scroll-behavior: smooth;
+
+    /* background-color: #666; */
+}
+.content article {
+    margin-bottom: 100px;
+}
+.content article:hover .section-header h1 {
+    text-decoration: underline;
+}
+
+.section-header {
+    padding: 0 30px;
+
+    font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
+}
+.section-header h1 {
+    margin-bottom: 10px;
+
+    color: #202020;
+}
+.section-container {
+    font-family: 'JetBrainsMono-Variable', 'DM Mono', 'Courier New', Courier, monospace;
+    /* font-size: .9em; */
+}
+
+/* Lines */
+.line {
+    margin-bottom: 50px!important;
+}
+.line-container {
+    width: auto;
+    margin: 0 35px;
+}
+.line img {
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+/* Painel de Monitoramento */
+.painel {
+    width: 100%;
+    
+    font-size: .9em;
+    text-transform:  uppercase;
+
+    border-collapse: collapse;
+}
+.painel tr {
+    background-color: transparent;
+    transition: background-color 0.05s;
+}
+.painel tr:hover {
+    background-color: #a40000;
+    color: #fdfdfd;
+}
+.painel td {
+    padding: 8px/* seu padding */;
+}
+.index{
+    padding-left: 35px!important;
+}
+.ultimo-do-grupo {
+    border-bottom: 1px dotted #444;  
+}
+.leitura {
+    padding-right: 30px!important;
+    text-align: end;
+}
+#ultima-leitura {
+    margin: 20px 35px 20px 35px;
+
+    text-align: right;
+    color: rgba(32,32,32,.25);
+}
+#ultima-leitura p{
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
+    font-weight: 600;
+}
+#ultima-leitura p .leitura-resultado {
+    color: rgba(32,32,32,1);
+    text-decoration: underline;
+}
+.monitoramento .img-insert {
+    margin-top: 30px;
+}
+
+/* Contador */
+.contador-wrapper {
+    width: auto;
+    margin: 0 30px; /* Alinhado com a margem que você usa no texto abaixo */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Empurra o GIF para a extremidade oposta */
+    font-size: 1.6em;
+}
+.contador-grupo-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.contador-box {
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    border: 1px solid #444;
+}
+.ocorrencias:hover .contador-box {
+    background-color: rgba(0,0,0,.7);
+    color:#fdfdfd;
+    text-decoration: underline;
+}
+.contador-label {
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;;
+    font-size: .8em;
+    line-height: 1.2;
+}
+.gif-ocorrencia {
+    height: auto; /* Ajuste para ficar do tamanho da sua contador-box */
+    width: auto;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+hr.divisor {
+    margin: 15px 0 20px 0;
+    border: 1ps dotted #444;
+}
+
+.ocorrencias-texto {
+    margin: 0 35px;
+}
+#ocor-slogan {
+    /* font-size: .8em; */
+    font-weight: bolder;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    /* text-align: center; */
+    line-height: 1.6;
+}
+#ocor-slogan span {
+    background-color: #444;
+    color: #ccc;
+}
+.ocorrencias:hover #ocor-slogan span {
+    background-color: #a40000;
+    color: #ccc;
+} 
+#ocor-777 {
+    padding: 12px;
+    margin: 20px 0;
+
+    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif;
+    font-weight: 600;
+    text-align: center;
+
+    border-top: 1px dotted #444;
+    border-bottom: 1px dotted #444;
+}
+#ocor-visita {
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
+    font-size: 1.1em;
+}
+#visita-counter {
+    font-weight: bold;
+    /* text-decoration: underline; */
+}
+
+/* Registro de Eventos */
+.log-box {
+    margin: 15px 30px 40px 30px;
+
+    height: 350px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #202020;
+    opacity: .5;
+
+    transition: all 0.05s;
+
+    /* esconde a scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.log-box:hover {
+    opacity: 1;
+    background-color: rgba(32,32,32,.8);
+    color: #fdfdfd;
+}
+.log-box::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+.log-box, .log-box * {
+    cursor: row-resize;
+}
+.log-box *::selection {
+    background-color: transparent!important;
+    color: #dfdfdf!important;
+}
+.log-content {
+    margin: 20px 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.log-content p {
+    /* font-size: .8em; */
+    text-align: start;
+    line-height: 1.5;
+}
+.log-content p a, .log-content p a span {
+    cursor: help!important;
+}
+.log-content p a {
+    color: #fff;
+    text-decoration: none!important;
+}
+
+.log-index::before {
+  content: "> ";
+}
+.log-index::after {
+  content: " ";
+}
+
+.foco-amarelo {
+    color: #d9ff00!important;
+}
+.foco-vermelho {
+    color: #ff0037!important;
+}
+.foco-azul {
+    color: #0048ff!important;
+}
+
+.chatbox {
+    margin-bottom: 50px!important;
+}
+#line-pos-chat {
+    margin-bottom: 100px!important;
+}
+.chat-container {
+    margin: 0 30px;
+}
+
+
+/* Pendências */
+.todo-list, .todo-list li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.todo-list li {
+    margin: 5px 25px;
+}
+.todo-list li * {
+    cursor: wait;
+}
+.todo-list li input[type="checkbox"]:checked + label {
+    text-decoration: line-through!important;
+    font-style: italic;
+    /* color: rgba(32,32,32,.4); */
+    opacity: .4;
+}
+
+/* Nota de rodapé */
+.endnote {
+    margin: 0 auto 20px auto;
+    text-align: center;
+}
+
+.chat-container {
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: .5;
+
+    transition: opacity ease .05s;
+}
+.chatbox:hover .chat-container {
+    opacity: 1;
+}

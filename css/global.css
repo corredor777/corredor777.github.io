@@ -1,0 +1,28 @@
+
+/* Importação de fontes */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jacquard+12&family=Jacquard+24&family=UnifrakturMaguntia&display=swap');
+@import url('_import/aktura.css');
+@import url('_import/zodiak.css');
+@import url('_import/jet-brains-mono.css');
+
+
+::selection {
+    background: #202020;
+    color: #cdcdcd;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    background-color: #cdcdcd;
+    color: #000;
+    font-family: 'Zodiak-Variable', 'EB Garamond', serif;
+    font-size: 1em;
+    font-weight: 400;
+}
+p {
+    margin: 0;
+    padding: 0;
+}

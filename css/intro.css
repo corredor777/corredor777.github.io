@@ -1,0 +1,89 @@
+* {
+    cursor: help;
+}
+body {       
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background-image: url('../assets/images/backgrounds/bg1.gif');
+}
+
+.container {
+    width: 800px;
+    height: 100vh;
+
+    position: relative;
+    margin: auto;
+
+    background-image: url('../assets/images/arts/mirror_frame_dither02.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 110vh;
+}
+
+
+
+.intro {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.intro div {
+    margin-top: -30px
+}
+.intro p {
+    margin: 0px;
+}
+#frase {
+    margin-top: 20px!important;
+
+    background-color: #a40000; /* New highlight background color */
+    color: #cdcdcd;
+
+    font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
+    font-weight: 300;
+    font-size: 2.4em;
+    letter-spacing: 1px;
+}
+#arcano {
+    margin-top: 10px!important;
+
+    font-family: 'JetBrainsMono-Variable', 'DM Mono', 'Courier New', Courier, monospace;
+    font-size: 0.6em;
+    font-weight: 300;
+    text-transform: uppercase;
+
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#frase:hover + #arcano {
+    opacity: 1;
+}
+
+.credits {
+    width: 100%;
+
+    padding: 0;
+
+    position: absolute;
+    bottom: 50px;
+}
+.credits p {
+    font-family: 'Zodiak-Variable', serif!important;
+    font-size: 0.7em;
+}
+.credits p span {
+    padding: 1px 5px;
+
+    background-color: #202020;
+    color: #cdcdcd;
+
+    text-decoration: underline;
+}
+
+
