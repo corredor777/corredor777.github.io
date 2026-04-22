@@ -1,3 +1,21 @@
+// Redirecionamento automático:
+const destino = 'main.html';
+
+// 1. Redirecionamento automático após 3 segundos
+const timer = setTimeout(() => {
+    window.location.href = destino;
+}, 5000);
+
+// 2. Redirecionamento instantâneo via clique (interação)
+document.addEventListener('click', () => {
+    clearTimeout(timer); // Cancela o timer de 3s para evitar conflito
+    window.location.href = destino;
+});
+
+
+
+
+
 // Sorteio de frases para a intro
 
 // 1. O Banco de Dados associando Arcanos às frases do arquivo MD
@@ -180,3 +198,33 @@ function cats_and_dogs(c) {
     }
 }
 // ]]>
+
+
+const htmlElement = document.documentElement;
+let isNegative = false;
+
+// Função que gera o efeito visual baseado no movimento do mouse
+document.addEventListener('mousemove', () => {
+    // Ajuste o 0.7 para mais ou menos agressividade (0.9 = menos flash, 0.5 = muito flash)
+    if (Math.random() > 0.7) {
+        if (!isNegative) {
+            htmlElement.classList.add('negativo');
+            isNegative = true;
+        } else {
+            htmlElement.classList.remove('negativo');
+            isNegative = false;
+        }
+    }
+});
+
+// Garante que o estado negativo seja limpo se o mouse parar de mover
+// e evita que a página redirecione em estado invertido
+document.addEventListener('mouseleave', () => {
+    htmlElement.classList.remove('negativo');
+    isNegative = false;
+});
+
+// Limpeza preventiva antes do redirecionamento
+window.onbeforeunload = function() {
+    htmlElement.classList.remove('negativo');
+};

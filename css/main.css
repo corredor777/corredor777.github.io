@@ -33,10 +33,17 @@
     font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
     font-size: 1em;
 
+    text-align: center;
+    vertical-align: middle;
+
     animation: ticker 15s linear infinite;
 }
 #frase-ticker span {
     padding-right: 1px;
+}
+#frase-ticker span img {
+    vertical-align: middle;
+    margin: 0 2px 2px 2px;
 }
 @keyframes ticker {
     from { transform: translateX(0); }
@@ -129,7 +136,7 @@ body, html {
     margin: 0 auto;
 }
 #credits {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 /* Conteúdo */
@@ -157,7 +164,7 @@ body, html {
     font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
 }
 .section-header h1 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     color: #202020;
 }
@@ -182,6 +189,10 @@ body, html {
 
 /* Painel de Monitoramento */
 .painel {
+    -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
+    -moz-osx-font-smoothing: grayscale; /* Firefox no macOS */
+    text-rendering: optimizeLegibility;
+
     width: 100%;
     
     font-size: .9em;
@@ -196,6 +207,11 @@ body, html {
 .painel tr:hover {
     background-color: #a40000;
     color: #fdfdfd;
+}
+.strobo-painel {
+    filter: invert(100%) contrast(300%) brightness(1.5) !important;
+    position: relative;
+    z-index: 10;
 }
 .painel td {
     padding: 8px/* seu padding */;
@@ -316,14 +332,23 @@ hr.divisor {
 /* Registro de Eventos */
 .log-box {
     margin: 15px 30px 40px 30px;
-
     height: 350px;
+
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    position: relative;
 
     background-color: rgba(0, 0, 0, 0.2);
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.1) 50%
+    ), black;
+    background-size: 100% 4px;
+    border-radius: 6px;
+    box-shadow: rgba(255,255,255,0.5) 0 -2px 6px inset;
+
     color: #202020;
     opacity: .5;
 
@@ -333,8 +358,20 @@ hr.divisor {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
 }
+
+/* Definição da animação de ligar */
+@keyframes power-on {
+    0% { opacity: 0.1; filter: brightness(1); }
+    10% { opacity: 0.8; filter: brightness(2); }
+    15% { opacity: 0.2; filter: brightness(1); }
+    25% { opacity: 1; filter: brightness(3); }
+    30% { opacity: 0.4; filter: brightness(1); }
+    100% { opacity: 1; filter: brightness(1); }
+}
+
 .log-box:hover {
     opacity: 1;
+    animation: power-on 0.25s linear;
     background-color: rgba(32,32,32,.8);
     color: #fdfdfd;
 }
@@ -374,14 +411,27 @@ hr.divisor {
   content: " ";
 }
 
+/* Animação do cursor/terminal */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+/* Aplica na última linha (ou onde estiver o _) */
+.log-entry:last-child .log-index {
+    animation: blink 1s step-end infinite;
+}
+
 .foco-amarelo {
     color: #d9ff00!important;
+    text-shadow: 0 0 5px #d9ff00;
 }
 .foco-vermelho {
     color: #ff0037!important;
+    text-shadow: 0 0 5px #ff0037;
 }
 .foco-azul {
     color: #0048ff!important;
+    text-shadow: 0 0 5px #0048ff;
 }
 
 .chatbox {
@@ -428,4 +478,7 @@ hr.divisor {
 }
 .chatbox:hover .chat-container {
     opacity: 1;
+}
+.chatbox .img-insert {
+    margin-top: 50px;
 }

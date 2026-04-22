@@ -86,4 +86,9 @@ body {
     text-decoration: underline;
 }
 
-
+/* Efeito strobo */
+.negativo {
+    filter: invert(100%) contrast(150%);
+    /* Opcional: pequeno tremor visual no strobo */
+    transform: translate(1px, -1px);
+}
