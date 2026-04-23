@@ -4,13 +4,14 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    
+
     <title>Corredor 777</title>
     <meta name="description" content="Corredor 777" />
     <meta name="author" content="O Zelador">
 
     <link rel="icon" type="image/x-icon" href="assets/images/favicon/censor.gif">
     
+    <!-- CSS global e da folha específica da main -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/main.css">
     
@@ -18,7 +19,10 @@
 
 <body>
     <div class="container">
-        <!-- Frase scrollando na horizontal (ticker effect) -->
+        <!-- ==========================================================================
+            [SEÇÃO: TICKER] 
+            Letreiro horizontal infinito.
+        =========================================================================== -->
         <div class="ticker">
             <div class="ticker-content">
                 <p id="frase-ticker">
@@ -27,8 +31,13 @@
             </div>
         </div>
 
-        <!-- Conteúdo principal -->
+        <!-- =========================================================================
+            [LAYOUT: PRINCIPAL] 
+            Organização binária: Sidebar (fixa à esquerda) e Content (rolagem à direita).
+         ========================================================================= -->
         <div class="main-layout">
+
+            <!-- [COMPONENTE: SIDEBAR] -->
             <aside class="sidebar">
                 <div id="sidebar-content">
                     <div class="logo">
@@ -51,9 +60,14 @@
                 </div>
             </aside>
 
+            <!-- [COMPONENTE: CONTENT] -->
             <main class="content">
                 <div id="main-content">
-                    <!-- Painel de Monitoramento -->
+
+                    <!-- =================================
+                        [MÓDULO: PAINEL DE MONITORAMENTO]
+                        Tabela técnica de status.
+                    ====================================== -->
                     <article class="monitoramento">
                         <header class="section-header">
                             <h1>Monitoramento das Instalações</h1>
@@ -62,7 +76,7 @@
                         <section class="section-container">
                             <table class="painel">
                                 <tbody>
-                                    <!-- primeiros 3 itens — separados dos demais -->
+                                    <!-- Primeiros 3 itens — separados dos demais -->
                                     <tr>
                                         <td class="index">00</td>
                                         <td class="sistema">Andares superiores</td>
@@ -79,7 +93,7 @@
                                         <td class="leitura">eco prolongado</td>
                                     </tr>
 
-                                    <!-- demais itens -->
+                                    <!-- Demais itens -->
                                     <tr>
                                         <td class="index">03</td>
                                         <td class="sistema">Trânsito interno</td>
@@ -109,30 +123,32 @@
                             </table>
 
                             <div id="ultima-leitura">
-                                <p>
-                                    <span>Estado geral das instalações: <span class="leitura-resultado">83,33%</span></span>
-                                </p>
-                                <p>
-                                    <span>Última leitura: <span class="leitura-resultado">22/04/2026 00:17</span></span>
-                                </p>
+                                <p><span>Estado geral das instalações: <span class="leitura-resultado">83,33%</span></span></p>
+                                <p><span>Última leitura: <span class="leitura-resultado">22/04/2026 00:17</span></span></p>
                             </div>
 
+                            <!-- Imagens centralizadas -->
                             <div class="center-image img-insert">
                                 <img src="assets/images/arts/stars.png"/>
-                                <img src="assets/images/gifs/Door (13).gif"/>
+                                <img src="assets/images/gifs/Door (13).gif" class="link-duat"/>
                             </div>
                         </section>
                         
                     </article>
 
-                    <!-- Line -->
+                    <!-- [DIVISOR] -->
                     <article class="line">
                         <div class="line-container">
                             <img src="assets/images/lines/barbedwire.png"/>
                         </div>
                     </article>
                     
-                    <!-- Ocorrências -->
+                    <!-- =================================
+                        [MÓDULO: OCORRÊNCIAS]
+                        Contém:
+                            - Contador de dias: Calculado por lógica de datas.
+                            - Visitas: Recuperadas do LocalStorage.
+                    ====================================== -->
                     <article class="ocorrencias">
                         <header class="section-header">
                             <h1>Ocorrências</h1>
@@ -142,6 +158,7 @@
                             <div class="contador-wrapper">
                                 <div class="contador-grupo-info">
                                     <div class="contador-box">
+                                        <!-- Valor "--" substituído pela lógica de cronologia em main.js -->
                                         <span class="contador-numero">--</span>
                                     </div>
                                     <span class="contador-label">carregando...</span>
@@ -167,14 +184,17 @@
                         </section>
                     </article>
 
-                    <!-- Line -->
+                    <!-- [DIVISOR] -->
                     <article class="line">
                         <div class="line-container">
                             <img src="assets/images/lines/barbedwire.png"/>
                         </div>
                     </article>
 
-                    <!-- Logs do site -->
+                    <!-- =================================
+                        [MÓDULO: LOGS]
+                        Terminal de eventos com estética CRT/Monitor antigo.
+                    ====================================== -->
                     <article class="logs">
                         <header class="section-header">
                             <h1>Registro de Eventos</h1>
@@ -186,8 +206,9 @@
                                     <p class="log-entry"><span class="log-index foco-vermelho">[000]</span><span class="foco-vermelho">FIAT LUX</span>&nbsp;Corredor em estado de vigília.</p>
                                     <p class="log-entry"><span class="log-index foco-vermelho">[001]</span><span class="foco-vermelho">ACESSO LIBERADO</span>&nbsp;Recepção operacional. O corredor agradece sua visita.</p>
                                     <p class="log-entry"><span class="log-index foco-vermelho">[002]</span>Correções visuais implementadas.</p>
-
+                                    <p class="log-entry"><span class="log-index foco-vermelho">[003]</span><a href="#" class="link-duat"><span class="foco-vermelho">DUAT</span></a>&nbsp;Protocolo de boas-vindas disponível.</p>
                                     
+                                    <!-- Cursor do terminal animado via CSS (blink animation) -->
                                     <p class="log-entry">
                                         <span class="log-index foco-vermelho">_</span>
                                     </p>
@@ -196,13 +217,17 @@
                         </section>
                     </article>
 
-                    <!-- Line -->
+                    <!-- [DIVISOR] -->
                     <article class="line">
                         <div class="line-container">
                             <img src="assets/images/lines/barbedwire.png"/>
                         </div>
                     </article>
 
+                    <!-- =================================
+                        [MÓDULO: CHATBOX]
+                        Integração de chat externo via iframe.
+                    ====================================== -->
                     <article class="chatbox">
                         <header class="section-header">
                             <h1>Interferências</h1>
@@ -213,18 +238,21 @@
                         </div>
 
                         <div class="center-image img-insert">
-                            <img src="assets/images/blinkies/a13.gif"/>
+                            <img src="assets/images/blinkies/open24.gif"/>
                         </div>
                     </article>
 
-                    <!-- Line -->
+                    <!-- [DIVISOR] -->
                     <article class="line" id="line-pos-chat">
                         <div class="line-container">
                             <img src="assets/images/lines/barbedwire.png"/>
                         </div>
                     </article>
 
-                    <!-- Lista de pendências -->
+                    <!-- =================================
+                        [MÓDULO: TO-DO]
+                        Lista de pendências e próximos passos.
+                    ====================================== -->
                     <article class="to-do">
                         <header class="section-header">
                             <h1>Pendências</h1>
@@ -232,49 +260,53 @@
                         
                         <section class="section-container">
                             <ul class="todo-list">
+                                
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-00" disabled>
-                                    <label for="item-00">Abrir os portões para o limiar</label>
+                                    <label for="item-00">Esconder o Juramento nos andares inferiores</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-01" disabled>
-                                    <label for="item-01">Esconder o Juramento nos andares inferiores</label>
+                                    <label for="item-01">Receber as primeiras transmissões</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-02" disabled>
-                                    <label for="item-02">Receber as primeiras transmissões</label>
+                                    <label for="item-02">Disponibilizar os manuscritos ocultos</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-03" disabled>
-                                    <label for="item-03">Disponibilizar os manuscritos ocultos</label>
+                                    <label for="item-03">Inaugurar o salão de obras e artefatos</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-04" disabled>
-                                    <label for="item-04">Inaugurar o salão de obras e artefatos</label>
+                                    <label for="item-04">Encontrar o livro de registro de passagen</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-05" disabled>
-                                    <label for="item-05">Encontrar o livro de registro de passagen</label>
+                                    <label for="item-05">Instalar sistema de áudio no corredor</label>
                                 </li>
                                 <li class="todo-item">
-                                    <input type="checkbox" id="item-06" disabled>
-                                    <label for="item-06">Instalar sistema de áudio no corredor</label>
+                                    <input type="checkbox" id="item-06" disabled checked>
+                                    <label for="item-06">Deixar a porta entreaberta.</label>
                                 </li>
                                 <li class="todo-item">
                                     <input type="checkbox" id="item-07" disabled checked>
-                                    <label for="item-07">Deixar a porta entreaberta.</label>
+                                    <label for="item-07">Abrir os portões para <a href="#" class="link-duat">o limiar</a></label>
                                 </li>
                             </ul>
                         </section>
                     </article>
 
-                    <!-- Line -->
+                    <!-- [DIVISOR] -->
                     <article class="line">
                         <div class="line-container">
                             <img src="assets/images/lines/barbedwire.png"/>
                         </div>
                     </article>
 
+                    <!-- =================================
+                        [MÓDULO: NOTA DE RODAPÉ]
+                    ====================================== -->
                     <footer class="endnote">
                         <div class="note-button">
                             <img src="assets/images/buttons/3void.png"/>
@@ -284,10 +316,113 @@
             </main>
         </div>
 
+        <!-- [[ ==========================================================================
+            [SEÇÃO: DUAT OVERLAY]
+            Camada oculta que sobrepõe a main
+                - canvas: Gerencia partículas dinâmicas.
+                - duat-content: Texto que sofre distorção visual (Blur/Fade) no scroll.
+         ========================================================================== ]] -->
+        <div id="duat-overlay">
+            <canvas id="duat-canvas"></canvas>
+
+            <div id="duat-content">
+                <!-- [BORDA SUPERIOR] -->
+                <div class="line" id="duat-line-top">
+                    <div class="line-container line-140">
+                        <img src="assets/images/lines/ornament1-top.png"/>
+                    </div>
+                </div>
+
+
+                <p id="duat-intro">Saudações a quem vier.</p>
+
+                <p>Encontraste o caminho correto,<br>mas chegaste pelas motivações erradas.</p>
+
+                <p>Não te preocupes com a volta;<br>
+                nunca mais estarás sozinho.</p>
+
+                <p class="duat-focus"><span>Quer dizer, então, que entraste na noite cobiçando o dia?</span></p>
+
+                <!-- [DIVISOR] -->
+                <div class="line-container line-110 center-line">
+                    <img src="assets/images/lines/egyptbar.png"/>
+                </div>
+
+                <p>Os egípcios acreditavam que, entre o ser e o não-ser, havia um lugar onde as almas perambulavam: Duat, o interstício. Lugar nenhum, senão a própria travessia; espaço que existe apenas enquanto a passagem ocorre. A sefirá invisível. O grande limiar e o profundo abismo: o conhecimento etéreo. É o estado intermediário onde a mente projeta tudo o que carrega. Ali não há território externo.</p>
+
+                <!-- [DIVISOR] -->
+                <div class="line-container line-110 center-line">
+                    <img src="assets/images/lines/egyptbar.png"/>
+                </div>
+
+
+                <p>O corredor é feito da substância do viajante.<br>
+                O caminho se manifesta como um reflexo da vontade no universo.</p>
+
+                <p class="duat-center"><span class="duat-italic">O universo é mental.<br>A vontade é o todo. E o todo é a mente.</span></p>
+
+                <p>Para tudo o que existe, as lacunas preenchem as distâncias: o que está lá e o que está aqui; o espaço entre o que és tu e o que sou eu.</p>
+
+                <div class="image-container center-line insert insert-gate">
+                    <img src="assets/images/arts/gate1-w.png"/>
+                </div>
+
+                <p>No reino dos símbolos, a alma encontra as manifestações de sua própria natureza e reflete aquilo que encontra.</p>
+
+                <p>O corredor não antecede o passo.<br>
+                Ele se manifesta quando a vontade encontra o vazio.<br>
+                Não há mapas, apenas espelhos.</p>
+
+                <div class="image-container center-line inverted">
+                    <img src="assets/images/imgs/judgement-of-the-dead-invert.jpg"/>
+                </div>
+
+                <p>E o véu parece ser formado por vários outros véus, mais finos, interpenetrando-se. E a voz diz: <span class="duat-italic duat-quote">Não existe luz, conhecimento, beleza ou estabilidade nos corredores para onde vais.</span></p>
+
+                <div class="image-container center-line insert">
+                    <img src="assets/images/arts/ankh.png" style="height: 150px; width: auto;"/>
+                </div>
+
+                <p>Fica à vontade para olhar todos os cantos e caminhar por todos os meus caminhos. Disseca-me por completo; sejamos testemunhas desta autópsia.</p>
+
+                <p class="duat-center duat-focus"><span>Eu sou a serpente que devora o espírito do homem.<br>
+                Eu sou a tormenta invisível, abraçando o mundo com desolação.</span></p>
+                
+                <p class="duat-center duat-italic"><a id="easter-tiamat" href="juramento.html" target="_blank">Tiamat</a> é o meu nome.</p>
+
+                <!-- Favicon -->
+                <div class="image-container center-line favicon-insert">
+                    <img src="assets/images/favicon/snake.gif" height="100%"/>
+                </div>
+
+                <p>Que tua passagem seja intensa, mas perene. E que, quando partires, não leves nada contigo. Deixa que tudo caia de volta no abismo.</p>
+
+                <!-- [DIVISOR] -->
+                <div class="image-container center-line">
+                    <img src="assets/images/lines/barbedwire-w.png"/>
+                </div>
+
+                <p id="duat-line-end" class="duat-center">Tu és o caminho se desdobrando sobre si mesmo.<br><span class="777">777</span></p>
+
+                <!-- [BORDA INFERIOR] -->
+                <div class="line" id="duat-line-bottom">
+                    <div class="line-container line-140">
+                        <img src="assets/images/lines/ornament1-bottom.png"/>
+                    </div>
+                </div>
+
+                <!-- Espaço extra para manter o scroll ativo após o texto sumir -->
+                <div id="duat-fim"></div>
+            </div>
+
+            <p id="duat-777">777</p>
+        </div>
+        
     </div>
 
+    <!-- Script central -->
     <script src="/js/main.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script> -->
 
 </body>
 </html>

@@ -1,3 +1,15 @@
+:root {
+    --cor-acento: #ff0037;
+    --cor-acento-glow: rgba(255, 0, 55, 0.8);
+}
+
+* {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Padrão */
+}
+
 /* Efeito ticker */
 .ticker {
     width: 100%;
@@ -15,7 +27,6 @@
     background-color: #202020;
 }
 .ticker-content {
-    will-change: opacity;
     backface-visibility: hidden;
 
     /* opacity: 1;
@@ -31,19 +42,19 @@
     white-space: nowrap;
     
     font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    font-size: 1em;
+    font-size: 12px;
 
     text-align: center;
     vertical-align: middle;
 
-    animation: ticker 15s linear infinite;
+    animation: ticker 25s linear infinite;
 }
 #frase-ticker span {
     padding-right: 1px;
 }
 #frase-ticker span img {
     vertical-align: middle;
-    margin: 0 2px 2px 2px;
+    margin: 0 4px 0 6px;
 }
 @keyframes ticker {
     from { transform: translateX(0); }
@@ -99,6 +110,16 @@ body, html {
     max-width: 100%;
 }
 
+/* Favicon Insert */
+.favicon-insert {
+    height: auto!important;
+}
+.favicon-insert img {
+    width: auto!important;
+    max-width: 100%;
+    max-height: 20px!important;
+}
+
 /* Sidebar */
 .sidebar {
     width: 250px;
@@ -135,9 +156,7 @@ body, html {
 .bio-stamp img {
     margin: 0 auto;
 }
-#credits {
-    /* font-weight: bold; */
-}
+
 
 /* Conteúdo */
 .content {
@@ -181,11 +200,13 @@ body, html {
     width: auto;
     margin: 0 35px;
 }
-.line img {
+.line img, .duat-line img {
     width: 100%;
     margin: 0 auto;
 }
-
+.link-duat {
+    cursor: help!important;
+}
 
 /* Painel de Monitoramento */
 .painel {
@@ -287,7 +308,6 @@ body, html {
 
 hr.divisor {
     margin: 15px 0 20px 0;
-    border: 1ps dotted #444;
 }
 
 .ocorrencias-texto {
@@ -426,13 +446,14 @@ hr.divisor {
     text-shadow: 0 0 5px #d9ff00;
 }
 .foco-vermelho {
-    color: #ff0037!important;
-    text-shadow: 0 0 5px #ff0037;
+    color: var(--cor-acento) !important;
+    text-shadow: 0 0 5px var(--cor-acento-glow);
 }
 .foco-azul {
     color: #0048ff!important;
     text-shadow: 0 0 5px #0048ff;
 }
+
 
 .chatbox {
     margin-bottom: 50px!important;
@@ -442,6 +463,19 @@ hr.divisor {
 }
 .chat-container {
     margin: 0 30px;
+
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: .5;
+
+    transition: opacity ease .05s;
+}
+.chatbox:hover .chat-container {
+    opacity: 1;
+}
+.chatbox .img-insert img{
+    margin-top: 50px;
+
+    border: 2px solid #000;
 }
 
 
@@ -463,6 +497,10 @@ hr.divisor {
     /* color: rgba(32,32,32,.4); */
     opacity: .4;
 }
+.todo-list a.link-duat {
+    color: #202020;
+    text-decoration: none;
+}
 
 /* Nota de rodapé */
 .endnote {
@@ -470,15 +508,265 @@ hr.divisor {
     text-align: center;
 }
 
-.chat-container {
-    background-color: rgba(255, 255, 255, 0.6);
-    opacity: .5;
 
-    transition: opacity ease .05s;
+
+/* ===================== */
+/* DUAT                  */
+/* ===================== */
+
+#duat-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    /* começa invisível */
+    opacity: 0;
+    pointer-events: none;
+
+    box-sizing: border-box;
+    cursor: s-resize;
+
+    /* fundo escuro base */
+    background-color: transparent;
 }
-.chatbox:hover .chat-container {
+
+#duat-overlay::-webkit-scrollbar {
+    display: none;
+}
+
+/* estado ativo — entrada estilo glitch/erro */
+#duat-overlay.ativo {
+    pointer-events: auto;
+    animation: entrar-glitch 0.6s steps(1) forwards;
+}
+
+/* estado fechando — some rapidamente */
+#duat-overlay.fechando {
+    animation: sair-duat 0.5s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes entrar-glitch {
+    0%   { opacity: 0;    filter: brightness(4) contrast(8) invert(100%); transform: translateX(-3px); }
+    10%  { opacity: 1;    filter: brightness(1) contrast(1) invert(50%); transform: translateX(0); }
+    15%  { opacity: 0.2;  filter: brightness(3) contrast(6) invert(0%); transform: translateX(2px); }
+    20%  { opacity: 1;    filter: brightness(1) contrast(1) invert(100%); transform: translateX(0); }
+    30%  { opacity: 0.4;  filter: brightness(2) contrast(4) invert(0%); transform: translateX(-1px); }
+    40%  { opacity: 1;    filter: brightness(1) contrast(1) invert(90%); transform: translateX(0); }
+    50%  { opacity: 0.7;  filter: brightness(1.5) invert(10%);           transform: translateX(1px); }
+    60%  { opacity: 1;    filter: brightness(1) contrast(1) invert(100%); transform: translateX(0); }
+    100% { opacity: 1;    filter: none;                      transform: none; }
+}
+
+@keyframes sair-duat {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* canvas de partículas */
+#duat-canvas {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 0; /* não ocupa espaço no scroll */
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#duat-canvas.ativo {
+    opacity: 0.7;
+}
+
+/* conteúdo */
+#duat-content {
+    position: relative;
+    z-index: 200;
+
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 15vh 40px 0 40px;
+    box-sizing: border-box;
+
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
+    font-size: 1.1em;
+    line-height: 2;
+    text-align: justify;
+    color: #fff;
+
+    /* blur e opacidade controlados pelo JS via inline style */
+    transition: filter 0.1s, opacity 0.1s;
+
+    will-change: filter, opacity; /* Otimiza o scroll pesado no Duat */
+}
+
+#duat-content .line-container{
+    margin: 0px 0px!important;
+}
+#duat-content .line-container img{
+    max-width: 100vw; /* Garante que não crie barra de rolagem horizontal se não quiser */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#duat-content .line-container.line-140 img {
+    width: 140%;
+}
+#duat-content .line-container.line-110 img {
+    width: 110%;
+}
+#duat-content .line-container.center-line {
+    margin-bottom: 40px!important;
+}
+
+#duat-content p {
+    margin-bottom: 3.5em;
+}
+.duat-italic {
+    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif;
+}
+.duat-quote::before {
+    content: "“";
+}
+.duat-quote::after {
+    content: "”";
+}
+#duat-content .duat-center {
+    text-align: center;
+}
+
+#duat-content .image-container {
+    margin: 40px 0 !important; /* Espaçamento vertical */
+    text-align: center;
+    width: 100%;
+}
+
+#duat-content .image-container img {
+    cursor: none!important;
+    /* Faz a imagem ter 110% da largura do pai (o texto) */
+    width: 110%; 
+    max-width: 110vw; /* Garante que não ultrapasse a tela física */
+    
+    /* Remove a trava de altura para não achatar a imagem */
+    max-height: none !important; 
+
+    /* Lógica de centralização para estourar as margens laterais */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    display: block;
+}
+#duat-content .image-container.insert img {
+    width: auto; /* Deixa a largura automática para não distorcer */
+    max-width: 110vw;
+    max-height: 300px !important; /* Trava a altura que você pediu */
+    margin-top: 60px!important;
+    margin-bottom: 60px!important;
+}
+#duat-content .insert-gate img {
+    opacity: 0.8;
+    filter: blur(10px) brightness(6);
+    transition: all 0.3s ease;
+}
+#duat-content .insert-gate img:hover{
     opacity: 1;
+    filter: blur(0px) brightness(0) saturate(100%) invert(13%) sepia(95%) saturate(7483%) hue-rotate(345deg) brightness(101%) contrast(108%);
 }
-.chatbox .img-insert {
-    margin-top: 50px;
+#duat-content .image-container.inverted img {
+    filter: invert(0%)!important;
+    transition: filter 0.1s ease;
+}
+#duat-content .image-container.inverted img:hover {
+    filter: invert(100%)!important;
+}
+#duat-content #duat-line-end {
+    margin-top: 80px!important;
+}
+#duat-content #duat-line-end span {
+    /* color: var(--cor-acento);
+    text-shadow: 0 0 5px var(--cor-acento-glow); */
+    font-size: .8em;
+    background-color: #202020;
+    padding: 1px 3px;
+}
+
+/* 777 — sempre visível, no centro */
+#duat-777 {
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 6px;
+    color: #ff0037;
+    text-shadow: 0 0 5px #ff0037;
+
+    mix-blend-mode: difference;
+    animation: strobo-777 1.2s steps(1) infinite;
+
+    /* começa invisível — aparece quando o scroll avança */
+    opacity: 0;
+    font-size: 1em;
+    filter: blur(0px);
+    transition: opacity 0.3s, font-size 0.3s, filter 0.3s;
+
+    pointer-events: none;
+    margin: 0;
+    padding: 0;
+
+    /* altura zero para não ocupar espaço no scroll */
+    height: 0;
+    overflow: visible;
+}
+
+/* espaço extra para scroll longo */
+#duat-fim {
+    height: 160vh;
+}
+
+/* easter egg — Tiamat */
+#easter-tiamat {
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+    text-decoration: none;
+    cursor: help;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.2s;
+    /* remover qualquer animation daqui */
+}
+#easter-tiamat:hover, .duat-focus span{
+    color: #ff0037;
+    border-bottom: 1px solid #ff0037;
+    animation: strobo-tiamat 0.2s steps(1) infinite;
+}
+
+@keyframes strobo-777 {
+    0%, 89%  { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+    90%      { color: #ff0037; filter: invert(100%) brightness(2); }
+    92%      { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+    94%      { color: #ff0037; filter: invert(100%) brightness(1.5); }
+    100%     { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+}
+
+@keyframes strobo-tiamat {
+    0%, 79%  { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+    80%      { color: #ff0037; filter: invert(100%) brightness(2.5); }
+    82%      { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+    85%      { color: #ff0037; filter: invert(100%) brightness(1.5); }
+    87%      { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
+    89%      { color: #ff0037; filter: invert(100%) brightness(2); }
+    100%     { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
 }
