@@ -199,28 +199,35 @@ function prepararImpressao() {
 
 // O redirecionamento ocorre após fechar o diálogo de impressão
 // GATILHOS DE IMPRESSÃO E REDIRECIONAMENTO
+// GATILHOS DE IMPRESSÃO E REDIRECIONAMENTO
 function prepararImpressao() {
-    // Gera data e hora no momento exato do "selo"
     const agora = new Date();
     const dataFormatada = agora.toLocaleDateString('pt-BR') + " - " + agora.toLocaleTimeString('pt-BR');
-    
+
     const campoData = document.getElementById('data-hora-fim');
     if (campoData) campoData.innerText = dataFormatada;
-    
+
     setTimeout(() => {
         window.print();
-        
+
         const redirecionar = () => {
             document.body.classList.remove('modo-impressao');
-            window.location.href = "https://corredor777.github.io/main.html";
+            // Usamos replace com a URL completa para não haver erro de caminho
+            window.location.replace("https://corredor777.github.io/main.html");
             window.removeEventListener('focus', redirecionar);
         };
-        
-        // Redireciona ao fechar a janela de impressão
-        window.addEventListener('focus', redirecionar);
+
+        // Redundância tripla para garantir o redirecionamento
         window.onafterprint = redirecionar;
+        
+        // O evento 'focus' detecta quando o usuário fecha o PDF e volta para a aba
+        window.addEventListener('focus', () => {
+            setTimeout(redirecionar, 200);
+        }, { once: true });
+
     }, 500);
 }
+
 
 // Esta função deve ser chamada dentro do seu evento de 'mouseup' ou 'touchend'
 function parar() {
