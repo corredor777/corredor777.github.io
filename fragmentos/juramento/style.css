@@ -5,6 +5,9 @@
     font-weight: 400;
     font-style: normal;
 }
+@import url('../../css/_import/aktura.css');
+@import url('../../css/_import/jet-brains-mono.css');
+@import url('../../css/_import/zodiak.css');
 
 @media print {
     /* Esconde tudo o que não for o container */
