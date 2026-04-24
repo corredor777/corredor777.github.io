@@ -199,33 +199,37 @@ function prepararImpressao() {
 
 // O redirecionamento ocorre após fechar o diálogo de impressão
 // GATILHOS DE IMPRESSÃO E REDIRECIONAMENTO
-// GATILHOS DE IMPRESSÃO E REDIRECIONAMENTO
 function prepararImpressao() {
     const agora = new Date();
     const dataFormatada = agora.toLocaleDateString('pt-BR') + " - " + agora.toLocaleTimeString('pt-BR');
-
     const campoData = document.getElementById('data-hora-fim');
     if (campoData) campoData.innerText = dataFormatada;
 
+    document.body.classList.add('modo-impressao');
+
+    // Função única de redirecionamento
+    const finalizarEIrEmbora = () => {
+        window.location.replace("https://corredor777.github.io/main.html");
+    };
+
+    // O truque: Escutar quando a página volta a ficar visível
+    const monitorarVolta = () => {
+        if (document.visibilityState === 'visible') {
+            finalizarEIrEmbora();
+            document.removeEventListener('visibilitychange', monitorarVolta);
+        }
+    };
+
+    // Adiciona o monitor antes de imprimir
+    document.addEventListener('visibilitychange', monitorarVolta);
+    
+    // redundância para navegadores que não pausam o JS no print
+    window.onafterprint = finalizarEIrEmbora;
+
+    // Dispara a impressão
     setTimeout(() => {
         window.print();
-
-        const redirecionar = () => {
-            document.body.classList.remove('modo-impressao');
-            // Usamos replace com a URL completa para não haver erro de caminho
-            window.location.replace("https://corredor777.github.io/main.html");
-            window.removeEventListener('focus', redirecionar);
-        };
-
-        // Redundância tripla para garantir o redirecionamento
-        window.onafterprint = redirecionar;
-        
-        // O evento 'focus' detecta quando o usuário fecha o PDF e volta para a aba
-        window.addEventListener('focus', () => {
-            setTimeout(redirecionar, 200);
-        }, { once: true });
-
-    }, 500);
+    }, 100);
 }
 
 
