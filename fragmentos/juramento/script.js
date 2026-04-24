@@ -212,7 +212,7 @@ function prepararImpressao() {
         
         const redirecionar = () => {
             document.body.classList.remove('modo-impressao');
-            window.location.href = "../../main.html";
+            window.location.href = "https://corredor777.github.io/main.html";
             window.removeEventListener('focus', redirecionar);
         };
         
