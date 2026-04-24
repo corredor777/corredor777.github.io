@@ -153,20 +153,20 @@ body {
 }
 .content header h1, .titulo-curvo {
     font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
-    font-size: 9em;
+    font-size: 8em;
     margin-bottom: 0px;
 }
 .content header h3 {
     font-family: "Squada One", sans-serif;
     font-weight: 400;
     font-size: 1.6em;
-    text-decoration: underline;
+    text-decoration: underline!important;
 
     margin: 0 auto 10px auto;
 }
 .content #data {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: .8em;
+    font-size: .6em;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -213,8 +213,9 @@ body {
     text-align: center;     /* Garante que o texto dentro da div fique centralizado */
     padding: 0 10px;        /* Dá um respiro entre as imagens e a frase */
 
-    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif;
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
     font-weight: 600;
+    font-style: italic;
 }
 #reg-frase {
     font-size: .85em;
@@ -375,11 +376,12 @@ body {
     text-align: right;
 }
 #rodape p {
-    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif!important;
+    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif!important;
+    font-style: italic;
     font-weight: 600;
     margin-top: 20px;
     line-height: 1.3;
-    font-size: 6.5pt;
+    font-size: 7.5pt;
     margin: 2px 0;
 }
 
