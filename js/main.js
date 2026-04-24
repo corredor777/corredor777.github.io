@@ -3,9 +3,25 @@
 // Duplica o conteúdo do letreiro para preencher o container infinitamente
 // ============================================================
 const ticker = document.getElementById('frase-ticker');
+
 if (ticker) {
     const conteudoOriginal = ticker.innerHTML;
-    ticker.innerHTML = conteudoOriginal.repeat(30); 
+    ticker.innerHTML = conteudoOriginal.repeat(30);
+
+    // Função para aplicar a animação com velocidade constante
+    window.addEventListener('load', () => {
+        const larguraTotal = ticker.scrollWidth;
+        const velocidadeNormal = 150; // pixels por segundo
+        const duracaoNormal = larguraTotal / velocidadeNormal;
+        const duracaoSlow = larguraTotal / (velocidadeNormal / 2); // Metade da velocidade
+
+        // Define as variáveis no elemento
+        ticker.style.setProperty('--duracao-normal', `${duracaoNormal}s`);
+        ticker.style.setProperty('--duracao-slow', `${duracaoSlow}s`);
+        
+        // Inicia a animação usando a variável
+        ticker.style.animation = `ticker var(--duracao-normal) linear infinite`;
+    });
 }
 
 
@@ -196,39 +212,40 @@ function desenharParticulas() { // função para desenhar e animar as partícula
     animacaoParticulas = requestAnimationFrame(desenharParticulas);
 }
 
+// Função para parar a animação das partículas e limpar o canvas
 function pararParticulas() {
     if (animacaoParticulas) {
         cancelAnimationFrame(animacaoParticulas);
-        animacaoParticulas = null;
-        ctx.clearRect(0, 0, duatCanvas.width, duatCanvas.height);
+        animacaoParticulas = null; // reseta a variável de controle
+        ctx.clearRect(0, 0, duatCanvas.width, duatCanvas.height); // limpa o canvas para remover as partículas restantes
     }
 }
 
+// Variável global para controle do strobo do 777
 let strobo777Global = null;
-
 
 // --- abrir ---
 function abrirDuat() {
-    duatOverlay.scrollTop = 0;
+    duatOverlay.scrollTop = 0; // reseta o scroll para o topo toda vez que abrir
 
-    duat777.style.opacity  = 0;
+    duat777.style.opacity  = 0; // 777 começa invisível para o efeito de fade-in
     duat777.style.fontSize = '1em';
-    duat777.style.filter   = 'blur(0px)';
+    duat777.style.filter   = 'blur(0px)'; // 777 começa sem desfoque para o efeito de entrada suave
     
-    // 1. Aplica o fundo com transparência IMEDIATAMENTE
-    // Isso evita o "flash" de preto sólido e permite ver o canvas atrás
+    // Aplica o fundo com transparência imediatamente
+    // para evitar o "flash" de preto sólido e permitir ver o canvas atrás
     duatOverlay.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
 
-    // 2. Limpa filtros residuais do conteúdo
+    // Limpa filtros residuais do conteúdo
     duatConteudo.style.filter  = '';
     duatConteudo.style.opacity = '';
-
-    // 3. Reseta estados de controle
+    
+    // Reseta estados de controle
     duat777.classList.remove('congelado');
     settecentoCongelado = false;
     jáFechando = false; 
 
-    // 4. Dispara as animações de entrada
+    // Dispara as animações de entrada
     duatOverlay.classList.remove('fechando');
     duatOverlay.classList.add('ativo');
     
@@ -391,11 +408,11 @@ setInterval(() => {
 
 // Strobo dinâmico para elementos do Duat (Link Tiamat e parágrafos de foco)
 const elementosStroboDuat = document.querySelectorAll('#easter-tiamat, .duat-focus');
-let intervaloSobroDuat = null;
+let intervaloStobroDuat = null;
 
 elementosStroboDuat.forEach(el => {
     el.addEventListener('mouseenter', () => {
-        intervaloSobroDuat = setInterval(() => {
+        intervaloStobroDuat = setInterval(() => {
             // Chance de 40% de trocar o estado a cada 50ms para efeito glitch
             if (Math.random() > 0.6) {
                 el.classList.toggle('strobo-painel');
@@ -404,7 +421,7 @@ elementosStroboDuat.forEach(el => {
     });
 
     el.addEventListener('mouseleave', () => {
-        clearInterval(intervaloSobroDuat);
+        clearInterval(intervaloStobroDuat);
         el.classList.remove('strobo-painel');
     });
 });
