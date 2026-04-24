@@ -218,9 +218,9 @@ body {
 
     font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
     font-weight: 600;
-    font-style: italic;
 }
 #reg-frase {
+    font-style: italic;
     font-size: .85em;
     line-height: 1.4em;
 }
