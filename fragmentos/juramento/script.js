@@ -1,3 +1,40 @@
+const cursorMap = {
+  '.cur-draw': 'images/cur2.cur',  // Mais específico primeiro
+  '.cur-default': 'images/cur4.cur' // Mais genérico depois
+};
+
+function aplicarSistemaCursor(mapa) {
+  const tratarMouse = (e) => {
+    let arquivoSelecionado = null;
+
+    // Checa a hierarquia (Canvas primeiro)
+    for (const seletor in mapa) {
+      if (e.target.closest(seletor)) {
+        arquivoSelecionado = mapa[seletor];
+        break;
+      }
+    }
+
+    if (arquivoSelecionado) {
+      // No Firefox, o caminho DEVE ser exato e ter o fallback ', auto'
+      // Aplicamos diretamente no e.target para evitar que filhos mostrem o cursor padrão
+      e.target.style.setProperty('cursor', `url('${arquivoSelecionado}'), auto`, 'important');
+    } else {
+      // Se não está nas áreas, força o none no elemento exato
+      e.target.style.setProperty('cursor', 'none', 'important');
+    }
+  };
+
+  // Escuta o movimento em todo o documento
+  document.addEventListener('mousemove', tratarMouse);
+}
+
+aplicarSistemaCursor(cursorMap);
+
+
+
+
+
 const spanData = document.getElementById('data-atual');
 const dataHoje = new Date();
 
@@ -12,7 +49,7 @@ spanData.textContent = dataFormatada;
 
 function gerarNumeroEspecial() {
     const spans = document.querySelectorAll('#regnum, #protocolo-fim');
-    const chanceEspecial = 0.4; // 40% de chance de ser um número especial
+    const chanceEspecial = 0.3; // 40% de chance de ser um número especial
     let resultado = "";
 
     if (Math.random() < chanceEspecial) {
@@ -188,8 +225,6 @@ canvas.addEventListener('touchmove', desenhar, { passive: false });
 canvas.addEventListener('touchend', parar);
 
 
-
-// Adicione esta função ao final do seu script
 function prepararImpressao() {
     // Pequeno delay para garantir que a última parte da "cauda" seja fixada no preto
     setTimeout(() => {
@@ -209,10 +244,17 @@ function prepararImpressao() {
 
     // Função única de redirecionamento
     const finalizarEIrEmbora = () => {
-        window.location.replace("https://corredor777.github.io/main.html");
+        // Timeout de 500ms para garantir que o Firefox processe o fechamento do print
+        setTimeout(() => {
+            window.location.replace("https://corredor777.github.io/main.html");
+        }, 500);
     };
 
-    // O truque: Escutar quando a página volta a ficar visível
+    // Redundância para navegadores que não pausam o JS no print
+    // No Firefox, remover o listener antigo e usar uma atribuição limpa
+    window.onafterprint = null; // Limpa instâncias anteriores
+    window.onafterprint = finalizarEIrEmbora;
+
     const monitorarVolta = () => {
         if (document.visibilityState === 'visible') {
             finalizarEIrEmbora();

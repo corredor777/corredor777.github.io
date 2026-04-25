@@ -1,12 +1,9 @@
 
 /* Importação de fontes */
 @import url('https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Amarante&family=Astloch:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=DotGothic16&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Jacquard+24+Charted&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libertinus+Keyboard&family=Manufacturing+Consent&family=Ovo&family=Rakkas&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Special+Elite&family=Special+Gothic+Expanded+One&family=Squada+One&family=Staatliches&family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&family=Xanh+Mono:ital@0;1&display=swap');
-
-
-
 @import url('import/aktura.css');
 
-
+/* Cor de seleção */
 ::selection {
     background: #202020;
     color: #cdcdcd;
@@ -18,11 +15,11 @@ body {
     padding: 0;
 
     background-color: #cdcdcd;
-    color: #000;
-    /* font-family: 'Zodiak-Variable', 'EB Garamond', serif;  */
+    
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 12pt;
     font-weight: 400;
+    color: #000;
 }
 p {
     margin: 0;

@@ -13,9 +13,6 @@ document.addEventListener('click', () => {
 });
 
 
-
-
-
 // Sorteio de frases para a intro
 
 // 1. O Banco de Dados associando Arcanos às frases do arquivo MD

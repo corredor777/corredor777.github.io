@@ -26,7 +26,7 @@
         <div class="ticker">
             <div class="ticker-content">
                 <p id="frase-ticker">
-                    <span>encare o abismo&nbsp;&nbsp;<img height="13px" src="assets/images/favicon/eye.gif" alt="Corredor 777"/>&nbsp;&nbsp;</span>
+                    <span>encare o abismo&nbsp;&nbsp;<img height="13px" src="assets/images/favicon/eye.gif" alt="777"/>&nbsp;&nbsp;</span>
                 </p>
             </div>
         </div>
@@ -35,7 +35,7 @@
             [LAYOUT: PRINCIPAL] 
             Organização binária: Sidebar (fixa à esquerda) e Content (rolagem à direita).
          ========================================================================= -->
-        <div class="main-layout">
+        <div class="main-layout cur-angel">
 
             <!-- [COMPONENTE: SIDEBAR] -->
             <aside class="sidebar">
@@ -201,7 +201,7 @@
                         </header>
 
                         <section class="section-container">
-                            <div class="log-box">
+                            <div class="log-box cur-vscroll">
                                 <div class="log-content">
                                     <p class="log-entry"><span class="log-index foco-vermelho">[000]</span><span class="foco-vermelho">FIAT LUX</span>&nbsp;Corredor em estado de vigília.</p>
                                     <p class="log-entry"><span class="log-index foco-vermelho">[001]</span><span class="foco-vermelho">ACESSO LIBERADO</span>&nbsp;Recepção operacional. O corredor agradece sua visita.</p>
@@ -315,7 +315,7 @@
                     ====================================== -->
                     <footer class="endnote">
                         <div class="note-button">
-                            <a href="fragmentos/juramento/index.html"><img src="assets/images/buttons/3void.png"/></a>
+                            <a href="fragmentos/juramento/index.html"><img class="cur-none" src="assets/images/buttons/3void.png"/></a>
                         </div>
                     </footer>
                 </div>
@@ -328,7 +328,7 @@
                 - canvas: Gerencia partículas dinâmicas.
                 - duat-content: Texto que sofre distorção visual (Blur/Fade) no scroll.
          ========================================================================== ]] -->
-        <div id="duat-overlay">
+        <div id="duat-overlay" class="cur-eye">
             <canvas id="duat-canvas"></canvas>
 
             <div id="duat-content">
@@ -373,7 +373,7 @@
                 <p>Para tudo o que existe, as lacunas preenchem as distâncias: o que está lá e o que está aqui; o espaço entre o que és tu e o que sou eu.</p>
 
                 <div class="image-container center-line insert insert-gate">
-                    <img src="assets/images/arts/gate1-w.png"/>
+                    <img class="cur-none" src="assets/images/arts/gate1-w.png"/>
                 </div>
 
                 <p>No reino dos símbolos, a alma encontra as manifestações de sua própria natureza e reflete aquilo que encontra.</p>
@@ -397,7 +397,7 @@
                 <p class="duat-center duat-focus"><span>Eu sou a serpente que devora o espírito do homem.<br>
                 Eu sou a tormenta invisível, abraçando o mundo com desolação.</span></p>
                 
-                <p class="duat-center duat-italic"><a id="easter-tiamat" href="fragmentos/juramento/index.html" target="_self">Tiamat</a> é o meu nome.</p>
+                <p class="duat-center duat-italic"><a class="cur-none" id="easter-tiamat" href="fragmentos/juramento/index.html" target="_self">Tiamat</a> é o meu nome.</p>
 
                 <!-- Favicon -->
                 <div class="image-container center-line favicon-insert">
@@ -431,6 +431,7 @@
 
     <!-- Script central -->
     <script src="/js/main.js" type="text/javascript"></script>
+    <script src="js/cursor-manager.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script> -->
 
 </body>

@@ -57,13 +57,18 @@
     -ms-user-select: none;     /* IE10+/Edge */
     user-select: none;         /* Padrão */
 
-    cursor: none;
+    cursor: none!important;
 }
 
+:not(.container-documento, .container-documento *, .area-canvas, .area-canvas *) {
+    cursor: none !important;
+}
 body, html {
     height: 100%;
     margin: 0;
     padding: 0;
+
+    
 }
 body {
     background-image: url('images/bg5-bmp.png');
@@ -396,7 +401,7 @@ body {
     background: transparent;
     filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 1px rgba(255, 0, 0, 0.3));
 
-    cursor: crosshair !important;    
+    /* cursor: url('images/cur5.cur'), auto!important;     */
 }
 
 #assinatura-linha hr {

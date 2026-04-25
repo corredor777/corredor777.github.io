@@ -10,21 +10,53 @@
     user-select: none;         /* Padrão */
 }
 
-/* Efeito ticker */
+body, html {
+    display: flex;
+    justify-content: center;
+
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-image: url('../assets/images/backgrounds/illusion4.gif');
+}
+body {
+    background-image: url('../assets/images/backgrounds/illusion4.gif');
+    background-repeat: round;
+
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Empilha Ticker em cima do Layout */
+    overflow: hidden; /* Trava o scroll global */
+
+    width: 800px;
+    height: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    margin: 0 auto 40px auto;
+
+    font-size: 9pt;
+}
+
+/* Efeito ticker horizontal */
 .ticker {
-    width: 100%;
     display: flex;
     flex-shrink: 0;
     overflow: hidden;
 
+    width: 100%;
     padding: 10px 0;
     border-bottom: 1px solid #444;
-
-    cursor: none!important
 }
 .ticker:hover {
-    color: #fdfdfd;
     background-color: #202020;
+    color: #fdfdfd;
 }
 .ticker-content {
     backface-visibility: hidden;
@@ -36,6 +68,7 @@
     display: flex;
     flex-shrink: 0;
     white-space: nowrap;
+    vertical-align: middle;
     
     font-family: "Fraunces", serif;
     font-optical-sizing: auto;
@@ -45,16 +78,13 @@
         "SOFT" 0,
         "WONK" 0;
     font-size: 9pt;
-
     text-align: center;
-    vertical-align: middle;
 
     animation: ticker var(--duracao-normal) linear infinite;
 }
 .ticker:hover #frase-ticker {
     animation-duration: var(--duracao-slow);
 }
-
 #frase-ticker span {
     padding-right: 1px;
 }
@@ -68,45 +98,8 @@
 }
 
 
-body, html {
-    cursor: none;
-
-    height: 100%;
-    margin: 0;
-    padding: 0;
-
-    display: flex;
-    justify-content: center;
-
-    background-image: url('../assets/images/backgrounds/illusion4.gif');
-}
-body {
-    background-image: url('../assets/images/backgrounds/illusion4.gif');
-    background-repeat: round;
-
-    font-family: "JetBrains Mono", monospace;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-}
-.container {
-    width: 800px;
-    height: 100%;
-    max-width: 800px;
-    max-height: 90vh;
-    margin: 0 auto 40px auto;
-
-    display: flex;
-    flex-direction: column; /* Empilha Ticker em cima do Layout */
-    overflow: hidden; /* Trava o scroll global */
-
-    font-size: 9pt;
-}
-
 /* Layout principal */
 .main-layout {
-    cursor:  wait;
-
     display: flex; /* Coloca sidebar e main lado a lado */
     flex-grow: 1;  /* Faz essa área ocupar todo o espaço restante da altura */
     overflow: hidden;
@@ -124,22 +117,14 @@ body {
     max-width: 100%;
 }
 
-/* Favicon Insert */
-.favicon-insert {
-    height: auto!important;
-}
-.favicon-insert img {
-    width: auto!important;
-    max-width: 100%;
-    max-height: 20px!important;
-}
+
 
 /* Sidebar */
 .sidebar {
+    flex-shrink: 0;
+
     width: 250px;
     padding: 30px 50px 30px 0;
-
-    flex-shrink: 0;
 
     border-right: 1px dotted #444;
 
@@ -159,9 +144,10 @@ body {
     margin-bottom: 20px;
 }
 .logo img {
+    display: block;
+
     width: 100%;
     height: auto;
-    display: block;   /* Remove espaços indesejados abaixo da imagem */
     max-width: 100%;
 }
 .bio {
@@ -169,7 +155,6 @@ body {
     margin: 50px auto 20px auto;
 
     text-align: center;
-
 }
 .bio-stamp {
     width: auto;
@@ -183,14 +168,13 @@ body {
 /* Conteúdo */
 .content {
     flex-grow: 1;
-    padding: 30px 0;
-
     overflow-y: auto;
+
     scrollbar-width: thin;
     scrollbar-color: #cccccc transparent;
     scroll-behavior: smooth;
 
-    /* background-color: #666; */
+    padding: 30px 0;
 }
 .content article {
     margin-bottom: 100px;
@@ -210,8 +194,9 @@ body {
 }
 .section-header h1 {
     margin-bottom: 20px;
-    font-size: 22pt;
+
     color: #202020;
+    font-size: 22pt;
 }
 
 /* Lines */
@@ -226,26 +211,21 @@ body {
     width: 100%;
     margin: 0 auto;
 }
-.link-duat {
-    cursor: help!important;
-}
 
 /* Painel de Monitoramento */
 .painel {
-    -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
-    -moz-osx-font-smoothing: grayscale; /* Firefox no macOS */
-    text-rendering: optimizeLegibility;
-
     width: 100%;
-    
-    font-size: 8.5pt;
-    text-transform:  uppercase;
 
     border-collapse: collapse;
 
     font-family: "DotGothic16", sans-serif;
     font-weight: 400;
     font-style: normal;
+    font-size: 8.5pt;
+    text-transform:  uppercase;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
+    -moz-osx-font-smoothing: grayscale; /* Firefox no macOS */
     letter-spacing: 1px;
 }
 .painel tr {
@@ -257,12 +237,13 @@ body {
     color: #fdfdfd;
 }
 .strobo-painel {
-    filter: invert(100%) contrast(300%) brightness(1.5) !important;
     position: relative;
     z-index: 10;
+
+    filter: invert(100%) contrast(300%) brightness(1.5) !important;
 }
 .painel td {
-    padding: 6px/* seu padding */;
+    padding: 6px;
 }
 .index{
     padding-left: 35px!important;
@@ -277,8 +258,8 @@ body {
 #ultima-leitura {
     margin: 20px 35px 20px 35px;
 
-    text-align: right;
     color: rgba(32,32,32,.4);
+    text-align: right;
 }
 #ultima-leitura p{
     font-family: "Fraunces", serif;
@@ -291,9 +272,10 @@ body {
     line-height: 1.5;
 }
 #ultima-leitura p .leitura-resultado {
+    border-bottom: 1px solid rgba(32,32,32,1);
+
     color: rgba(32,32,32,1);
     font-style: normal!important;
-    border-bottom: 1px solid rgba(32,32,32,1);
 }
 .monitoramento .img-insert {
     margin-top: 20px;
@@ -301,30 +283,33 @@ body {
 
 /* Contador */
 .contador-wrapper {
-    width: auto;
-    margin: 0 30px; /* Alinhado com a margem que você usa no texto abaixo */
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Empurra o GIF para a extremidade oposta */
+    justify-content: space-between;
+
+    width: auto;
+    margin: 0 30px;
+    
     font-size: 18pt;
 }
 .contador-grupo-info {
     display: flex;
-    align-items: center;
     gap: 20px;
+    align-items: center;
 }
 .contador-box {
-    padding: 20px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 
+    padding: 20px;
+
     border: 1px solid #444;
 }
 .ocorrencias:hover .contador-box {
     background-color: rgba(0,0,0,.7);
+    
     color:#fdfdfd;
     text-decoration: underline;
 }
@@ -340,7 +325,7 @@ body {
     line-height: 1.2;
 }
 .gif-ocorrencia {
-    height: auto; /* Ajuste para ficar do tamanho da sua contador-box */
+    height: auto;
     width: auto;
     object-fit: contain;
     margin-right: 5px;
@@ -353,14 +338,12 @@ hr.divisor {
 .ocorrencias-texto {
     margin: 0 35px;
 }
-#ocor-slogan {
-    
+#ocor-slogan { 
     font-size: 8.5pt;
     font-weight: 500;
-    letter-spacing: 1px;
     text-transform: uppercase;
-    /* text-align: center; */
     line-height: 1.5;
+    letter-spacing: 1px;
 }
 #ocor-slogan span {
     background-color: #444;
@@ -373,10 +356,11 @@ hr.divisor {
 #ocor-777 {
     padding: 12px;
     margin: 20px 0;
-    text-align: center;
 
     border-top: 1px dotted #444;
     border-bottom: 1px dotted #444;
+
+    text-align: center;
 }
 #ocor-visita {
     font-family: "Fraunces", serif;
@@ -389,20 +373,23 @@ hr.divisor {
     font-size: 11pt;
 }
 #visita-counter {
-    font-weight: bold;
     border-bottom: 1px solid #333;
+    font-weight: bold;
 }
 
 /* Registro de Eventos */
 .log-box {
-    margin: 15px 30px 40px 30px;
-    height: 350px;
-
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    overflow-y: scroll;
+
+    height: 350px;
+    margin: 15px 30px 40px 30px;
+
+    box-shadow: rgba(255,255,255,0.5) 0 -2px 6px inset;
+    border-radius: 6px;
 
     background-color: rgba(0, 0, 0, 0.2);
     background: linear-gradient(
@@ -410,10 +397,9 @@ hr.divisor {
         rgba(0, 0, 0, 0.05) 50%
     ), black;
     background-size: 100% 4px;
-    border-radius: 6px;
-    box-shadow: rgba(255,255,255,0.5) 0 -2px 6px inset;
-
+    
     color: #202020;
+
     opacity: .5;
 
     transition: all 0.05s;
@@ -422,8 +408,7 @@ hr.divisor {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
 }
-
-/* Definição da animação de ligar */
+/* Animação de ligar */
 @keyframes power-on {
     0% { opacity: 0.1; filter: brightness(1); }
     10% { opacity: 0.8; filter: brightness(2); }
@@ -432,29 +417,30 @@ hr.divisor {
     30% { opacity: 0.4; filter: brightness(1); }
     100% { opacity: 1; filter: brightness(1); }
 }
-
 .log-box:hover {
-    opacity: 1;
-    animation: power-on 0.25s linear;
     background-color: rgba(32,32,32,.8);
+
     color: #e4e4e4;
     text-shadow: 0 0 5px #e4e4e4;
+
+    opacity: 1;
+
+    animation: power-on 0.25s linear;
 }
 .log-box::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
 }
-.log-box, .log-box * {
-    cursor: row-resize;
-}
+
 .log-box *::selection {
     background-color: transparent!important;
     color: #dfdfdf!important;
 }
 .log-content {
-    margin: 20px 35px;
     display: flex;
-    flex-direction: column;
     gap: 5px;
+    flex-direction: column;
+
+    margin: 20px 35px;
 }
 .log-content p {
     font-size: 7pt;
@@ -463,19 +449,16 @@ hr.divisor {
     text-align: start;
     line-height: 1.5;
 }
-.log-content p a, .log-content p a span {
-    cursor: help!important;
-}
 .log-content p a {
     color: #fff;
     text-decoration: none!important;
 }
 
 .log-index::before {
-  content: "> ";
+    content: "> ";
 }
 .log-index::after {
-  content: " ";
+    content: " ";
 }
 
 /* Animação do cursor/terminal */
@@ -521,27 +504,24 @@ hr.divisor {
 }
 .chatbox .img-insert img{
     margin-top: 50px;
-
     border: 2px solid #000;
 }
 
 
 /* Pendências */
 .todo-list, .todo-list li {
-    list-style-type: none;
     padding: 0;
     margin: 0;
+
+    list-style-type: none;
 }
 .todo-list li {
     margin: 5px 25px;
 }
-.todo-list li * {
-    cursor: wait;
-}
 .todo-list li input[type="checkbox"]:checked + label {
     text-decoration: line-through!important;
     font-style: italic;
-    /* color: rgba(32,32,32,.4); */
+    
     opacity: .4;
 }
 .todo-list a.link-duat {
@@ -554,9 +534,6 @@ hr.divisor {
     margin: 0 auto 20px auto;
     text-align: center;
 }
-.note-button a {
-    cursor: none!important;
-}
 
 
 
@@ -568,23 +545,19 @@ hr.divisor {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
     z-index: 200;
 
     overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
-
-    /* começa invisível */
-    opacity: 0;
     pointer-events: none;
-
     box-sizing: border-box;
-    cursor: s-resize;
 
-    /* fundo escuro base */
+    width: 100vw;
+    height: 100vh;
+
     background-color: transparent;
+    opacity: 0;
 }
 
 #duat-overlay::-webkit-scrollbar {
@@ -599,8 +572,8 @@ hr.divisor {
 
 /* estado fechando — some rapidamente */
 #duat-overlay.fechando {
-    animation: sair-duat 0.5s ease forwards;
     pointer-events: none;
+    animation: sair-duat 0.5s ease forwards;
 }
 
 @keyframes entrar-glitch {
@@ -614,7 +587,6 @@ hr.divisor {
     60%  { opacity: 1;    filter: brightness(1) contrast(1) invert(100%); transform: translateX(0); }
     100% { opacity: 1;    filter: none;                      transform: none; }
 }
-
 @keyframes sair-duat {
     0%   { opacity: 1; }
     100% { opacity: 0; }
@@ -625,18 +597,31 @@ hr.divisor {
     position: sticky;
     top: 0;
     left: 0;
+    z-index: 1;
+
+    overflow: visible;
+    pointer-events: none;
+
     width: 100vw;
     height: 0; /* não ocupa espaço no scroll */
-    z-index: 1;
-    pointer-events: none;
-    overflow: visible;
+    
     opacity: 0;
     transition: opacity 0.3s;
 }
-
 #duat-canvas.ativo {
     opacity: 0.7;
 }
+
+/* Favicon Insert */
+.favicon-insert {
+    height: auto!important;
+}
+.favicon-insert img {
+    width: auto!important;
+    max-width: 100%;
+    max-height: 20px!important;
+}
+
 
 /* conteúdo */
 #duat-content {
@@ -663,16 +648,18 @@ hr.divisor {
     /* blur e opacidade controlados pelo JS via inline style */
     transition: filter 0.1s, opacity 0.1s;
 
-    will-change: filter, opacity; /* Otimiza o scroll pesado no Duat */
+    will-change: filter, opacity; /* Otimiza o scroll */
 }
 
 #duat-content .line-container{
     margin: 0px 0px!important;
 }
 #duat-content .line-container img{
-    max-width: 100vw; /* Garante que não crie barra de rolagem horizontal se não quiser */
     position: relative;
     left: 50%;
+
+    max-width: 100vw;
+
     transform: translateX(-50%);
 }
 #duat-content .line-container.line-140 img {
@@ -705,26 +692,22 @@ hr.divisor {
 }
 
 #duat-content .image-container {
-    margin: 40px 0 !important; /* Espaçamento vertical */
-    text-align: center;
     width: 100%;
+    margin: 40px 0 !important;
+
+    text-align: center;
 }
 
 #duat-content .image-container img {
-    cursor: none!important;
-    /* Faz a imagem ter 110% da largura do pai (o texto) */
-    width: 110%; 
-    max-width: 110vw; /* Garante que não ultrapasse a tela física */
-    
-    /* Remove a trava de altura para não achatar a imagem */
-    max-height: none !important; 
-
-    /* Lógica de centralização para estourar as margens laterais */
+    display: block;
     position: relative;
     left: 50%;
+
+    width: 110%; 
+    max-width: 110vw;
+    max-height: none !important;
+
     transform: translateX(-50%);
-    
-    display: block;
 }
 #duat-content .image-container.insert img {
     width: auto; /* Deixa a largura automática para não distorcer */
@@ -736,6 +719,7 @@ hr.divisor {
 #duat-content .insert-gate img {
     opacity: 0.8;
     filter: blur(10px) brightness(6);
+    
     transition: all 0.3s ease;
 }
 #duat-content .insert-gate img:hover{
@@ -753,19 +737,27 @@ hr.divisor {
     margin-top: 80px!important;
 }
 #duat-content #duat-line-end span {
-    /* color: var(--cor-acento);
-    text-shadow: 0 0 5px var(--cor-acento-glow); */
-    font-size: 8pt;
-    background-color: #202020;
     padding: 1px 3px;
+
+    background-color: #202020;
+
+    font-size: 8pt;
 }
 
 /* 777 — sempre visível, no centro */
 #duat-777 {
     position: sticky;
     top: 50%;
-    transform: translateY(-50%);
     z-index: 3;
+    pointer-events: none;
+
+    height: 0;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+
+    transform: translateY(-50%);
+
     font-family: "Fraunces", serif;
     font-optical-sizing: auto;
     font-weight: 700;
@@ -773,27 +765,19 @@ hr.divisor {
     font-variation-settings:
         "SOFT" 0,
         "WONK" 0;
+    font-size: 30pt;
     text-align: center;
-    letter-spacing: 6px;
-    color: #ff0037;
     text-shadow: 0 0 5px #ff0037;
+    color: #ff0037;
+    letter-spacing: 6px;
 
     mix-blend-mode: difference;
     animation: strobo-777 1.2s steps(1) infinite;
 
-    /* começa invisível — aparece quando o scroll avança */
     opacity: 0;
-    font-size: 30pt;
+    
     filter: blur(0px);
     transition: opacity 0.3s, font-size 0.3s, filter 0.3s;
-
-    pointer-events: none;
-    margin: 0;
-    padding: 0;
-
-    /* altura zero para não ocupar espaço no scroll */
-    height: 0;
-    overflow: visible;
 }
 
 /* espaço extra para scroll longo */
@@ -803,17 +787,18 @@ hr.divisor {
 
 /* easter egg — Tiamat */
 #easter-tiamat {
-    color: #fff;
+    border-bottom: 1px solid transparent;
+
     text-shadow: 0 0 5px #fff;
     text-decoration: none;
-    cursor: help;
-    border-bottom: 1px solid transparent;
+    color: #fff;
+    
     transition: border-bottom 0.2s;
-    /* remover qualquer animation daqui */
 }
 #easter-tiamat:hover, .duat-focus span{
-    color: #ff0037;
     border-bottom: 1px solid #ff0037;
+    color: #ff0037;
+
     animation: strobo-tiamat 0.2s steps(1) infinite;
 }
 
@@ -824,7 +809,6 @@ hr.divisor {
     94%      { color: #ff0037; filter: invert(100%) brightness(1.5); }
     100%     { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
 }
-
 @keyframes strobo-tiamat {
     0%, 79%  { color: #ff0037; filter: none; text-shadow: 0 0 5px #ff0037; }
     80%      { color: #ff0037; filter: invert(100%) brightness(2.5); }
