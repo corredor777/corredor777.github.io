@@ -1,14 +1,3 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Squada+One&display=swap');
-.squada-one-regular {
-    font-family: "Squada One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}
-@import url('../../css/import/aktura.css');
-@import url('../../css/import/jet-brains-mono.css');
-@import url('../../css/import/zodiak.css');
-
 @media print {
     /* Esconde tudo o que não for o container */
     body * {
@@ -24,6 +13,7 @@
         position: absolute;
         left: 0;
         top: 0;
+
         width: 100%;
         margin: 0;
         padding: 0;
@@ -32,12 +22,13 @@
     #assinatura-linha hr {
         visibility: visible !important;
         display: block !important;
-        border: none !important;
-        /* Use border-top com uma cor sólida e garanta que tenha espessura */
-        border-top: 2px solid #333 !important; 
+
         width: 100% !important;
         height: 0 !important;
         margin-top: 5px !important;
+        border: none !important;
+        border-top: 1px solid #333 !important; 
+
         opacity: 1 !important;
     }
 
@@ -47,13 +38,20 @@
         print-color-adjust: exact !important;
     }
 
-    /* Opcional: esconder scrollbars ou elementos de navegação se existirem */
+    /* Esconde scrollbars ou elementos de navegação se existirem */
     ::-webkit-scrollbar {
         display: none;
+    }
+
+    /* Insere informações do registro abaixo da assinatura */
+    #registro-impressao {
+        display: block !important;
+        visibility: visible !important;
     }
 }
 
 * {
+    /* Impede seleção de qualquer coisa */
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* IE10+/Edge */
@@ -72,17 +70,22 @@ body {
     background-size: 90px;
     background-repeat: round;
 
-    font-family: 'DM Mono', 'JetBrainsMono-Variable', Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 10pt;
 }
 
 .container {
     display: flex;
-    flex-direction: column; /* Importante para o texto fluir corretamente com flex */
+    flex-direction: column;
+
     width: 800px;
     max-width: 800px;
     margin: 100px auto 0 auto;
-    position: relative; /* Adicionado para ancorar a marca d'água */
+
+    position: relative; /* Para ancorar a marca d'água */
     overflow: hidden;
 
     background-image: url('images/juramento-bg.png');
@@ -91,21 +94,21 @@ body {
 
     border: 1px solid #333;
     box-shadow: 0 0 20px rgba(270, 171, 162, 0.2);
-    font-size: .9em;
+
     transition: box-shadow 0.3s ease;
 }
 
-/* A Marca d'água */
+/* Marca d'água */
 .container::before {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     
-    /* Ajuste o tamanho da marca d'água aqui */
     width: 550px;
     height: 500px;
+
+    transform: translate(-50%, -50%);
     
     background-image: url('../../assets/images/arts/brasao777.png');
     background-size: contain;
@@ -113,26 +116,30 @@ body {
     background-position: center;
 
     filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%) hue-rotate(345deg) brightness(101%) contrast(30%);
-    
-    /* Controla a transparência da marca d'água */
-    opacity: 0.25; 
+    opacity: 0.3; 
+
     z-index: 0;
     pointer-events: none;
 }
 
-/* Garante que o conteúdo (texto, etc) fique por cima da marca d'água */
+/* Garante que o conteúdo fique por cima da marca d'água */
 .container > * {
     position: relative;
     z-index: 1;
 }
+
 .container:hover {
     box-shadow: 0 0 20px rgba(270, 171, 162, 0.6);
 }
 
 #bottom {
+    /* Garante que haja um espaço final depois do .container */
     height: 100px;
     display: block;
 }
+
+
+/* Classes padrão */
 .center-image {
     display: block;
     margin: 0 auto;
@@ -141,163 +148,179 @@ body {
     justify-content: center;
 }
 
+
 /* Layout principal */
 .content {
     margin: 180px 150px;
 }
 
+
+/* Header */
 .content header {
     text-align: center;
 }
-.content header svg {
-    width: 100%!important;
-    height: auto!important;
-    display: block!important;
-}
-.content header h1, .titulo-curvo {
-    font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
-    font-size: 8em;
-    margin-bottom: 0px;
-}
-.content header h3 {
-    font-family: "Squada One", sans-serif;
-    font-weight: 400;
-    font-size: 1.6em;
-    text-decoration: underline!important;
 
-    margin: 0 auto 10px auto;
-}
-.content #data {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: .6em;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-
-.cabecalho {
+#cabecalho {
     display: flex;
     justify-content: center;
     align-items: center;
+
     width: 100%;
     height: 150px;
 
     text-align: center;
 }
-.cabecalho img {
+/* Imagem do topo */
+#center-image {
+    margin-top: 40px;
+}
+#center-image img {
     max-height: 100%;
     max-width: 100%;
-
-    /* margin-top: 50px */
 }
 
-#registro {
-    display: flex;          /* Ativa o flexbox */
-    align-items: center;    /* Centraliza verticalmente as imagens e o texto */
-    justify-content: space-between; /* Distribui o espaço entre os elementos */
-    width: 100%;
+/* Título curvo */
+.content header svg {
+    display: block!important;
 
+    width: 100%!important;
+    height: auto!important;
+}
+.titulo-curvo {
+    margin-bottom: 0px;
+
+    font-family: 'Aktura-Regular', "UnifrakturCook", 'Times New Roman', Times, serif;
+    font-size: 85pt;
+}
+
+/* Subtítulo */
+.content header h3 {
+    margin: 0 auto 10px auto;
+
+    font-family: "Squada One", sans-serif;
+    font-weight: 400;
+    font-size: 14pt;
+    text-decoration: underline!important;
+}
+/* Data do documento */
+.content #data {
+    font-family: "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* Registro do documento */
+#registro {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
     margin: 10px 0 50px 0;
 }
-
+/* Imagens laterais */
 .reg-image {
-    flex: 0 0 115px;
+    flex: 0 0 110px;
 }
 .reg-image img {
     width: 100%; 
     height: auto;
+
     filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%) hue-rotate(345deg) brightness(101%) contrast(30%);
     opacity: 1;
 }
-
+/* Texto central */
 #reg-texto {
-    flex: 1;                /* O texto ocupa todo o espaço restante no meio */
-    text-align: center;     /* Garante que o texto dentro da div fique centralizado */
-    padding: 0 10px;        /* Dá um respiro entre as imagens e a frase */
+    flex: 1; /* O texto ocupa todo o espaço restante no meio */
 
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    font-weight: 600;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 1;
+    text-align: center;
 }
 #reg-frase {
     font-style: italic;
-    font-size: .85em;
-    line-height: 1.4em;
+    font-size: 9pt;
+    line-height: 1.1;
 }
-
 #reg-numero {
-    margin-top: 20px;
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif!important;
-    font-size: 1.2em;
+    margin-top: 25px;
+
+    font-size: 11pt;
     font-weight: bold;
     letter-spacing: 1px;
-
 }
+/* Número sorteado pelo .js */
 #regnum {
     padding: 4px 13px;
     border: 1px solid #333;
 }
 #regnum::before {
     content: "nº";
-    margin-right: 5px;
+    margin-right: 2px;
 }
 
+
+/* Texto principal  */
 .content main{
-    /* font-family: 'EB Garamond', 'Times New Roman', Times, serif; */
-    margin: 50px 15px 30px 15px;
+    margin: 50px 15px 20px 15px;
 
     text-align: justify;
-    line-height: 1.4em;
+    line-height: 1.48;
+    font-size: 9.5pt!important;
 }
 .content main p {
     margin: 20px 0;
 }
-.content main p:last-child {
-    margin-top: 50px!important;
-}
+/* Primeira letra */
 .content main p:first-child::first-letter {
-    font-family: 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
-    font-size: 3.3rem;         /* Tamanho da letra (ajuste conforme necessário) */
+    float: left; /* Faz o texto contornar a letra */
+
+    margin: 2px 7px 0 -17px;
+
+    font-family: "UnifrakturMaguntia", 'Times New Roman', Times, serif;
+    font-size: 39pt;
     font-weight: bold;
-    float: left;               /* Faz o texto contornar a letra */
     line-height: 1;
-
-    margin: -13px 6px 0 -17px;
 }
+/* Itens centrais */
 .content main .termos {
-    margin-left: 30px;
+    margin: 15px 0 0 30px!important;
 }
-
 .content main .termos .t-bold {
     font-weight: bold;
 }
+/* Último parágrafo */
+.content main p:last-child {
+    margin-bottom: 40px!important;
+}
 
-.credits {
+
+/* Rodapé */
+.content footer {
     display: flex;
-    justify-content: space-between; /* Empurra carimbos para a esquerda e assinatura para a direita */
-    align-items: flex-start;         /* Alinha ambos por baixo */
     gap: 45px;
-    margin: 15px 0 30px 0;
-    width: 100%;
+    justify-content: space-between;
+    align-items: center;
     box-sizing: border-box;
-}
-#credits > div {
-    margin: 0px auto;
-}
 
-/* Bloco dos Carimbos */
+    width: 100%;
+    margin-bottom: 40px;
+}
+/* Carimbos */
 #carimbo {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
-
-/* #carimbo p span {
-    opacity: 0.8;
-    background: #fdfdfd;
-    padding: 2px 4px;
-} */
-
 /* Container que agrupa os dois carimbos */
 #carimbo-content {
     display: flex;
@@ -308,128 +331,133 @@ body {
 }
 #carimbo-content > div {
     width: 135px; /* Largura fixa para os carimbos */
-    margin: 0 0; /* Espaçamento entre os carimbos */
-
-    /* border: 2px solid #5d5d5d;
-    border-radius: 4px; */
 }
-
-/* Força todas as imagens a terem a mesma largura dentro das divs */
 #carimbo-1 img, #carimbo-2 img, #carimbo-3 img {
+    display: block;
+
     width: 100%;
     height: auto;
-    display: block;
 }
-
-/* Estilo individual com tilt suave */
+/* Estilos individuais */
 #carimbo-1 {
     z-index: 2;
-    margin: 0 -4px 0 auto!important; /* Sobreposição leve */
+    margin: 0 -3px 0 auto!important;
 }
 #carimbo-1 img {
-    /* transform: rotate(-1.5deg); */
     width: 75%;
     margin: 0 auto
 }
-
 #carimbo-2 {
-    margin-top: -60px!important; /* Sobreposição leve */
     z-index: 2;
+    margin-top: -20px!important;
 }
 #carimbo-2 img {
+    margin-top: -30px;
     transform: rotate(1.5deg);
-    
 }
-
 #carimbo-3 {
     z-index: 0;
-    margin-top: 10px!important;
+    margin-top: -15px!important;
 }
 #carimbo-3 img {
-    filter: invert(100%) contrast(180%);
+    filter: invert(100%) contrast(210%);
     opacity: .7;
 }
 
-/* Bloco da Assinatura e Rodapé */
+/* Bloco da Assinatura */
 #assinatura {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch; /* Alinha à direita conforme seu layout */
+    justify-content: center;
+    align-items: stretch;
+
     width: 100%;
-    overflow: hidden; /* Impede que qualquer resíduo saia da div */
+    overflow: hidden;
+
     text-align: right;
 }
-
-#canva, #canva * {
-    cursor: crosshair!important;
-}
-
-#assinatura-linha p {
-    font-size: 2em;
-}
-#assinatura-linha hr {
-    border: none;
-    border-top: 1px solid #333;
-    margin-bottom: 5px;
-}
-
-#rodape {
-    margin-top: 25px;
-    text-align: right;
-}
-#rodape p {
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif!important;
-    font-style: italic;
-    font-weight: 600;
-    margin-top: 20px;
-    line-height: 1.3;
-    font-size: 7.5pt;
-    margin: 2px 0;
-}
-
-
 /* Container da assinatura */
 #canva {
+    position: relative;
+
     width: 100%;
     height: 100px;
+
     background: transparent;
-    position: relative;
 }
 
 #canva canvas {
-    display: block;
-    background: transparent;
-    cursor: crosshair !important;
-    filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 1px rgba(255, 0, 0, 0.3));
-
     touch-action: none; /* Impede o delay de reconhecimento de toque */
     user-select: none;
     -webkit-user-select: none;
+
+    display: block;
+    
+    background: transparent;
+    filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 1px rgba(255, 0, 0, 0.3));
+
+    cursor: crosshair !important;    
 }
 
+#assinatura-linha hr {
+    margin-bottom: 5px;
+
+    border: none;
+    border-top: 1px solid #333;
+}
 #assinatura-linha p {
-    font-size: 2em;
     margin: 0;
     line-height: 1;
-}
 
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 22pt!important;
+    letter-spacing: 3px;
+}
+/* Hora do registro - apenas para impressão */
 #registro-impressao {
-    text-align: left;
     display: none;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 5pt;
+
+    margin-top: 10px;
+
+    font-family: "DotGothic16", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 6pt;
+    text-align: left;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+/* Nota final */
+#nota-final {
     margin-top: 20px;
-    text-transform: uppercase;
+
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: italic;
+    font-variation-settings:
+        "SOFT" 1,
+        "WONK" 0;
+    font-size: 8pt;
+    text-align: right;
+    line-height: 1.3;
 }
-@media print {
-    #registro-impressao {
-        display: block !important;
-        visibility: visible !important;
-    }
+#nota-final p {
+    margin: 3px 0;
 }
+
+
+
+
+
+
+
 
 #credits {
     text-align: center;

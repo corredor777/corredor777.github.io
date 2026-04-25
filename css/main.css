@@ -37,8 +37,14 @@
     flex-shrink: 0;
     white-space: nowrap;
     
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    font-size: 12px;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 9pt;
 
     text-align: center;
     vertical-align: middle;
@@ -77,6 +83,11 @@ body, html {
 body {
     background-image: url('../assets/images/backgrounds/illusion4.gif');
     background-repeat: round;
+
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 .container {
     width: 800px;
@@ -88,9 +99,8 @@ body {
     display: flex;
     flex-direction: column; /* Empilha Ticker em cima do Layout */
     overflow: hidden; /* Trava o scroll global */
-    
-    /* border: 1px solid #333; */
-    font-size: .9em;
+
+    font-size: 9pt;
 }
 
 /* Layout principal */
@@ -132,6 +142,14 @@ body {
     flex-shrink: 0;
 
     border-right: 1px dotted #444;
+
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
 }
 #sidebar-content, #main-content {
     margin-top: 30px;
@@ -184,16 +202,16 @@ body {
 .section-header {
     padding: 0 30px;
 
-    font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
+    font-family: 'Aktura-Regular', "UnifrakturCook", 'Times New Roman', Times, serif;
+    font-style: normal;
+}
+.section-header:first-child h1 {
+    margin-top: 0!important;
 }
 .section-header h1 {
     margin-bottom: 20px;
-
+    font-size: 22pt;
     color: #202020;
-}
-.section-container {
-    font-family: 'JetBrainsMono-Variable', 'DM Mono', 'Courier New', Courier, monospace;
-    /* font-size: .9em; */
 }
 
 /* Lines */
@@ -220,10 +238,15 @@ body {
 
     width: 100%;
     
-    font-size: .9em;
+    font-size: 8.5pt;
     text-transform:  uppercase;
 
     border-collapse: collapse;
+
+    font-family: "DotGothic16", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 1px;
 }
 .painel tr {
     background-color: transparent;
@@ -239,7 +262,7 @@ body {
     z-index: 10;
 }
 .painel td {
-    padding: 8px/* seu padding */;
+    padding: 6px/* seu padding */;
 }
 .index{
     padding-left: 35px!important;
@@ -255,18 +278,25 @@ body {
     margin: 20px 35px 20px 35px;
 
     text-align: right;
-    color: rgba(32,32,32,.25);
+    color: rgba(32,32,32,.4);
 }
 #ultima-leitura p{
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
     font-weight: 600;
+    font-style: italic;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    line-height: 1.5;
 }
 #ultima-leitura p .leitura-resultado {
     color: rgba(32,32,32,1);
-    text-decoration: underline;
+    font-style: normal!important;
+    border-bottom: 1px solid rgba(32,32,32,1);
 }
 .monitoramento .img-insert {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 /* Contador */
@@ -276,7 +306,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between; /* Empurra o GIF para a extremidade oposta */
-    font-size: 1.6em;
+    font-size: 18pt;
 }
 .contador-grupo-info {
     display: flex;
@@ -299,8 +329,14 @@ body {
     text-decoration: underline;
 }
 .contador-label {
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;;
-    font-size: .8em;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
     line-height: 1.2;
 }
 .gif-ocorrencia {
@@ -318,12 +354,13 @@ hr.divisor {
     margin: 0 35px;
 }
 #ocor-slogan {
-    /* font-size: .8em; */
-    font-weight: bolder;
-    letter-spacing: 2px;
+    
+    font-size: 8.5pt;
+    font-weight: 500;
+    letter-spacing: 1px;
     text-transform: uppercase;
     /* text-align: center; */
-    line-height: 1.6;
+    line-height: 1.5;
 }
 #ocor-slogan span {
     background-color: #444;
@@ -336,21 +373,24 @@ hr.divisor {
 #ocor-777 {
     padding: 12px;
     margin: 20px 0;
-
-    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif;
-    font-weight: 600;
     text-align: center;
 
     border-top: 1px dotted #444;
     border-bottom: 1px dotted #444;
 }
 #ocor-visita {
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    font-size: 1.1em;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
 }
 #visita-counter {
     font-weight: bold;
-    /* text-decoration: underline; */
+    border-bottom: 1px solid #333;
 }
 
 /* Registro de Eventos */
@@ -367,7 +407,7 @@ hr.divisor {
     background-color: rgba(0, 0, 0, 0.2);
     background: linear-gradient(
         rgba(18, 16, 16, 0) 50%, 
-        rgba(0, 0, 0, 0.1) 50%
+        rgba(0, 0, 0, 0.05) 50%
     ), black;
     background-size: 100% 4px;
     border-radius: 6px;
@@ -397,7 +437,8 @@ hr.divisor {
     opacity: 1;
     animation: power-on 0.25s linear;
     background-color: rgba(32,32,32,.8);
-    color: #fdfdfd;
+    color: #e4e4e4;
+    text-shadow: 0 0 5px #e4e4e4;
 }
 .log-box::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
@@ -416,7 +457,9 @@ hr.divisor {
     gap: 5px;
 }
 .log-content p {
-    /* font-size: .8em; */
+    font-size: 7pt;
+    font-weight: 300!important;
+    text-transform: uppercase;
     text-align: start;
     line-height: 1.5;
 }
@@ -605,8 +648,14 @@ hr.divisor {
     padding: 15vh 40px 0 40px;
     box-sizing: border-box;
 
-    font-family: 'Zodiak-Variable', 'Times New Roman', Times, serif;
-    font-size: 1.1em;
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
     line-height: 2;
     text-align: justify;
     color: #fff;
@@ -640,7 +689,10 @@ hr.divisor {
     margin-bottom: 3.5em;
 }
 .duat-italic {
-    font-family: 'Zodiak-VariableItalic', 'Times New Roman', Times, serif;
+    font-style: italic!important;
+    font-variation-settings:
+        "SOFT" 1,
+        "WONK" 0;
 }
 .duat-quote::before {
     content: "“";
@@ -703,7 +755,7 @@ hr.divisor {
 #duat-content #duat-line-end span {
     /* color: var(--cor-acento);
     text-shadow: 0 0 5px var(--cor-acento-glow); */
-    font-size: .8em;
+    font-size: 8pt;
     background-color: #202020;
     padding: 1px 3px;
 }
@@ -714,8 +766,13 @@ hr.divisor {
     top: 50%;
     transform: translateY(-50%);
     z-index: 3;
-
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
     font-weight: 700;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
     text-align: center;
     letter-spacing: 6px;
     color: #ff0037;
@@ -726,7 +783,7 @@ hr.divisor {
 
     /* começa invisível — aparece quando o scroll avança */
     opacity: 0;
-    font-size: 1em;
+    font-size: 30pt;
     filter: blur(0px);
     transition: opacity 0.3s, font-size 0.3s, filter 0.3s;
 

@@ -42,7 +42,7 @@ const boxNumero = document.querySelector('.contador-numero');
 const labelTexto = document.querySelector('.contador-label');
 
 // Atualiza o número no elemento
-boxNumero.textContent = dias < 10 ? '0' + dias : dias; // adiciona zero à esquerda se for menor que 10
+boxNumero.textContent = dias.toString().padStart(3, '0');
 
 // Ajusta o plural da frase lateral
 if (dias === 1) {

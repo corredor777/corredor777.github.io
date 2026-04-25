@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=UnifrakturMaguntia&display=swap');
+
 * {
     cursor: help;
 }
@@ -45,18 +47,24 @@ body {
     background-color: #a40000; /* New highlight background color */
     color: #cdcdcd;
 
-    font-family: 'Aktura-Regular', 'UnifrakturMaguntia', 'Times New Roman', Times, serif;
+    font-family: 'Aktura-Regular', "UnifrakturCook", serif;
+    font-weight: 700;
+    font-style: normal;
     font-weight: 300;
-    font-size: 2.4em;
+    font-size: 32pt;
     letter-spacing: 1px;
 }
 #arcano {
     margin-top: 10px!important;
 
-    font-family: 'JetBrainsMono-Variable', 'DM Mono', 'Courier New', Courier, monospace;
+    font-family: "DotGothic16", "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: 0.6em;
     font-weight: 300;
     text-transform: uppercase;
+    letter-spacing: 1px;
 
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -74,7 +82,13 @@ body {
     bottom: 50px;
 }
 .credits p {
-    font-family: 'Zodiak-Variable', serif!important;
+    font-family: "Fraunces", serif!important;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
     font-size: 0.7em;
 }
 .credits p span {
