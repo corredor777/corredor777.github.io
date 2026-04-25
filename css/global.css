@@ -1,9 +1,9 @@
 
 /* Importação de fontes */
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Jacquard+12&family=Jacquard+24&family=UnifrakturMaguntia&display=swap');
-@import url('_import/aktura.css');
-@import url('_import/zodiak.css');
-@import url('_import/jet-brains-mono.css');
+@import url('import/aktura.css');
+@import url('import/zodiak.css');
+@import url('import/jet-brains-mono.css');
 
 
 ::selection {
