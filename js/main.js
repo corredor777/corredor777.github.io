@@ -30,7 +30,7 @@ if (ticker) {
 // [SISTEMA: CONTAGEM DE DIAS APÓS OCORRÊNCIA]
 // IMPORTANTE: Altere os valores abaixo para atualizar a data do incidente
 // ============================================================
-const dataIncidente = new Date(2026, 3, 20); // qlterar seguindo o formato: (ano, mês-1, dia)
+const dataIncidente = new Date(2026, 4, 1); // alterar seguindo o formato: (ano, mês-1, dia)
 const hoje = new Date();
 
 // Cálculo da diferença
