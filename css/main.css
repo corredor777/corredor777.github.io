@@ -333,6 +333,8 @@ body {
 
 hr.divisor {
     margin: 15px 0 20px 0;
+    border: none;
+    border-bottom: 1px dotted #202020;
 }
 
 .ocorrencias-texto {
@@ -427,6 +429,9 @@ hr.divisor {
 
     animation: power-on 0.25s linear;
 }
+.log-box:hover .log-content p a {
+    color: #e4e4e4;
+}
 .log-box::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
 }
@@ -437,23 +442,30 @@ hr.divisor {
 }
 .log-content {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     flex-direction: column;
 
     margin: 20px 35px;
 }
 .log-content p {
+    /* recuo de quebra alinhado após o "> " */
+    padding-left: 2.5ch;
+    text-indent: -2.5ch;
+
     font-size: 7pt;
     font-weight: 300!important;
     text-transform: uppercase;
     text-align: start;
-    line-height: 1.5;
+    line-height: 1.8;
 }
 .log-content p a {
-    color: #fff;
+    color: #202020;
     text-decoration: none!important;
 }
-
+/* .log-index {
+    flex-shrink: 0; /* impede que o índice encolha
+    white-space: nowrap;
+} */
 .log-index::before {
     content: "> ";
 }
@@ -540,7 +552,6 @@ hr.divisor {
 /* ===================== */
 /* DUAT                  */
 /* ===================== */
-
 #duat-overlay {
     position: fixed;
     top: 0;
