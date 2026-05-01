@@ -462,10 +462,14 @@ hr.divisor {
     color: #202020;
     text-decoration: none!important;
 }
-/* .log-index {
-    flex-shrink: 0; /* impede que o índice encolha
-    white-space: nowrap;
-} */
+.log-content p a:visited {
+    color: #202020;
+    text-decoration: none !important;
+}
+.log-box:hover .log-content p a:visited {
+    color: #e4e4e4;
+}
+
 .log-index::before {
     content: "> ";
 }
