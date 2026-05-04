@@ -25,3 +25,185 @@ p {
     margin: 0;
     padding: 0;
 }
+
+/* ============================================================
+   PLAYER
+   Cores default da main. Outras páginas sobrescrevem as variáveis.
+============================================================ */
+#corredor-player {
+    --player-cor: rgba(10,10,10,.6);
+    --player-cor-ativa: #ff0037;
+    --player-cor-hover: rgba(10,10,10,.3);
+    --player-fundo-popup: rgba(10,10,10,.75);
+    --player-texto-popup: rgba(245,245,245,.5);
+    --player-border-radius-popup: 2px;
+    --player-borda: rgba(245,245,245,.2);
+    --player-btn: #666;
+
+    width: 100%;
+    position: relative;
+
+    margin: 40px auto 40px auto;
+}
+
+/* Controles */
+.player-controls {
+    display: flex;
+    margin: 10px auto;
+    
+}
+.player-controls-container {
+    width: auto;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+
+.player-controls button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    color: var(--player-btn);
+    opacity: 0.5;
+    transition: opacity 0.1s, color 0.1s;
+    font-family: inherit;
+}
+
+.player-controls button:hover {
+    opacity: 1;
+    color: var(--player-cor-ativa);
+}
+
+/* Botão de play ativo */
+#player-btn-play[data-estado="tocando"] {
+    color: var(--player-cor-ativa) !important;
+    opacity: 1;
+}
+#player-btn-play.loading {
+    opacity: 0.5;
+    cursor: wait!important;
+    filter: grayscale(1);
+}
+
+/* Ticker */
+.player-ticker {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* mantém no ticker, não no pai */
+    border-top: 1px dotted var(--player-cor-hover);
+    padding-top: 4px;
+    margin-top: 6px;
+    gap: 15px;
+}
+
+/* O ticker de texto ocupa todo o espaço que sobra */
+.player-ticker-text-wrapper {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.player-ticker-text {
+    display: inline-flex;
+    animation: ticker-player 20s linear infinite;
+    font-family: 'JetBrainsMono-Variable', monospace;
+    font-size: 9px;
+    color: var(--player-cor);
+    opacity: 0.6;
+}
+.player-ticker-text img {
+    width: auto;
+    height: 12px;
+    margin-bottom: -3px;
+}
+
+/* Botão da lista na mesma linha */
+.player-ticker button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bolder;
+    color: var(--player-cor);
+    opacity: 0.5;
+    flex-shrink: 0; /* não encolhe */
+    transition: opacity 0.1s, color 0.1s;
+    font-family: inherit;
+}
+
+.player-ticker button:hover {
+    opacity: 1;
+    color: var(--player-cor-hover);
+}
+
+@keyframes ticker-player {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Pop-up da playlist */
+.player-popup {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--player-fundo-popup);
+    border: 1px solid var(--player-borda);
+    border-radius: var(--player-border-radius-popup);
+    scrollbar-width: thin;
+    scrollbar-color: var(--player-borda) transparent;
+    z-index: 100;
+    margin-bottom: 10px;
+
+    /* esconde a scrollbar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.player-lista {
+    background: none;
+}
+
+.player-popup.active {
+    display: block;
+}
+
+.lista-item {
+    padding: 6px 10px;
+    font-size: 9px;
+    font-family: 'JetBrainsMono-Variable', monospace;
+    color: var(--player-texto-popup);
+    cursor: pointer;
+    border-bottom: 1px solid var(--player-borda);
+    text-transform: uppercase;
+    opacity: 0.6;
+    transition: opacity 0.1s, color 0.1s;
+}
+
+.lista-item:hover {
+    opacity: 1;
+    background: var(--player-cor-hover);
+}
+.lista-item:hover::before {
+    content: "";
+    margin-left: 1px;
+}
+
+.lista-item.active {
+    color: var(--player-cor-ativa);
+    opacity: 1;
+    font-style: italic;
+}
+.lista-item.active::before {
+    content: "";
+    margin-left: 5px;
+}
