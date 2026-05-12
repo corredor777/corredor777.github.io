@@ -49,7 +49,7 @@ spanData.textContent = dataFormatada;
 
 function gerarNumeroEspecial() {
     const spans = document.querySelectorAll('#regnum, #protocolo-fim');
-    const chanceEspecial = 0.3; // 40% de chance de ser um número especial
+    const chanceEspecial = 0.3; // 30% de chance de ser um número especial
     let resultado = "";
 
     if (Math.random() < chanceEspecial) {

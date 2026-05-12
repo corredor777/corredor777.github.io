@@ -1,10 +1,10 @@
 // Redirecionamento automático:
 const destino = 'main.html';
 
-// 1. Redirecionamento automático após 3 segundos
+// 1. Redirecionamento automático após 6 segundos
 const timer = setTimeout(() => {
     window.location.href = destino;
-}, 5000);
+}, 6000);
 
 // 2. Redirecionamento instantâneo via clique (interação)
 document.addEventListener('click', () => {
@@ -20,7 +20,7 @@ const bancoDeDados = [
     { carta: "0 - O Louco", frase: " How does it feel to be inside a dream? " },
     { carta: "I - O Mago", frase: " Eu sou. " },
     { carta: "II - A Sacerdotisa", frase: " A natureza gosta de se esconder. " },
-    { carta: "III - A Imperatriz", frase: " I desire violently — and I wait. " },
+    { carta: "III - A Imperatriz", frase: " I desire violently, and I wait. " },
     { carta: "IV - O Imperador", frase: " Amor sob vontade " },
     { carta: "V - O Hierofante", frase: " V.I.T.R.I.O.L. " },
     { carta: "VI - Os Enamorados", frase: " Sou o corte, e sou a faca. " },
