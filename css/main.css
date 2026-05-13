@@ -117,7 +117,18 @@ body {
     max-width: 100%;
 }
 
-
+.foco-amarelo {
+    color: #d9ff00!important;
+    text-shadow: 0 0 5px #d9ff00;
+}
+.foco-vermelho {
+    color: var(--cor-acento) !important;
+    text-shadow: 0 0 5px var(--cor-acento-glow);
+}
+.foco-azul {
+    color: #0048ff!important;
+    text-shadow: 0 0 5px #0048ff;
+}
 
 /* Sidebar */
 .sidebar {
