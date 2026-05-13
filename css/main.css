@@ -190,7 +190,7 @@ body {
 .section-header {
     padding: 0 30px;
 
-    font-family: 'Aktura-Regular', "UnifrakturCook", 'Times New Roman', Times, serif;
+    font-family: "Manufacturing Consent", "UnifrakturCook", 'Times New Roman', Times, serif;
     font-style: normal;
 }
 .section-header:first-child h1 {
@@ -200,7 +200,7 @@ body {
     margin-bottom: 20px;
 
     color: #202020;
-    font-size: 22pt;
+    font-size: 26pt;
 }
 
 /* Lines */
@@ -489,19 +489,6 @@ hr.divisor {
 /* Aplica na última linha (ou onde estiver o _) */
 .log-entry:last-child .log-index {
     animation: blink 1s step-end infinite;
-}
-
-.foco-amarelo {
-    color: #d9ff00!important;
-    text-shadow: 0 0 5px #d9ff00;
-}
-.foco-vermelho {
-    color: var(--cor-acento) !important;
-    text-shadow: 0 0 5px var(--cor-acento-glow);
-}
-.foco-azul {
-    color: #0048ff!important;
-    text-shadow: 0 0 5px #0048ff;
 }
 
 

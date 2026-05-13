@@ -43,12 +43,12 @@ body {
     background-color: #a40000; /* New highlight background color */
     color: #cdcdcd;
 
-    font-family: 'Aktura-Regular', "UnifrakturCook", serif;
+    font-family: "Manufacturing Consent", "UnifrakturCook", serif;
     font-weight: 700;
     font-style: normal;
     font-weight: 300;
-    font-size: 32pt;
-    letter-spacing: 1px;
+    font-size: 36pt;
+    letter-spacing: -1px;
 }
 #arcano {
     margin-top: 10px!important;

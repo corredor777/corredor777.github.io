@@ -3,6 +3,7 @@ const globalCursorMap = {
   '.cur-skeleton-hand': '/assets/images/cursor/skeleton-hand.cur',
   '.cur-draw': '/assets/images/cursor/caneta.cur',
   '.cur-chama': '/assets/images/cursor/blueflame.gif',
+  '.cur-blocked-default': 'not-allowed',
   '.cur-none': 'none',
   '.cur-help': 'help',
   '.link-duat': 'help',

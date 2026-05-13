@@ -1,0 +1,47 @@
+<!-- fragmentos/transmissoes/diario/index.html -->
+<!-- Fragmento puro — sem html/head/body -->
+
+
+<div class="diario-wrapper">
+
+    <div class="diario-coluna-esquerda">
+        <div class="section-header">
+            <div class="section-title">Diário&nbsp;&there4;</div>
+        </div>
+        <div id="diario-nav"></div>
+    </div>
+
+    <div class="diario-coluna-direita">
+        <div id="diario-entrada">
+            <p class="diario-placeholder">Selecione uma entrada.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(async () => {
+    const nav = document.getElementById('diario-nav');
+
+    const res  = await fetch('fragmentos/transmissoes/diario/entradas/index.json');
+    const lista = await res.json(); // ["2026-05-12", "2026-04-30", ...]
+
+    lista.forEach((slug, i) => {
+        const btn = document.createElement('div');
+        btn.className = 'diario-bolinha';
+        btn.dataset.url  = `./diario/entradas/${slug}.html`;
+        btn.dataset.date = slug;
+        btn.title = slug;
+        btn.textContent = '●';
+        // Primeira bolinha ativa por padrão
+        if (i === 0) btn.classList.add('primeira');
+        nav.appendChild(btn);
+    });
+
+    // Carrega a entrada mais recente automaticamente
+    if (lista.length > 0) {
+        const primeira = nav.querySelector('.diario-bolinha');
+        primeira?.click();
+    }
+})();
+</script>

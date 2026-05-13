@@ -1,0 +1,395 @@
+#monitor-target {
+    color: var(--fosforo-verde-glow);
+}
+
+.section-header {
+    position: relative;
+    left: 10px;
+    z-index: 0;
+    font-family: "Manufacturing Consent", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48pt;
+    line-height: 1;
+    /* text-transform: uppercase; */
+    margin-bottom: -45px;
+    filter: blur(2px);
+    opacity: .12;
+}
+
+#notas-grid, #diario-entrada {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 12pt;
+    line-height: 2;
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* ── Diário: grid duas colunas ───────────────────────────── */
+.diario-wrapper {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    height: 100%;
+}
+
+.diario-coluna-esquerda {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-right: 1px solid rgba(20, 253, 206, 0.1);
+    padding-right: 24px;
+    overflow: hidden;
+}
+
+.diario-titulo {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--fosforo-verde);
+    opacity: 0.25;
+    filter: blur(0.6px);
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+.diario-titulo span { opacity: 0.6; }
+
+#diario-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    flex: 1;
+}
+#diario-nav::-webkit-scrollbar { display: none; }
+
+.diario-data {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--fosforo-verde-glow-light);
+    text-align: left;
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 8pt;
+    letter-spacing: 2px;
+    color: var(--fosforo-verde);
+    opacity: 0.3;
+    padding: 7px 0;
+    cursor: none;
+    transition: opacity 0.1s steps(1);
+}
+.diario-data:hover { opacity: 0.7; }
+.diario-data.ativa {
+    opacity: 1;
+    border-bottom-color: var(--fosforo-verde-glow);
+}
+
+.diario-coluna-direita {
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.diario-coluna-direita::-webkit-scrollbar { display: none; }
+
+#diario-entrada {
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--fosforo-verde-glow) transparent;
+}
+
+.diario-placeholder {
+    opacity: 0.7;
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 10pt;
+
+    animation: blink 1.6s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: .6; }
+    50% { opacity: 0; }
+}
+
+.entrada-data {
+    color: var(--fosforo-vermelho);
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 9pt;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 18px;
+}
+
+.entrada-corpo {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
+    color: var(--fosforo-verde)!important;
+
+    padding-right: 20px;
+}
+.entrada-corpo p {
+    max-width: 100%;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.focus-italico {
+    font-style: italic;
+}
+
+
+/* ── Notas: grid duas colunas (esquerda larga) ───────────── */
+.notas-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ── Coluna esquerda: lista de notas ─────────────────────── */
+.notas-coluna-esquerda {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+    border-right: 1px solid rgba(20, 253, 206, 0.08);
+    padding-right: 32px;
+}
+
+#notas-lista {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--fosforo-verde-glow) transparent;
+}
+#notas-lista::-webkit-scrollbar       { width: 4px; }
+#notas-lista::-webkit-scrollbar-track { background: transparent; }
+#notas-lista::-webkit-scrollbar-thumb {
+    background: var(--fosforo-verde-glow);
+    border-radius: 2px;
+}
+
+.nota-item { border-bottom: 1px solid rgba(20, 253, 206, 0.06); }
+
+.nota-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    color: var(--fosforo-verde);
+    opacity: 0.5;
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 0.78rem;
+    cursor: none;
+    transition: opacity 0.1s steps(1);
+    gap: 8px;
+}
+.nota-titulo:hover   { opacity: 0.85; }
+.nota-titulo.aberta  { opacity: 1; }
+
+.nota-indicador {
+    flex-shrink: 0;
+    transition: transform 0.2s;
+    color: var(--fosforo-verde-glow);
+    margin-right: 15px;
+}
+.nota-titulo.aberta .nota-indicador { transform: rotate(90deg); }
+
+/* ── Coluna direita ──────────────────────────────────────── */
+.notas-coluna-direita {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+}
+
+/* Slider de definições — altura fixa, padding generoso */
+.notas-definicoes-wrapper {
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(20, 253, 206, 0.08);
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+}
+
+#definicoes-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.def-termo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    background: rgba(20, 253, 206, 0.03);
+    border: 1px solid var(--fosforo-verde-glow-light);
+    padding: 20px 18px;
+    cursor: none;
+    text-align: left;
+    transition: background 0.1s steps(1), border-color 0.1s steps(1);
+}
+.def-termo:hover {
+    background: var(--fosforo-verde-glow-light);
+}
+
+.def-termo-label {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 7pt;
+    letter-spacing: 3px;
+    color: var(--fosforo-verde);
+    opacity: 0.3;
+}
+.def-termo-texto {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
+    letter-spacing: 0.5px;
+    color: var(--fosforo-verde);
+    line-height: 1.5;
+}
+
+.def-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.def-prev, .def-next {
+    background: none;
+    border: none;
+    color: var(--fosforo-verde);
+    opacity: 0.4;
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 8pt;
+    cursor: none;
+    transition: opacity 0.1s steps(1);
+    padding: 4px 0;
+}
+.def-prev:hover, .def-next:hover { opacity: 1; }
+.def-prev:disabled, .def-next:disabled { opacity: 0.1; pointer-events: none; }
+
+.def-contador {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 7pt;
+    color: var(--fosforo-verde);
+    opacity: 0.25;
+    letter-spacing: 0.1em;
+}
+
+/* Análises — ocupa o espaço restante */
+.notas-analises-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+}
+#analise-full-header .section-title span {
+    border-bottom: 1px dotted var(--fosforo-verde);
+    padding: 2px 0;
+}
+#analise-full-body h2 {
+    font-family: "Manufacturing Consent", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24pt;
+    margin: 20px auto 0 auto;
+}
+#analises-lista {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: none;
+    gap: 2px;
+}
+#analises-lista::-webkit-scrollbar { display: none; }
+
+.analise-link {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(20, 253, 206, 0.06);
+    text-align: left;
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 0.75rem;
+    color: var(--fosforo-verde);
+    opacity: 0.35;
+    padding: 8px 0;
+    cursor: none;
+    transition: opacity 0.1s steps(1);
+}
+.analise-link:hover { opacity: 0.8; }
+
+.nota-item p {
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.focus-sublinhado {
+    border-bottom: 1px solid var(--fosforo-verde);
+}
+
+.nota-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+.nota-item li {
+    position: relative;
+    padding-left: 20px;
+    margin-top: 5px;
+}
+.nota-item ul li::before {
+    content: "→"; /* Ou use "»", "•", "::" */
+    position: absolute;
+    left: 0;
+    color: var(--fosforo-verde); /* Aplica o vermelho #ff0037 */
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-weight: bold;
+}
+
+.nota-citacao {
+    text-align: center;
+}
+.nota-citacao .citacao {
+    font-style: italic!important;
+}
+.nota-citacao .citacao::before {
+    content: "“";
+}
+.nota-citacao .citacao::after {
+    content: "”";
+}
+.nota-citacao .autor {
+    display: block;
+    opacity: .4;
+}
+.nota-citacao .autor::before {
+    content: "- "
+}
