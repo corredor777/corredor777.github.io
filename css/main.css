@@ -542,7 +542,7 @@ hr.divisor {
     
     opacity: .4;
 }
-.todo-list a.link-duat {
+.todo-list a {
     color: #202020;
     text-decoration: none;
 }
