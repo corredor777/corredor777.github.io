@@ -3,6 +3,7 @@
 }
 
 .section-header {
+    pointer-events: none;
     position: relative;
     left: 10px;
     z-index: 0;
@@ -15,6 +16,7 @@
     margin-bottom: -45px;
     filter: blur(2px);
     opacity: .12;
+    
 }
 
 #notas-grid, #diario-entrada {
