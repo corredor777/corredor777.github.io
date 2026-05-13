@@ -410,7 +410,7 @@ body, html {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(2, 5, 2, 0.82);
+    background: var(--fosforo-verde-glow-light);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;

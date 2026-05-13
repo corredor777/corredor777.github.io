@@ -433,13 +433,13 @@ async function rodarBoot() {
     await transicaoTarget(target, () => {
         target.innerHTML = `
             <div class="boot-pronto">
-                <p>Olá! Você acessou uma zona de memória persistente</p>
+                <p>Olá! Você acessou uma zona de memória persistente.</p>
+                <p class="dim">Estava mantendo as luzes acesas para caso alguém aparecesse.</p>
                 <br>
-                <p>O conteúdo dessa página é composto por sedimentos, registros e anomalias até então catalogadas.</p>
-                <p>São as informações que me permitiram fundar estas instalações. Informações que só estou catalogando, pouco a pouco, agora.</p>
+                <p>O que deixei espalhado por aqui é o que sobrou das minhas tentativas de dar ordem ao caos. São registros honestos, alguns sobre o que estudo, outros sobre o que sinto, todos partes de um mesmo corpo que ainda estou tentando construir.</p>
                 <br>
-                <p>Selecione uma seção na barra inferior para iniciar uma transmissão.</p>
-                <p class="dim"><span class="foco-vermelho">Fique à vontade para explorar as minhas maluquices.</span></p>
+                <p>Escolha um dos acessos abaixo para começar. Não tenha pressa, o tempo aqui dentro corre em outra frequência.</p>
+                <p class="dim">Estarei por perto, ajustando as engrenagens. Pode entrar.</p>
             </div>`;
     });
     if (status) status.innerText = 'STATUS: EM VIGÍLIA';
