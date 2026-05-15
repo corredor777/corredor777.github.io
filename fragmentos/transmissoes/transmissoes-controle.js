@@ -188,6 +188,7 @@ function vincularEventosDiario(nav) {
             try {
                 const html = await fetchFragmento(btn.dataset.url);
                 entrada.innerHTML = html;
+                reexecutarScripts(entrada);
                 entrada.scrollTop = 0;
             } catch {
                 entrada.innerHTML = `<p class="foco-vermelho">ERRO: entrada não encontrada.</p>`;
@@ -510,6 +511,19 @@ function atualizarNavAtiva(secao) {
                 ?.closest('.nav-bloco-link')
                 ?.classList.add('nav-ativo');
     }
+}
+
+function reexecutarScripts(container) {
+    container.querySelectorAll('script').forEach(scriptAntigo => {
+        const scriptNovo = document.createElement('script');
+        if (scriptAntigo.src) {
+            scriptNovo.src = scriptAntigo.src;
+        } else {
+            scriptNovo.textContent = scriptAntigo.textContent;
+        }
+        document.body.appendChild(scriptNovo);
+        document.body.removeChild(scriptNovo);
+    });
 }
 
 /* ══════════════════════════════════════════════════════════════

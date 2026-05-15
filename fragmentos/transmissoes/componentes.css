@@ -114,12 +114,12 @@
 
     animation: blink 1.6s steps(1) infinite;
 }
-
 @keyframes blink {
     0%, 100% { opacity: .6; }
     50% { opacity: 0; }
 }
 
+/* Componentes das entradas do diário */
 .entrada-data {
     color: var(--fosforo-vermelho);
     font-family: "JetBrains Mono", monospace;
@@ -131,9 +131,8 @@
     text-align: center;
     text-transform: uppercase;
     opacity: 0.5;
-    margin-bottom: 18px;
+    margin: 0 30px 18px auto;
 }
-
 .entrada-corpo {
     font-family: "Fraunces", serif;
     font-optical-sizing: auto;
@@ -152,10 +151,59 @@
     margin-bottom: 14px;
     overflow: hidden;
 }
-
-.focus-italico {
-    font-style: italic;
+.entrada-corpo p.codex {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 9pt;
+    font-variant-numeric: tabular-nums;
+    text-align: justify;
+    font-weight: 300;
+    color: var(--fosforo-vermelho);
+    opacity: .33;
 }
+
+/* Conva para WebGL */
+.bloco-webgl {
+    text-align: center;
+}
+.block-webgl canva {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Criptografia dos nomes */
+.crypto-nome {
+    background: var(--fosforo-verde-glow);
+    padding: 1px 2px 1px 3px;
+    color: var(--fosforo-verde);
+    margin-right: 2px;
+}
+
+/* Estilos do corpo do texto */
+.focus-italico {
+    font-style: italic!important;
+}
+.focus-sublinhado {
+    border-bottom: 1px solid var(--fosforo-verde);
+}
+.focus-callout {
+    display: block;
+    padding: 6px 20px;
+    text-align: center;
+    background-color: var(--fosforo-verde-glow-light);
+}
+.focus-callout:hover {
+    color: var(--fosforo-vermelho);
+}
+.focus-dim {
+    opacity: .4;
+}
+#monitor-target code {
+    background-color: var(--fosforo-verde-glow)!important;
+    color: var(--vidro-preto);
+    border-radius: 2px;
+    padding: 0 4px;
+}
+
 
 
 /* ── Notas: grid duas colunas (esquerda larga) ───────────── */
@@ -173,7 +221,7 @@
     flex-direction: column;
     gap: 16px;
     overflow: hidden;
-    border-right: 1px solid rgba(20, 253, 206, 0.08);
+    border-right: 1px solid var(--fosforo-verde-glow-light);
     padding-right: 32px;
 }
 
@@ -190,7 +238,7 @@
     border-radius: 2px;
 }
 
-.nota-item { border-bottom: 1px solid rgba(20, 253, 206, 0.06); }
+.nota-item { border-bottom: 1px solid var(--fosforo-verde-glow-light); }
 
 .nota-titulo {
     display: flex;
@@ -227,7 +275,7 @@
 /* Slider de definições — altura fixa, padding generoso */
 .notas-definicoes-wrapper {
     flex-shrink: 0;
-    border-bottom: 1px solid rgba(20, 253, 206, 0.08);
+    border-bottom: 1px solid var(--fosforo-verde-glow-light);
     padding-bottom: 24px;
     margin-bottom: 24px;
 }
@@ -336,7 +384,7 @@
     width: 100%;
     background: none;
     border: none;
-    border-bottom: 1px solid rgba(20, 253, 206, 0.06);
+    border-bottom: 1px solid var(--fosforo-verde-glow-light);
     text-align: left;
     font-family: 'JetBrains Mono Variable', monospace;
     font-size: 0.75rem;
@@ -351,10 +399,6 @@
 .nota-item p {
     margin-bottom: 15px;
     line-height: 1.4;
-}
-
-.focus-sublinhado {
-    border-bottom: 1px solid var(--fosforo-verde);
 }
 
 .nota-item ul {
@@ -393,5 +437,6 @@
     opacity: .4;
 }
 .nota-citacao .autor::before {
-    content: "- "
+    content: "— "
 }
+

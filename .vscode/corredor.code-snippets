@@ -1,5 +1,5 @@
 {
-  "Template Local Corredor 777": {
+  "Corredor 777 | Template Local": {
     "scope": "html",
     "prefix": "corredor-html",
     "body": [
@@ -52,7 +52,7 @@
     ],
     "description": "Template exclusivo para o Corredor 777"
   },
-  "Entrada de Diário": {
+  "Corredor 777 | Entrada de Diário": {
     "prefix": "corredor-diario-entrada",
     "body": [
       "<!-- diario/entradas/${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}.html -->",
@@ -66,5 +66,27 @@
     ],
     "description": "Gera um fragmento de entrada de diário com data automática"
   },
-  
+  "Corredor 777 | Análise": {
+      "prefix": "corredor-analise",
+      "body": [
+        "",
+        "",
+        "<div id=\"analise-full-header\">",
+        "  <!-- botão Voltar é injetado pelo JS aqui -->",
+        "  <div class=\"section-title\">Título: <span>${2:Análise 001}</span></div>",
+        "</div>",
+        "",
+        "<div id=\"analise-full-body\">",
+        "  <h2>${3:Subtítulo ou seção}</h2>",
+        "  <p>",
+        "    ${4:Conteúdo denso da análise.}",
+        "  </p>",
+        "  <h2>${5:Outra seção}</h2>",
+        "  <p>",
+        "    ${6:Continua com mais conteúdo aqui.}",
+        "  </p>",
+        "</div>"
+      ],
+      "description": "Gera a estrutura padrão para fragmentos de análise com header e body internos."
+  },
 }
