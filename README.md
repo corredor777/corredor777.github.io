@@ -67,11 +67,11 @@ A Recepção (`main.html`) é o hub central: contém conteúdo que descreve esta
 
 ## Conceitos
  
-**Metáfora espacial** — o site usa vocabulário de instalação arquitetônica para descrever tudo. Seções são cômodos, galerias, câmaras. Visitantes são presenças. O autor é O Zelador. Os estados internos são leituras de painel de monitoramento. O overlay de entrada só fecha ao completar o scroll, impondo uma duração, uma travessia obrigatória. Essa camada de linguagem não é estética — é estrutural. O texto e a interface falam a mesma língua. Cada decisão de UX tem uma função dentro da obra.
+**Metáfora espacial** — o site usa vocabulário de instalação arquitetônica para descrever tudo. Seções são cômodos, galerias, câmaras. Visitantes são presenças. O autor é O Zelador. Os estados internos são leituras de painel de monitoramento. O overlay de entrada só fecha ao completar o scroll, impondo uma duração, uma travessia obrigatória. O texto e a interface falam a mesma língua. Cada decisão de UX tem uma função dentro da obra.
  
 **O Caminho da Serpente** — 32 páginas baseadas na Árvore da Vida cabalística: 10 sefirót, 1 Da'at e 22 caminhos. A navegação tem uma sequência primária (a subida da serpente, de Malkuth a Kether) e túneis discretos entre pontos não adjacentes. O visitante não recebe um mapa. Alguns nós têm comportamento condicional via `sessionStorage` dependendo da origem do acesso. A estrutura está definida; o conteúdo está sendo escrito.
  
-**Restrição de dispositivo** — a experiência pressupõe tela grande. Não há versão mobile. Essa não é uma limitação técnica pendente de resolução — é uma decisão sobre o tipo de atenção que a obra exige.
+**Restrição de dispositivo** — a experiência pressupõe tela grande. Não há versão mobile. Essa não é uma limitação técnica pendente de resolução, é uma decisão sobre o tipo de atenção que a obra exige.
  
 ---
 
@@ -81,7 +81,7 @@ A Recepção (`main.html`) é o hub central: contém conteúdo que descreve esta
  
 **Engine do player de música** — `player-engine.js` é um módulo reutilizável que opera sobre a YouTube IFrame API com o player de vídeo invisível. Cada página instancia o player com sua própria playlist via `inicializarPlayer()`. Shuffle ativo por padrão. Customizável por página via variáveis CSS.
  
-**Sistema de injeção de conteúdo (Transmissões)** — cada entrada das subseções de Transmissões é um arquivo HTML individual. Um script Python atualiza um JSON por subseção; esse JSON é lido pelo JavaScript da página, que injeta os HTMLs individuais dentro do layout principal já estilizado — o visual do monitor CRT. Isso permite adicionar e editar conteúdo sem tocar no HTML principal.
+**Sistema de injeção de conteúdo (Transmissões)** — cada entrada das subseções de Transmissões é um arquivo HTML individual. Um script Python atualiza um JSON por subseção; esse JSON é lido pelo JavaScript da página, que injeta os HTMLs individuais dentro do layout principal já estilizado, o visual do monitor CRT. Isso permite adicionar e editar conteúdo sem tocar no HTML principal.
  
 **Gerenciador de cursores** — sistema que permite trocar o cursor da página adicionando uma classe ao elemento HTML. Suporta GIFs animados cross-platform sem delay de carregamento.
 
