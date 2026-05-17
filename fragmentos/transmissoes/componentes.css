@@ -351,25 +351,25 @@
 }
 
 /* Análises — ocupa o espaço restante */
-.notas-analises-wrapper {
+.notas-ensaios-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 12px;
     overflow: hidden;
 }
-#analise-full-header .section-title span {
+#ensaio-full-header .section-title span {
     border-bottom: 1px dotted var(--fosforo-verde);
     padding: 2px 0;
 }
-#analise-full-body h2 {
+#ensaio-full-body h2 {
     font-family: "Manufacturing Consent", system-ui;
     font-weight: 400;
     font-style: normal;
     font-size: 24pt;
     margin: 20px auto 0 auto;
 }
-#analises-lista {
+#ensaios-lista {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -377,9 +377,9 @@
     scrollbar-width: none;
     gap: 2px;
 }
-#analises-lista::-webkit-scrollbar { display: none; }
+#ensaios-lista::-webkit-scrollbar { display: none; }
 
-.analise-link {
+.ensaios-link {
     display: block;
     width: 100%;
     background: none;
@@ -394,7 +394,7 @@
     cursor: none;
     transition: opacity 0.1s steps(1);
 }
-.analise-link:hover { opacity: 0.8; }
+.ensaios-link:hover { opacity: 0.8; }
 
 .nota-item p {
     margin-bottom: 15px;

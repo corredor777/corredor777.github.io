@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-galeria_setup.py
+galeria-setup.py
 Ferramentas de manutenção da galeria de artefatos do Corredor 777.
 Otimizado para arquitetura de Repositórios Satélites (Sem LFS / Custo Zero).
 
-Uso:
-    python galeria_setup.py thumbs          — gera thumbs locais para imagens e vídeos novos
-    python galeria_setup.py json            — gera/atualiza galeria-obras.json mapeando URLs remotas
-    python galeria_setup.py tudo            — roda thumbs + json em sequência
+Uso (de qualquer diretório):
+    python _ferramentas/galeria-setup.py thumbs   — gera thumbs locais para imagens e vídeos novos
+    python _ferramentas/galeria-setup.py json     — gera/atualiza galeria-obras.json mapeando URLs remotas
+    python _ferramentas/galeria-setup.py tudo     — roda thumbs + json em sequência
 """
 
 import json
@@ -18,51 +18,49 @@ import subprocess
 import sys
 from pathlib import Path
 
+# ─── RAIZ DO REPOSITÓRIO ──────────────────────────────────────────────────────
+
+# _ferramentas/ está um nível abaixo da raiz — sobe um nível para ancorá-la
+RAIZ = Path(__file__).resolve().parent.parent
+
 # ─── CONFIGURAÇÃO DO SATELLITE DEPLOY ─────────────────────────────────────────
 
-# SUBSITUIR COM O SEU NOME DE USUÁRIO REAL DO GITHUB:
+# SUBSTITUIR COM O SEU NOME DE USUÁRIO REAL DO GITHUB:
 SEU_USUARIO_GITHUB = "corredor777"
 
-# Nome base dos repositórios que hospedarão os arquivos brutos
 REPO_MIDIAS_A = "corredor777-midias-a"
 REPO_MIDIAS_B = "corredor777-midias-b"
 
-# ─── CONFIGURAÇÃO PADRÃO ──────────────────────────────────────────────────────
+# ─── CAMINHOS (relativos à raiz) ──────────────────────────────────────────────
 
-# Caminhos locais para processamento de miniaturas
-PASTA_IMAGENS   = Path("setores/galeria/artefatos/imagens")
-PASTA_THUMBS    = Path("setores/galeria/artefatos/imagens/thumbs")
-PASTA_VIDEOS    = Path("setores/galeria/artefatos//videos")
-ARQUIVO_JSON    = Path("setores/galeria/galeria-obras.json")
+GALERIA        = RAIZ / "fragmentos" / "galeria"
+PASTA_IMAGENS  = GALERIA / "artefatos" / "imagens"
+PASTA_THUMBS   = GALERIA / "artefatos" / "imagens" / "thumbs"
+PASTA_VIDEOS   = GALERIA / "artefatos" / "videos"
+ARQUIVO_JSON   = GALERIA / "galeria-obras.json"
+
+# Caminho das thumbs como visto pelo HTML da galeria (relativo a fragmentos/galeria/)
+THUMB_URL_BASE = "artefatos/imagens/thumbs"
 
 EXT_IMAGENS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 EXT_VIDEOS  = {".mp4", ".webm", ".mov"}
 
-# Largura máxima da miniatura local (Git principal)
 THUMB_LARGURA = 500
 
-# Dimensões e regras da parede virtual
-CANVAS_W = 6000
-CANVAS_H = 5000
-CENTRO_X = 3000
-CENTRO_Y = 2500
-RAIO = 1800
+# ─── DIMENSÕES DO CANVAS VIRTUAL ──────────────────────────────────────────────
+
+CANVAS_W  = 6000
+CANVAS_H  = 5000
+CENTRO_X  = 3000
+CENTRO_Y  = 2500
+RAIO      = 1800
 SEED_LAYOUT = 777
 
 LARGURA_MIN = 180
 LARGURA_MAX = 480
-ROT_MAX = 4.5
-Z_MIN = 1
-Z_MAX = 8
-
-# ─── UTILIDADES ───────────────────────────────────────────────────────────────
-
-def verificar_raiz():
-    if not Path("galeria").exists():
-        print("ERRO: execute este script a partir da raiz do repositório.")
-        print("  cd /caminho/para/corredor777")
-        print("  python galeria/ferramentas/galeria_setup.py tudo")
-        sys.exit(1)
+ROT_MAX     = 4.5
+Z_MIN       = 1
+Z_MAX       = 8
 
 # ─── THUMBS ───────────────────────────────────────────────────────────────────
 
@@ -164,21 +162,19 @@ def distribuir_obras(ids: list[str]) -> dict[str, dict]:
         y = CENTRO_Y + r * math.sin(theta) + rng.uniform(-80, 80)
 
         layout[obra_id] = {
-            "x": int(x),
-            "y": int(y),
-            "w": rng.randint(LARGURA_MIN, LARGURA_MAX),
+            "x":   int(x),
+            "y":   int(y),
+            "w":   rng.randint(LARGURA_MIN, LARGURA_MAX),
             "rot": round(rng.uniform(-ROT_MAX, ROT_MAX), 2),
-            "z": rng.randint(Z_MIN, Z_MAX),
+            "z":   rng.randint(Z_MIN, Z_MAX),
         }
     return layout
 
 # ─── MAPEAMENTO E CRIAÇÃO DO JSON SATELLITE ───────────────────────────────────
 
 def _listar_arquivos_e_dividir() -> list[dict]:
-    """Varre arquivos locais, extrai proporção e divide entre os servidores A e B."""
     todos_arquivos = []
 
-    # Localiza Imagens
     if PASTA_IMAGENS.exists():
         from PIL import Image
         for f in sorted(PASTA_IMAGENS.iterdir()):
@@ -191,7 +187,6 @@ def _listar_arquivos_e_dividir() -> list[dict]:
                     pass
                 todos_arquivos.append({"nome": f.name, "stem": f.stem, "tipo": "imagem", "proporcao": proporcao})
 
-    # Localiza Vídeos
     if PASTA_VIDEOS.exists():
         for f in sorted(PASTA_VIDEOS.iterdir()):
             if f.suffix.lower() in EXT_VIDEOS:
@@ -207,36 +202,35 @@ def _listar_arquivos_e_dividir() -> list[dict]:
                         ],
                         capture_output=True, text=True, timeout=10
                     )
-                    dimensoes = resultado.stdout.strip().split('x')
+                    dimensoes = resultado.stdout.strip().split("x")
                     if len(dimensoes) == 2:
                         proporcao = round(float(dimensoes[1]) / float(dimensoes[0]), 4)
                 except Exception:
                     pass
                 todos_arquivos.append({"nome": f.name, "stem": f.stem, "tipo": "video", "proporcao": proporcao})
 
-    # Divide os arquivos de forma balanceada (Metade no Repositório A, Metade no B)
     arquivos_mapeados = []
     metade = len(todos_arquivos) // 2
 
     for index, arquivo in enumerate(todos_arquivos):
-        # Determina qual repositório satélite receberá o arquivo bruto
         repo_destino = REPO_MIDIAS_A if index < metade else REPO_MIDIAS_B
-        
-        url_remota_original = f"https://{SEU_USUARIO_GITHUB}.github.io/{repo_destino}/{arquivo['nome']}"
-        thumb_local_site = f"../assets/images/artefatos/thumbs/{arquivo['stem'] if arquivo['tipo'] == 'video' else arquivo['nome']}"
-        if arquivo['tipo'] == 'video':
-            thumb_local_site = f"../assets/images/artefatos/thumbs/{arquivo['stem']}.jpg"
+
+        url_remota = f"https://{SEU_USUARIO_GITHUB}.github.io/{repo_destino}/{arquivo['nome']}"
+
+        if arquivo["tipo"] == "video":
+            thumb = f"{THUMB_URL_BASE}/{arquivo['stem']}.jpg"
+        else:
+            thumb = f"{THUMB_URL_BASE}/{arquivo['nome']}"
 
         item = {
-            "id": arquivo["stem"],
-            "tipo": arquivo["tipo"],
-            "src": url_remota_original,
-            "thumb": thumb_local_site,
-            "proporcao": arquivo["proporcao"]
+            "id":        arquivo["stem"],
+            "tipo":      arquivo["tipo"],
+            "src":       url_remota,
+            "thumb":     thumb,
+            "proporcao": arquivo["proporcao"],
         }
-        
         if arquivo["tipo"] == "video":
-            item["poster"] = thumb_local_site
+            item["poster"] = thumb
 
         arquivos_mapeados.append(item)
 
@@ -283,9 +277,7 @@ def gerar_json():
         print("  Nenhum arquivo encontrado nas pastas de artefatos locais.\n")
         return
 
-    ids_novos = [a["id"] for a in arquivos if a["id"] not in existentes]
-
-    if not ids_novos and len(arquivos) == len(existentes):
+    if not arquivos and len(arquivos) == len(existentes):
         print(f"  JSON já está atualizado. {len(existentes)} obras registradas.\n")
         return
 
@@ -297,22 +289,20 @@ def gerar_json():
     todas_entradas = []
     for arquivo in arquivos:
         if arquivo["id"] in existentes:
-            # Mantém metadados antigos, mas atualiza a URL do src caso a divisão mude
             entrada_atualizada = existentes[arquivo["id"]]
-            entrada_atualizada["src"] = arquivo["src"]
+            entrada_atualizada["src"]       = arquivo["src"]
             entrada_atualizada["proporcao"] = arquivo["proporcao"]
             todas_entradas.append(entrada_atualizada)
         else:
             entrada = _entrada_vazia(arquivo, layout)
             todas_entradas.append(entrada)
-            print(f"  + Nova obra mapeada para nuvem: {arquivo['id']}")
+            print(f"  + Nova obra mapeada: {arquivo['id']}")
 
     with open(ARQUIVO_JSON, "w", encoding="utf-8") as f:
         json.dump(todas_entradas, f, ensure_ascii=False, indent=2)
 
-    print(f"\n  ✓ JSON internacional gerado com sucesso em {ARQUIVO_JSON}")
+    print(f"\n  ✓ JSON gerado em {ARQUIVO_JSON.relative_to(RAIZ)}")
     print("  Separe os arquivos físicos originais de acordo com as URLs geradas antes do push.\n")
-
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
 
@@ -322,7 +312,7 @@ COMANDOS = {
 }
 
 def main():
-    verificar_raiz()
+    print(f"Raiz detectada: {RAIZ}\n")
 
     args = sys.argv[1:]
     if not args or args[0] not in (*COMANDOS, "tudo"):
@@ -332,12 +322,13 @@ def main():
     comando = args[0]
 
     if comando == "tudo":
-        print("── 1. Gerando miniaturas locais para renderização básica ──")
+        print("── 1. Gerando miniaturas locais ──")
         gerar_thumbs()
-        print("── 2. Mapeando distribuição nos servidores GitHub Satélites ──")
+        print("── 2. Mapeando distribuição nos servidores satélites ──")
         gerar_json()
     else:
         COMANDOS[comando]()
+
 
 if __name__ == "__main__":
     main()

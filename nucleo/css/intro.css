@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-image: url('../assets/images/backgrounds/bg1.gif');
+    background-image: url('../../assets/images/backgrounds/bg1.gif');
 
     text-align: center;
 }
@@ -19,7 +19,7 @@ body {
 
     margin: auto;
 
-    background-image: url('../assets/images/arts/mirror_frame_dither02.png');
+    background-image: url('../../assets/images/arts/mirror_frame_dither02.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 110vh;
