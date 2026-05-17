@@ -66,17 +66,17 @@
     ],
     "description": "Gera um fragmento de entrada de diário com data automática"
   },
-  "Corredor 777 | Análise": {
-      "prefix": "corredor-analise",
+  "Corredor 777 | Ensaio": {
+      "prefix": "corredor-ensaio",
       "body": [
         "",
         "",
-        "<div id=\"analise-full-header\">",
+        "<div id=\"ensaio-full-header\">",
         "  <!-- botão Voltar é injetado pelo JS aqui -->",
         "  <div class=\"section-title\">Título: <span>${2:Análise 001}</span></div>",
         "</div>",
         "",
-        "<div id=\"analise-full-body\">",
+        "<div id=\"ensaio-full-body\">",
         "  <h2>${3:Subtítulo ou seção}</h2>",
         "  <p>",
         "    ${4:Conteúdo denso da análise.}",
