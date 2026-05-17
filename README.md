@@ -110,6 +110,8 @@ Seção de conteúdo ocultista, em construção. A entrada da página irá mostr
 **Sistema de injeção de conteúdo (Transmissões)** — cada entrada das subseções é um arquivo HTML individual. Um script Python mantém um JSON por subseção; o JavaScript da página lê esse JSON e injeta os HTMLs dentro do layout do monitor CRT sem tocar no HTML principal.
  
 **Gerenciador de cursores** — permite trocar o cursor da página via classe no elemento `<html>`. Suporta GIFs animados cross-platform sem delay de carregamento.
+
+**Recados do dev** — quebra de quarta parede via `console.log`.
  
 ---
  
