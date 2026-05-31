@@ -12,7 +12,6 @@ Uso (de qualquer diretório):
 
 import json
 import math
-import os
 import random
 import subprocess
 import sys
@@ -33,36 +32,37 @@ REPO_MIDIAS_B = "corredor777-midias-b"
 
 # ─── CAMINHOS (relativos à raiz) ──────────────────────────────────────────────
 
-GALERIA        = RAIZ / "fragmentos" / "galeria"
-PASTA_IMAGENS  = GALERIA / "artefatos" / "imagens"
-PASTA_THUMBS   = GALERIA / "artefatos" / "imagens" / "thumbs"
-PASTA_VIDEOS   = GALERIA / "artefatos" / "videos"
-ARQUIVO_JSON   = GALERIA / "galeria-obras.json"
+GALERIA = RAIZ / "fragmentos" / "galeria"
+PASTA_IMAGENS = GALERIA / "artefatos" / "imagens"
+PASTA_THUMBS = GALERIA / "artefatos" / "imagens" / "thumbs"
+PASTA_VIDEOS = GALERIA / "artefatos" / "videos"
+ARQUIVO_JSON = GALERIA / "galeria-obras.json"
 
 # Caminho das thumbs como visto pelo HTML da galeria (relativo a fragmentos/galeria/)
 THUMB_URL_BASE = "artefatos/imagens/thumbs"
 
 EXT_IMAGENS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-EXT_VIDEOS  = {".mp4", ".webm", ".mov"}
+EXT_VIDEOS = {".mp4", ".webm", ".mov"}
 
 THUMB_LARGURA = 500
 
 # ─── DIMENSÕES DO CANVAS VIRTUAL ──────────────────────────────────────────────
 
-CANVAS_W  = 6000
-CANVAS_H  = 5000
-CENTRO_X  = 3000
-CENTRO_Y  = 2500
-RAIO      = 1800
+CANVAS_W = 6000
+CANVAS_H = 5000
+CENTRO_X = 3000
+CENTRO_Y = 2500
+RAIO = 1800
 SEED_LAYOUT = 777
 
 LARGURA_MIN = 180
 LARGURA_MAX = 480
-ROT_MAX     = 4.5
-Z_MIN       = 1
-Z_MAX       = 8
+ROT_MAX = 4.5
+Z_MIN = 1
+Z_MAX = 8
 
 # ─── THUMBS ───────────────────────────────────────────────────────────────────
+
 
 def gerar_thumbs():
     PASTA_THUMBS.mkdir(parents=True, exist_ok=True)
@@ -71,7 +71,10 @@ def gerar_thumbs():
 
     if PASTA_IMAGENS.exists():
         for arquivo in sorted(PASTA_IMAGENS.iterdir()):
-            if arquivo.suffix.lower() not in EXT_IMAGENS or arquivo.parent == PASTA_THUMBS:
+            if (
+                arquivo.suffix.lower() not in EXT_IMAGENS
+                or arquivo.parent == PASTA_THUMBS
+            ):
                 continue
 
             destino = PASTA_THUMBS / arquivo.name
@@ -81,6 +84,7 @@ def gerar_thumbs():
 
             try:
                 from PIL import Image
+
                 with Image.open(arquivo) as img:
                     ratio = THUMB_LARGURA / img.width
                     nova_altura = int(img.height * ratio)
@@ -113,27 +117,40 @@ def gerar_thumbs():
             try:
                 resultado = subprocess.run(
                     [
-                        "ffprobe", "-v", "error",
-                        "-show_entries", "format=duration",
-                        "-of", "default=noprint_wrappers=1:nokey=1",
+                        "ffprobe",
+                        "-v",
+                        "error",
+                        "-show_entries",
+                        "format=duration",
+                        "-of",
+                        "default=noprint_wrappers=1:nokey=1",
                         str(arquivo),
                     ],
-                    capture_output=True, text=True, timeout=30
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
                 )
                 duracao = float(resultado.stdout.strip() or "0")
                 frame_em = duracao / 2
 
                 subprocess.run(
                     [
-                        "ffmpeg", "-ss", str(frame_em),
-                        "-i", str(arquivo),
-                        "-vframes", "1",
-                        "-vf", f"scale={THUMB_LARGURA}:-1",
-                        "-q:v", "3",
+                        "ffmpeg",
+                        "-ss",
+                        str(frame_em),
+                        "-i",
+                        str(arquivo),
+                        "-vframes",
+                        "1",
+                        "-vf",
+                        f"scale={THUMB_LARGURA}:-1",
+                        "-q:v",
+                        "3",
                         str(destino),
                         "-y",
                     ],
-                    capture_output=True, timeout=60
+                    capture_output=True,
+                    timeout=60,
                 )
 
                 if destino.exists():
@@ -146,7 +163,9 @@ def gerar_thumbs():
 
     print(f"\n  {processadas} geradas, {puladas} já existiam.\n")
 
+
 # ─── DISTRIBUIÇÃO NO CANVAS ───────────────────────────────────────────────────
+
 
 def distribuir_obras(ids: list[str]) -> dict[str, dict]:
     rng = random.Random(SEED_LAYOUT)
@@ -162,21 +181,24 @@ def distribuir_obras(ids: list[str]) -> dict[str, dict]:
         y = CENTRO_Y + r * math.sin(theta) + rng.uniform(-80, 80)
 
         layout[obra_id] = {
-            "x":   int(x),
-            "y":   int(y),
-            "w":   rng.randint(LARGURA_MIN, LARGURA_MAX),
+            "x": int(x),
+            "y": int(y),
+            "w": rng.randint(LARGURA_MIN, LARGURA_MAX),
             "rot": round(rng.uniform(-ROT_MAX, ROT_MAX), 2),
-            "z":   rng.randint(Z_MIN, Z_MAX),
+            "z": rng.randint(Z_MIN, Z_MAX),
         }
     return layout
 
+
 # ─── MAPEAMENTO E CRIAÇÃO DO JSON SATELLITE ───────────────────────────────────
+
 
 def _listar_arquivos_e_dividir() -> list[dict]:
     todos_arquivos = []
 
     if PASTA_IMAGENS.exists():
         from PIL import Image
+
         for f in sorted(PASTA_IMAGENS.iterdir()):
             if f.suffix.lower() in EXT_IMAGENS and f.parent != PASTA_THUMBS:
                 proporcao = 1.0
@@ -185,7 +207,14 @@ def _listar_arquivos_e_dividir() -> list[dict]:
                         proporcao = round(img.height / img.width, 4)
                 except Exception:
                     pass
-                todos_arquivos.append({"nome": f.name, "stem": f.stem, "tipo": "imagem", "proporcao": proporcao})
+                todos_arquivos.append(
+                    {
+                        "nome": f.name,
+                        "stem": f.stem,
+                        "tipo": "imagem",
+                        "proporcao": proporcao,
+                    }
+                )
 
     if PASTA_VIDEOS.exists():
         for f in sorted(PASTA_VIDEOS.iterdir()):
@@ -194,20 +223,34 @@ def _listar_arquivos_e_dividir() -> list[dict]:
                 try:
                     resultado = subprocess.run(
                         [
-                            "ffprobe", "-v", "error",
-                            "-select_streams", "v:0",
-                            "-show_entries", "stream=width,height",
-                            "-of", "csv=s=x:p=0",
-                            str(f)
+                            "ffprobe",
+                            "-v",
+                            "error",
+                            "-select_streams",
+                            "v:0",
+                            "-show_entries",
+                            "stream=width,height",
+                            "-of",
+                            "csv=s=x:p=0",
+                            str(f),
                         ],
-                        capture_output=True, text=True, timeout=10
+                        capture_output=True,
+                        text=True,
+                        timeout=10,
                     )
                     dimensoes = resultado.stdout.strip().split("x")
                     if len(dimensoes) == 2:
                         proporcao = round(float(dimensoes[1]) / float(dimensoes[0]), 4)
                 except Exception:
                     pass
-                todos_arquivos.append({"nome": f.name, "stem": f.stem, "tipo": "video", "proporcao": proporcao})
+                todos_arquivos.append(
+                    {
+                        "nome": f.name,
+                        "stem": f.stem,
+                        "tipo": "video",
+                        "proporcao": proporcao,
+                    }
+                )
 
     arquivos_mapeados = []
     metade = len(todos_arquivos) // 2
@@ -215,7 +258,9 @@ def _listar_arquivos_e_dividir() -> list[dict]:
     for index, arquivo in enumerate(todos_arquivos):
         repo_destino = REPO_MIDIAS_A if index < metade else REPO_MIDIAS_B
 
-        url_remota = f"https://{SEU_USUARIO_GITHUB}.github.io/{repo_destino}/{arquivo['nome']}"
+        url_remota = (
+            f"https://{SEU_USUARIO_GITHUB}.github.io/{repo_destino}/{arquivo['nome']}"
+        )
 
         if arquivo["tipo"] == "video":
             thumb = f"{THUMB_URL_BASE}/{arquivo['stem']}.jpg"
@@ -223,10 +268,10 @@ def _listar_arquivos_e_dividir() -> list[dict]:
             thumb = f"{THUMB_URL_BASE}/{arquivo['nome']}"
 
         item = {
-            "id":        arquivo["stem"],
-            "tipo":      arquivo["tipo"],
-            "src":       url_remota,
-            "thumb":     thumb,
+            "id": arquivo["stem"],
+            "tipo": arquivo["tipo"],
+            "src": url_remota,
+            "thumb": thumb,
             "proporcao": arquivo["proporcao"],
         }
         if arquivo["tipo"] == "video":
@@ -238,25 +283,27 @@ def _listar_arquivos_e_dividir() -> list[dict]:
 
 
 def _entrada_vazia(arquivo: dict, layout: dict) -> dict:
-    pos = layout.get(arquivo["id"], {"x": CENTRO_X, "y": CENTRO_Y, "w": 300, "rot": 0, "z": 3})
+    pos = layout.get(
+        arquivo["id"], {"x": CENTRO_X, "y": CENTRO_Y, "w": 300, "rot": 0, "z": 3}
+    )
     entrada = {
-        "id":        arquivo["id"],
-        "tipo":      arquivo["tipo"],
-        "src":       arquivo["src"],
-        "thumb":     arquivo["thumb"],
+        "id": arquivo["id"],
+        "tipo": arquivo["tipo"],
+        "src": arquivo["src"],
+        "thumb": arquivo["thumb"],
         "proporcao": arquivo["proporcao"],
-        "alt":       "",
-        "x":         pos["x"],
-        "y":         pos["y"],
-        "w":         pos["w"],
-        "rot":       pos["rot"],
-        "z":         pos["z"],
-        "titulo":    "",
-        "ano":       "",
-        "midia":     "",
+        "alt": "",
+        "x": pos["x"],
+        "y": pos["y"],
+        "w": pos["w"],
+        "rot": pos["rot"],
+        "z": pos["z"],
+        "titulo": "",
+        "ano": "",
+        "midia": "",
         "materiais": "",
-        "refs":      "",
-        "proposta":  "",
+        "refs": "",
+        "proposta": "",
     }
     if arquivo["tipo"] == "video":
         entrada["poster"] = arquivo["poster"]
@@ -290,7 +337,7 @@ def gerar_json():
     for arquivo in arquivos:
         if arquivo["id"] in existentes:
             entrada_atualizada = existentes[arquivo["id"]]
-            entrada_atualizada["src"]       = arquivo["src"]
+            entrada_atualizada["src"] = arquivo["src"]
             entrada_atualizada["proporcao"] = arquivo["proporcao"]
             todas_entradas.append(entrada_atualizada)
         else:
@@ -302,14 +349,18 @@ def gerar_json():
         json.dump(todas_entradas, f, ensure_ascii=False, indent=2)
 
     print(f"\n  ✓ JSON gerado em {ARQUIVO_JSON.relative_to(RAIZ)}")
-    print("  Separe os arquivos físicos originais de acordo com as URLs geradas antes do push.\n")
+    print(
+        "  Separe os arquivos físicos originais de acordo com as URLs geradas antes do push.\n"
+    )
+
 
 # ─── MAIN ─────────────────────────────────────────────────────────────────────
 
 COMANDOS = {
     "thumbs": gerar_thumbs,
-    "json":   gerar_json,
+    "json": gerar_json,
 }
+
 
 def main():
     print(f"Raiz detectada: {RAIZ}\n")
