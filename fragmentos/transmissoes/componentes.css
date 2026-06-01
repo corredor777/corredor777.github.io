@@ -5,15 +5,16 @@
 .section-header {
     pointer-events: none;
     position: relative;
-    left: 10px;
-    z-index: 0;
+    left: 5px;
+    bottom: -10px;
+    z-index: -1;
     font-family: "Manufacturing Consent", system-ui;
     font-weight: 400;
     font-style: normal;
     font-size: 48pt;
     line-height: 1;
     /* text-transform: uppercase; */
-    margin-bottom: -45px;
+    margin-bottom: -35px;
     filter: blur(2px);
     opacity: .12;
     
@@ -197,6 +198,9 @@
 .focus-dim {
     opacity: .4;
 }
+.focus-center {
+    text-align: center!important;
+}
 #monitor-target code {
     background-color: var(--fosforo-verde-glow)!important;
     color: var(--vidro-preto);
@@ -240,11 +244,15 @@
 
 .nota-item { border-bottom: 1px solid var(--fosforo-verde-glow-light); }
 
-.nota-titulo {
+.nota-titulo, .ensaio-link {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
     color: var(--fosforo-verde);
     opacity: 0.5;
     font-family: 'JetBrains Mono Variable', monospace;
@@ -253,7 +261,7 @@
     transition: opacity 0.1s steps(1);
     gap: 8px;
 }
-.nota-titulo:hover   { opacity: 0.85; }
+.nota-titulo:hover, .ensaio-link:hover   { opacity: 0.85; }
 .nota-titulo.aberta  { opacity: 1; }
 
 .nota-indicador {
@@ -358,17 +366,97 @@
     gap: 12px;
     overflow: hidden;
 }
+#ensaio-full-header {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--fosforo-verde-glow);
+}
 #ensaio-full-header .section-title span {
     border-bottom: 1px dotted var(--fosforo-verde);
     padding: 2px 0;
 }
-#ensaio-full-body h2 {
-    font-family: "Manufacturing Consent", system-ui;
+#ensaio-full-header header p {
+    margin-top: 20px;
+    text-align: justify;
+}
+#ensaio-full-header #eixos-tematicos ul{
+    margin: 10px auto 0 auto;
+    list-style-type: "→ ";
+}
+
+#ensaio-full-body #cabecalho-citacao{
+    text-align: center!important;
+    font-style: italic;
+    margin: 60px 0;
+}
+#ensaio-full-body #cabecalho-citacao p {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 13pt;
+    line-height: 1.5;
+}
+#ensaio-full-body #cabecalho-citacao .autor {
+    display: block;
+    margin-top: 15px;
+    font-size: 9px;
+    font-style: normal!important;
+    opacity: .45;
+}
+#ensaio-full-body #cabecalho-citacao .autor::before {
+    content: "-----[ ";
+}
+#ensaio-full-body #cabecalho-citacao .autor::after {
+    content: " ]-----";
+}
+
+#ensaio-full-body .conteudo {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-variation-settings:
+        "SOFT" 0,
+        "WONK" 0;
+    font-size: 11pt;
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 80px;
+}
+#ensaio-full-body .conteudo p {
+    margin-bottom: 15px;
+}
+#ensaio-full-body .conteudo .focus-callout {
+    margin: 30px 0;
+}
+#ensaio-full-body .conteudo h2 {
+    font-family: "Jacquard 24", system-ui;
     font-weight: 400;
     font-style: normal;
     font-size: 24pt;
-    margin: 20px auto 0 auto;
+    margin: 75px auto 20px auto;
+    text-align: center;
 }
+#ensaio-full-body #referencias {
+    padding: 40px 0 100px 0;
+    border-top: 1px solid var(--fosforo-verde-glow);
+}
+#ensaio-full-body #referencias p {
+    margin-bottom: 15px;
+    text-align: justify;
+    white-space: pre-wrap;
+    opacity: .35;
+    transition: opacity .1s steps(1);
+}
+#ensaio-full-body #referencias p:hover {
+    opacity: 1;
+}
+
+
+
+
 #ensaios-lista {
     flex: 1;
     display: flex;
@@ -379,22 +467,17 @@
 }
 #ensaios-lista::-webkit-scrollbar { display: none; }
 
-.ensaios-link {
-    display: block;
-    width: 100%;
+.ensaio-link {
     background: none;
     border: none;
     border-bottom: 1px solid var(--fosforo-verde-glow-light);
-    text-align: left;
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 0.75rem;
-    color: var(--fosforo-verde);
-    opacity: 0.35;
-    padding: 8px 0;
-    cursor: none;
-    transition: opacity 0.1s steps(1);
+    padding: 0 0 8px 0;
+    /* margin: 0; */
+    transition: all 0.1s steps(1);
 }
-.ensaios-link:hover { opacity: 0.8; }
+.ensaio-link:hover {
+    border-bottom-color: var(--fosforo-verde-glow);
+}
 
 .nota-item p {
     margin-bottom: 15px;

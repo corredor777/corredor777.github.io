@@ -54,7 +54,7 @@ async function navegarPara(secao) {
 async function montarNotas() {
     await montarListaNotas();
     await montarDefinicoes();
-    await montarAnalises();
+    await montarEnsaios();
 }
 
 async function montarListaNotas() {
@@ -123,18 +123,18 @@ async function montarDefinicoes() {
     }
 }
 
-async function montarAnalises() {
-    const lista = document.getElementById('analises-lista');
+async function montarEnsaios() {
+    const lista = document.getElementById('ensaios-lista');
     if (!lista) return;
     try {
-        const res   = await fetch('./notas/analises/index.json');
+        const res   = await fetch('./notas/ensaios/index.json');
         const itens = await res.json();
-        // formato: [{ slug: "analise-slug", titulo: "Título da análise" }, ...]
+        // formato: [{ slug: "ensaio-slug", titulo: "Título da análise" }, ...]
 
         itens.forEach(item => {
             const btn = document.createElement('button');
-            btn.className    = 'analise-link';
-            btn.dataset.url  = `./notas/analises/${item.slug}.html`;
+            btn.className    = 'ensaio-link';
+            btn.dataset.url  = `./notas/ensaios/${item.slug}.html`;
             btn.textContent  = item.titulo;
             lista.appendChild(btn);
         });
@@ -471,7 +471,7 @@ function vincularEventos(raiz) {
     });
 
     /* Links de análise (fullscreen) */
-    raiz.querySelectorAll('.analise-link').forEach(link => {
+    raiz.querySelectorAll('.ensaio-link').forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
             abrirFullscreen(link.dataset.url || link.href);
