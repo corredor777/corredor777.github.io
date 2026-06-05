@@ -451,8 +451,6 @@
 }
 
 
-
-
 #ensaios-lista {
     flex: 1;
     display: flex;
@@ -519,3 +517,9 @@
     content: "— "
 }
 
+#transmissoes-modal-content p{
+    margin-bottom: 15px;
+}
+#transmissoes-modal-content p:last-child {
+    margin-bottom: 0!important;
+}
