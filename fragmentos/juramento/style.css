@@ -1,479 +1,476 @@
 @media print {
-    /* Esconde tudo o que não for o container */
-    body * {
-        visibility: hidden;
-    }
-    
-    .container, .container * {
-        visibility: visible;
-    }
+  /* Esconde tudo o que não for o container */
+  body * {
+    visibility: hidden;
+  }
 
-    /* Posiciona o container no topo da página impressa */
-    .container {
-        position: absolute;
-        left: 0;
-        top: 0;
+  .container,
+  .container * {
+    visibility: visible;
+  }
 
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
+  /* Posiciona o container no topo da página impressa */
+  .container {
+    position: absolute;
+    left: 0;
+    top: 0;
 
-    #assinatura-linha hr {
-        visibility: visible !important;
-        display: block !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-        width: 100% !important;
-        height: 0 !important;
-        margin-top: 5px !important;
-        border: none !important;
-        border-top: 1px solid #333 !important; 
+  #assinatura-linha hr {
+    visibility: visible !important;
+    display: block !important;
 
-        opacity: 1 !important;
-    }
+    width: 100% !important;
+    height: 0 !important;
+    margin-top: 5px !important;
+    border: none !important;
+    border-top: 1px solid #333 !important;
 
-    /* Remove cores de fundo forçadas e garante que imagens/gifs apareçam */
-    body {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
+    opacity: 1 !important;
+  }
 
-    /* Esconde scrollbars ou elementos de navegação se existirem */
-    ::-webkit-scrollbar {
-        display: none;
-    }
+  /* Remove cores de fundo forçadas e garante que imagens/gifs apareçam */
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
-    /* Insere informações do registro abaixo da assinatura */
-    #registro-impressao {
-        display: block !important;
-        visibility: visible !important;
-    }
+  /* Esconde scrollbars ou elementos de navegação se existirem */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Insere informações do registro abaixo da assinatura */
+  #registro-impressao {
+    display: block !important;
+    visibility: visible !important;
+  }
 }
 
 * {
-    /* Impede seleção de qualquer coisa */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* IE10+/Edge */
-    user-select: none;         /* Padrão */
+  /* Impede seleção de qualquer coisa */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Padrão */
 
-    cursor: none!important;
+  cursor: none !important;
 }
 
-:not(.container-documento, .container-documento *, .area-canvas, .area-canvas *) {
-    cursor: none !important;
+:not(
+  .container-documento,
+  .container-documento *,
+  .area-canvas,
+  .area-canvas *
+) {
+  cursor: none !important;
 }
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-
-    
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 body {
-    background-image: url('images/bg5-bmp.png');
-    background-size: 90px;
-    background-repeat: round;
+  background-image: url("images/bg5-bmp.png");
+  background-size: 90px;
+  background-repeat: round;
 
-    font-family: "JetBrains Mono", monospace;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 10pt;
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 10pt;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    width: 800px;
-    max-width: 800px;
-    margin: 100px auto 0 auto;
+  width: 800px;
+  max-width: 800px;
+  margin: 100px auto 0 auto;
 
-    position: relative; /* Para ancorar a marca d'água */
-    overflow: hidden;
+  position: relative; /* Para ancorar a marca d'água */
+  overflow: hidden;
 
-    background-image: url('images/juramento-bg.png');
-    background-size: 100% 100%;
-    background-position: top;
+  background-image: url("images/juramento-bg.png");
+  background-size: 100% 100%;
+  background-position: top;
 
-    border: 1px solid #333;
-    box-shadow: 0 0 20px rgba(270, 171, 162, 0.2);
+  border: 1px solid #333;
+  box-shadow: 0 0 20px rgba(270, 171, 162, 0.2);
 
-    transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 /* Marca d'água */
 .container::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    
-    width: 550px;
-    height: 500px;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
 
-    transform: translate(-50%, -50%);
-    
-    background-image: url('../../assets/images/arts/brasao777.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  width: 550px;
+  height: 500px;
 
-    filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%) hue-rotate(345deg) brightness(101%) contrast(30%);
-    opacity: 0.3; 
+  transform: translate(-50%, -50%);
 
-    z-index: 0;
-    pointer-events: none;
+  background-image: url("../../assets/images/arts/brasao777.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%)
+    hue-rotate(345deg) brightness(101%) contrast(30%);
+  opacity: 0.3;
+
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Garante que o conteúdo fique por cima da marca d'água */
 .container > * {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .container:hover {
-    box-shadow: 0 0 20px rgba(270, 171, 162, 0.6);
+  box-shadow: 0 0 20px rgba(270, 171, 162, 0.6);
 }
 
 #bottom {
-    /* Garante que haja um espaço final depois do .container */
-    height: 100px;
-    display: block;
+  /* Garante que haja um espaço final depois do .container */
+  height: 100px;
+  display: block;
 }
-
 
 /* Classes padrão */
 .center-image {
-    display: block;
-    margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 
-    text-align: center;
-    justify-content: center;
+  text-align: center;
+  justify-content: center;
 }
-
 
 /* Layout principal */
 .content {
-    margin: 180px 150px;
+  margin: 180px 150px;
 }
-
 
 /* Header */
 .content header {
-    text-align: center;
+  text-align: center;
 }
 
 #cabecalho {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    width: 100%;
-    height: 150px;
+  width: 100%;
+  height: 150px;
 
-    text-align: center;
+  text-align: center;
 }
 /* Imagem do topo */
 #center-image {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 #center-image img {
-    max-height: 100%;
-    max-width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 /* Título curvo */
 .content header svg {
-    display: block!important;
+  display: block !important;
 
-    width: 100%!important;
-    height: auto!important;
+  width: 100% !important;
+  height: auto !important;
 }
 .titulo-curvo {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 
-    font-family: 'Aktura-Regular', "UnifrakturCook", 'Times New Roman', Times, serif;
-    font-size: 85pt;
+  font-family:
+    "Aktura-Regular", "UnifrakturCook", "Times New Roman", Times, serif;
+  font-size: 85pt;
 }
 
 /* Subtítulo */
 .content header h3 {
-    margin: 0 auto 10px auto;
+  margin: 0 auto 10px auto;
 
-    font-family: "Squada One", sans-serif;
-    font-weight: 400;
-    font-size: 14pt;
-    text-decoration: underline!important;
+  font-family: "Squada One", sans-serif;
+  font-weight: 400;
+  font-size: 14pt;
+  text-decoration: underline !important;
 }
 /* Data do documento */
 .content #data {
-    font-family: "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 7pt;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-family: "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-
 
 /* Registro do documento */
 #registro {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: space-between;
 
-    width: 100%;
-    margin: 10px 0 50px 0;
+  width: 100%;
+  margin: 10px 0 50px 0;
 }
 /* Imagens laterais */
 .reg-image {
-    flex: 0 0 110px;
+  flex: 0 0 110px;
 }
 .reg-image img {
-    width: 100%; 
-    height: auto;
+  width: 100%;
+  height: auto;
 
-    filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%) hue-rotate(345deg) brightness(101%) contrast(30%);
-    opacity: 1;
+  filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%)
+    hue-rotate(345deg) brightness(101%) contrast(30%);
+  opacity: 1;
 }
 /* Texto central */
 #reg-texto {
-    flex: 1; /* O texto ocupa todo o espaço restante no meio */
+  flex: 1; /* O texto ocupa todo o espaço restante no meio */
 
-    font-family: "Fraunces", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-variation-settings:
-        "SOFT" 0,
-        "WONK" 1;
-    text-align: center;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-variation-settings:
+    "SOFT" 0,
+    "WONK" 1;
+  text-align: center;
 }
 #reg-frase {
-    font-style: italic;
-    font-size: 9pt;
-    line-height: 1.1;
+  font-style: italic;
+  font-size: 9pt;
+  line-height: 1.1;
 }
 #reg-numero {
-    margin-top: 25px;
+  margin-top: 25px;
 
-    font-size: 11pt;
-    font-weight: bold;
-    letter-spacing: 1px;
+  font-size: 11pt;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 /* Número sorteado pelo .js */
 #regnum {
-    padding: 4px 13px;
-    border: 1px solid #333;
+  padding: 4px 13px;
+  border: 1px solid #333;
 }
 #regnum::before {
-    content: "nº";
-    margin-right: 2px;
+  content: "nº";
+  margin-right: 2px;
 }
-
 
 /* Texto principal  */
-.content main{
-    margin: 50px 15px 20px 15px;
+.content main {
+  margin: 50px 15px 20px 15px;
 
-    text-align: justify;
-    line-height: 1.48;
-    font-size: 9.5pt!important;
+  text-align: justify;
+  line-height: 1.48;
+  font-size: 9.5pt !important;
 }
 .content main p {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 /* Primeira letra */
 .content main p:first-child::first-letter {
-    float: left; /* Faz o texto contornar a letra */
+  float: left; /* Faz o texto contornar a letra */
 
-    margin: 2px 7px 0 -17px;
+  margin: 2px 7px 0 -17px;
 
-    font-family: "UnifrakturMaguntia", 'Times New Roman', Times, serif;
-    font-size: 39pt;
-    font-weight: bold;
-    line-height: 1;
+  font-family: "UnifrakturMaguntia", "Times New Roman", Times, serif;
+  font-size: 39pt;
+  font-weight: bold;
+  line-height: 1;
 }
 /* Itens centrais */
 .content main .termos {
-    margin: 15px 0 0 30px!important;
+  margin: 15px 0 0 30px !important;
 }
 .content main .termos .t-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 /* Último parágrafo */
 .content main p:last-child {
-    margin-bottom: 40px!important;
+  margin-bottom: 40px !important;
 }
-
 
 /* Rodapé */
 .content footer {
-    display: flex;
-    gap: 45px;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
+  display: flex;
+  gap: 45px;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 
-    width: 100%;
-    margin-bottom: 40px;
+  width: 100%;
+  margin-bottom: 40px;
 }
 /* Carimbos */
 #carimbo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 /* Container que agrupa os dois carimbos */
 #carimbo-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    margin: 20px 0 0 -10px;
+  margin: 20px 0 0 -10px;
 }
 #carimbo-content > div {
-    width: 135px; /* Largura fixa para os carimbos */
+  width: 135px; /* Largura fixa para os carimbos */
 }
-#carimbo-1 img, #carimbo-2 img, #carimbo-3 img {
-    display: block;
+#carimbo-1 img,
+#carimbo-2 img,
+#carimbo-3 img {
+  display: block;
 
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 /* Estilos individuais */
 #carimbo-1 {
-    z-index: 2;
-    margin: 0 -3px 0 auto!important;
+  z-index: 2;
+  margin: 0 -3px 0 auto !important;
 }
 #carimbo-1 img {
-    width: 75%;
-    margin: 0 auto
+  width: 75%;
+  margin: 0 auto;
 }
 #carimbo-2 {
-    z-index: 2;
-    margin-top: -20px!important;
+  z-index: 2;
+  margin-top: -20px !important;
 }
 #carimbo-2 img {
-    margin-top: -30px;
-    transform: rotate(1.5deg);
+  margin-top: -30px;
+  transform: rotate(1.5deg);
 }
 #carimbo-3 {
-    z-index: 0;
-    margin-top: -15px!important;
+  z-index: 0;
+  margin-top: -15px !important;
 }
 #carimbo-3 img {
-    filter: invert(100%) contrast(210%);
-    opacity: .7;
+  filter: invert(100%) contrast(210%);
+  opacity: 0.7;
 }
 
 /* Bloco da Assinatura */
 #assinatura {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 
-    width: 100%;
-    overflow: hidden;
+  width: 100%;
+  overflow: hidden;
 
-    text-align: right;
+  text-align: right;
 }
 /* Container da assinatura */
 #canva {
-    position: relative;
+  position: relative;
 
-    width: 100%;
-    height: 100px;
+  width: 100%;
+  height: 100px;
 
-    background: transparent;
+  background: transparent;
 }
 
 #canva canvas {
-    touch-action: none; /* Impede o delay de reconhecimento de toque */
-    user-select: none;
-    -webkit-user-select: none;
+  touch-action: none; /* Impede o delay de reconhecimento de toque */
+  user-select: none;
+  -webkit-user-select: none;
 
-    display: block;
-    
-    background: transparent;
-    filter: contrast(1.2) brightness(1.1) drop-shadow(0 0 1px rgba(255, 0, 0, 0.3));
+  display: block;
 
-    /* cursor: url('images/cur5.cur'), auto!important;     */
+  background: transparent;
+  filter: contrast(1.2) brightness(1.1)
+    drop-shadow(0 0 1px rgba(255, 0, 0, 0.3));
+
+  /* cursor: url('images/cur5.cur'), auto!important;     */
 }
 
 #assinatura-linha hr {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 
-    border: none;
-    border-top: 1px solid #333;
+  border: none;
+  border-top: 1px solid #333;
 }
 #assinatura-linha p {
-    margin: 0;
-    line-height: 1;
+  margin: 0;
+  line-height: 1;
 
-    font-family: "Fraunces", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
-    font-variation-settings:
-        "SOFT" 0,
-        "WONK" 0;
-    font-size: 22pt!important;
-    letter-spacing: 3px;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings:
+    "SOFT" 0,
+    "WONK" 0;
+  font-size: 22pt !important;
+  letter-spacing: 3px;
 }
 /* Hora do registro - apenas para impressão */
 #registro-impressao {
-    display: none;
+  display: none;
 
-    margin-top: 10px;
+  margin-top: 10px;
 
-    font-family: "DotGothic16", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 6pt;
-    text-align: left;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-family: "DotGothic16", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 6pt;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 /* Nota final */
 #nota-final {
-    margin-top: 20px;
+  margin-top: 20px;
 
-    font-family: "Fraunces", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: italic;
-    font-variation-settings:
-        "SOFT" 1,
-        "WONK" 0;
-    font-size: 8pt;
-    text-align: right;
-    line-height: 1.3;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: italic;
+  font-variation-settings:
+    "SOFT" 1,
+    "WONK" 0;
+  font-size: 8pt;
+  text-align: right;
+  line-height: 1.3;
 }
 #nota-final p {
-    margin: 3px 0;
+  margin: 3px 0;
 }
-
-
-
-
-
-
-
 
 #credits {
-    text-align: center;
-    margin-bottom: 25px;
+  text-align: center;
+  margin-bottom: 25px;
 }
 #credits p {
-    font-size: 6pt;
-    opacity: 0.8;
+  font-size: 6pt;
+  opacity: 0.8;
 }
 #credits p span {
-    background: #fdfdfd;
-    padding: 2px 4px;
+  background: #fdfdfd;
+  padding: 2px 4px;
 }
-

@@ -1,103 +1,103 @@
 * {
-    cursor: help;
+  cursor: help;
 }
-body {       
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    background-image: url('../../assets/images/backgrounds/bg1.gif');
+  background-image: url("../../assets/images/backgrounds/bg1.gif");
 
-    text-align: center;
+  text-align: center;
 }
 
 .container {
-    position: relative;
+  position: relative;
 
-    width: 800px;
-    height: 100vh;
+  width: 800px;
+  height: 100vh;
 
-    margin: auto;
+  margin: auto;
 
-    background-image: url('../../assets/images/arts/mirror_frame_dither02.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 110vh;
+  background-image: url("../../assets/images/arts/mirror_frame_dither02.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 110vh;
 }
 
 .intro {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    height: 100vh;
+  height: 100vh;
 }
 
 .intro p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 #frase {
-    margin-top: 20px!important;
+  margin-top: 20px !important;
 
-    background-color: #a40000; /* New highlight background color */
-    color: #cdcdcd;
+  background-color: #a40000; /* New highlight background color */
+  color: #cdcdcd;
 
-    font-family: "Manufacturing Consent", "UnifrakturCook", serif;
-    font-weight: 700;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 36pt;
-    letter-spacing: -1px;
+  font-family: "Manufacturing Consent", "UnifrakturCook", serif;
+  font-weight: 700;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 36pt;
+  letter-spacing: -1px;
 }
 #arcano {
-    margin-top: 10px!important;
+  margin-top: 10px !important;
 
-    font-family: "DotGothic16", "JetBrains Mono", monospace;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 0.6em;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-family: "DotGothic16", "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.6em;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 
-    opacity: 0;
+  opacity: 0;
 
-    transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 .intro div:hover #arcano {
-    opacity: 1;
+  opacity: 1;
 }
 
 .credits {
-    position: absolute;
-    bottom: 50px;
+  position: absolute;
+  bottom: 50px;
 
-    width: 100%;
-    padding: 0;
+  width: 100%;
+  padding: 0;
 }
 .credits p {
-    font-family: "Fraunces", serif!important;
-    font-optical-sizing: auto;
-    font-weight: 300;
-    font-style: normal;
-    font-variation-settings:
-        "SOFT" 0,
-        "WONK" 0;
-    font-size: 0.7em;
+  font-family: "Fraunces", serif !important;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "SOFT" 0,
+    "WONK" 0;
+  font-size: 0.7em;
 }
 .credits p span {
-    padding: 1px 5px;
+  padding: 1px 5px;
 
-    background-color: #202020;
-    color: #cdcdcd;
+  background-color: #202020;
+  color: #cdcdcd;
 
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Efeito strobo */
 .negativo {
-    filter: invert(100%) contrast(150%);
-    transform: translate(1px, -1px); /* Pequeno tremor visual no strobo */
+  filter: invert(100%) contrast(150%);
+  transform: translate(1px, -1px); /* Pequeno tremor visual no strobo */
 }

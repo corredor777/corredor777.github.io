@@ -2,26 +2,28 @@
    VARIÁVEIS E BASE
    ============================================================ */
 :root {
-    --fosforo-verde: #38ecdc;
-    --fosforo-verde-glow: rgba(20, 253, 206, 0.25);
-    --fosforo-verde-glow-light: rgba(20, 253, 206, 0.08);
-    --fosforo-vermelho: #ff0037;
-    --bezel-cor: rgba(0,0,0,0.45);
-    --vidro-preto: #020502;
-    --reflexo-intensidade: 0.06; /* 0.02 = sutil, 0.12 = forte */
+  --fosforo-verde: #38ecdc;
+  --fosforo-verde-glow: rgba(20, 253, 206, 0.25);
+  --fosforo-verde-glow-light: rgba(20, 253, 206, 0.08);
+  --fosforo-vermelho: #ff0037;
+  --bezel-cor: rgba(0, 0, 0, 0.45);
+  --vidro-preto: #020502;
+  --reflexo-intensidade: 0.06; /* 0.02 = sutil, 0.12 = forte */
 }
 
-body, html {
-    margin: 0;
-    padding: 0;
+body,
+html {
+  margin: 0;
+  padding: 0;
 
-    background: rgb(32,32,32) url('assets/tv-noise-background-3.png') no-repeat center / cover;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    user-select: none;
-    display: flex;
-    
+  background: rgb(32, 32, 32) url("assets/tv-noise-background-3.png") no-repeat
+    center / cover;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  font-variant-emoji: text !important;
 }
 
 /* ============================================================
@@ -30,94 +32,92 @@ body, html {
 
 /* Gabinete de plástico externo */
 #monitor-carcaca {
-    position: relative;
-    display: flex;
-    width: 90vw;
-    max-width: 1200px;
-    height: 90vh;
-    margin: auto;
+  position: relative;
+  display: flex;
+  width: 90vw;
+  max-width: 1200px;
+  height: 90vh;
+  margin: auto;
 
-    background:
+  background:
         /* reflexo diagonal principal: branco → verde-menta */
-        linear-gradient(
-            0deg,
-            rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 1.2)) 5%,
-            rgba(56, 236, 220,  calc(var(--reflexo-intensidade) * 0.7)) 16%,
-            transparent 42%
-        ),
-        /* mancha difusa no canto superior esquerdo */
-        radial-gradient(
-            ellipse 55% 35% at 18% 12%,
-            rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 0.5)) 25%,
-            rgba(56, 236, 220,  calc(var(--reflexo-intensidade) * 0.2)) 60%,
-            transparent 70%
-        ),
-        /* vinheta escura nas bordas */
-        radial-gradient(circle, transparent 55%, rgba(0,0,0,0.65) 100%);
-    background-color: var(--bezel-cor);
-    border: 2px solid rgba(245,245,245,0.05);
-    
-    border-radius: 40px;
-    overflow: hidden;
-    /* border: 40px solid rgba(32,32,32,0.6); */
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 1.2)) 5%,
+      rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.7)) 16%,
+      transparent 42%
+    ),
+    /* mancha difusa no canto superior esquerdo */
+    radial-gradient(
+        ellipse 55% 35% at 18% 12%,
+        rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 0.5)) 25%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.2)) 60%,
+        transparent 70%
+      ),
+    /* vinheta escura nas bordas */
+    radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
+  background-color: var(--bezel-cor);
+  border: 2px solid rgba(245, 245, 245, 0.05);
 
-    /* Relevo industrial e sombra projetada */
-    box-shadow:
-        inset 0 0 40px var(--fosforo-verde-glow-light),
-        inset 0 -50px 30px rgba(0,0,0,0.25),
-        inset 10px 10px 20px rgba(255,255,255,0.01),
-        0 0 120px rgba(0,0,0,0.5);
-        
+  border-radius: 40px;
+  overflow: hidden;
+  /* border: 40px solid rgba(32,32,32,0.6); */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Relevo industrial e sombra projetada */
+  box-shadow:
+    inset 0 0 40px var(--fosforo-verde-glow-light),
+    inset 0 -50px 30px rgba(0, 0, 0, 0.25),
+    inset 10px 10px 20px rgba(255, 255, 255, 0.01),
+    0 0 120px rgba(0, 0, 0, 0.5);
 }
 
 /* O vidro curvado do monitor */
 #crt-canvas-borda {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 52; /* acima do rolo e das scanlines */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 52; /* acima do rolo e das scanlines */
 }
 
 #tela-filtro {
-    /* Fósforo + aberração no tubo */
-    filter: url(#crt-barrel);
+  /* Fósforo + aberração no tubo */
+  filter: url(#crt-barrel);
 
-    transform-style: preserve-3d;
-    perspective: 800px;
+  transform-style: preserve-3d;
+  perspective: 800px;
 
-    /* mesmo tamanho do tela-tubo */
-    position: relative;
-    width: 80vw;
-    max-width: 1050px;
-    height: 75vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* mesmo tamanho do tela-tubo */
+  position: relative;
+  width: 80vw;
+  max-width: 1050px;
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background-color: rgba(0,0,0,0.05);
-    border: 20px solid rgba(0,0,0,0.8);
-    border-radius: 24px; /* Curvatura física do canto do tubo */
-    box-shadow:
-        0 0 2px rgba(255,255,255,0.02);
-    /* Bloom estático iluminando a borda interna da moldura */
-    box-shadow:
-        0 0 3px rgba(255,255,255,0.08),
-        inset 0 0 8px rgba(0,0,0,1),
-        inset 0 20px 50px rgba(0,0,0,0.5),
-        inset 0 0 90px var(--fosforo-verde-glow),
-        0 0 30px rgba(0,0,0,0.4);
-    margin: auto;
-    overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 20px solid rgba(0, 0, 0, 0.8);
+  border-radius: 24px; /* Curvatura física do canto do tubo */
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.02);
+  /* Bloom estático iluminando a borda interna da moldura */
+  box-shadow:
+    0 0 3px rgba(255, 255, 255, 0.08),
+    inset 0 0 8px rgba(0, 0, 0, 1),
+    inset 0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 0 90px var(--fosforo-verde-glow),
+    0 0 30px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  overflow: hidden;
 }
 #tela-tubo {
-    margin: auto;
-    overflow: hidden;
+  margin: auto;
+  overflow: hidden;
 }
 
 /* ============================================================
@@ -125,57 +125,61 @@ body, html {
    ============================================================ */
 
 .camada-crt {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 50;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
 }
 
 /* Scanlines horizontais */
 .overlay-scanlines {
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.22),
-        rgba(0, 0, 0, 0.22) 1px,
-        transparent 1px,
-        transparent 2px
-    );
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22),
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 2px
+  );
 }
 
 /* Cintilação de tensão */
 .overlay-flicker {
-    background: rgba(18, 16, 16, 0.02);
-    opacity: 0;
-    animation: flicker-tension 0.15s infinite;
+  background: rgba(18, 16, 16, 0.02);
+  opacity: 0;
+  animation: flicker-tension 0.15s infinite;
 }
 
 @keyframes flicker-tension {
-    0% { opacity: 0.1; }
-    100% { opacity: 0.15; }
+  0% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.15;
+  }
 }
 
 /* Reflexo diagonal no vidro e Vinheta interna */
 .overlay-vidro {
-    background:
+  background:
         /* reflexo diagonal principal: branco → verde-menta */
-        linear-gradient(
-            128deg,
-            rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 1.2)) 0%,
-            rgba(56, 236, 220,  calc(var(--reflexo-intensidade) * 0.8)) 18%,
-            transparent 42%
-        ),
-        /* mancha difusa no canto superior esquerdo */
-        radial-gradient(
-            ellipse 55% 35% at 18% 12%,
-            rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 0.6)) 0%,
-            rgba(56, 236, 220,  calc(var(--reflexo-intensidade) * 0.3)) 45%,
-            transparent 70%
-        ),
-        /* vinheta escura nas bordas */
-        radial-gradient(circle, transparent 55%, rgba(0,0,0,0.65) 100%);
+    linear-gradient(
+      128deg,
+      rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 1.2)) 0%,
+      rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.8)) 18%,
+      transparent 42%
+    ),
+    /* mancha difusa no canto superior esquerdo */
+    radial-gradient(
+        ellipse 55% 35% at 18% 12%,
+        rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 0.6)) 0%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.3)) 45%,
+        transparent 70%
+      ),
+    /* vinheta escura nas bordas */
+    radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
 }
 
 /* ============================================================
@@ -183,107 +187,106 @@ body, html {
    ============================================================ */
 
 #terminal-interface {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
 }
 
 #terminal-topo {
-    width: 800px;
-    margin: 40px auto 0;
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--fosforo-verde-glow);
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 8pt;
-    letter-spacing: 1px;
+  width: 800px;
+  margin: 40px auto 0;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--fosforo-verde-glow);
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 8pt;
+  letter-spacing: 1px;
 }
 #topo-status {
-    opacity: .3;
+  opacity: 0.3;
 }
 
 /* Navbar Inferior Estilo VHS */
 #terminal-nav-inferior {
-    width: 100%;
-    height: 100px;
-    background: rgba(0, 0, 0, 0.7);
-    border-top: 1px solid var(--fosforo-verde-glow);
-    display: flex;
-    align-items: center;
-    margin-top: auto;
+  width: 100%;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.7);
+  border-top: 1px solid var(--fosforo-verde-glow);
+  display: flex;
+  align-items: center;
+  margin-top: auto;
 }
 .nav-bloqueada .nav-bloco-link {
-    pointer-events: none;
-    opacity: 0.15;
-    
+  pointer-events: none;
+  opacity: 0.15;
 }
 
 .nav-container-transmissoes {
-    width: 800px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-grupo-secoes {
-    display: flex;
-    gap: 30px;
+  display: flex;
+  gap: 30px;
 }
 
 .nav-bloco-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px;
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    transition: all 0.1s steps(1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  transition: all 0.1s steps(1);
 }
 
 /* Container do icone */
 .icon-vhs {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* O SVG injetado herda a cor de acento do Corredor */
 .svg-injetado {
-    width: 100%;
-    height: 100%;
-    display: block;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.svg-injetado path, 
-.svg-injetado circle, 
+.svg-injetado path,
+.svg-injetado circle,
 .svg-injetado rect {
-    fill: var(--fosforo-verde);
-    stroke: none;
-    transition: fill 0.1s ease;
+  fill: var(--fosforo-verde);
+  stroke: none;
+  transition: fill 0.1s ease;
 }
 
 .nav-bloco-link span {
-    font-size: 7pt;
-    margin-top: 8px;
-    letter-spacing: 1px;
+  font-size: 7pt;
+  margin-top: 8px;
+  letter-spacing: 1px;
 }
 
 /* Efeito VHS no Hover */
 .nav-bloco-link:hover {
-    background: var(--fosforo-verde);
-    color: #000;
-    outline: 3px solid var(--fosforo-verde);
-    outline-offset: 4px;
+  background: var(--fosforo-verde);
+  color: #000;
+  outline: 3px solid var(--fosforo-verde);
+  outline-offset: 4px;
 }
 .nav-bloco-link:hover .svg-injetado path,
 .nav-bloco-link:hover .svg-injetado circle,
@@ -291,7 +294,7 @@ body, html {
 .nav-bloco-link.nav-ativo .svg-injetado path,
 .nav-bloco-link.nav-ativo .svg-injetado circle,
 .nav-bloco-link.nav-ativo .svg-injetado rect {
-    fill: #000;
+  fill: #000;
 }
 
 /* ============================================================
@@ -299,235 +302,254 @@ body, html {
    ============================================================ */
 
 #monitor-target {
-    width: 800px;
-    margin: 0 auto;
-    flex: 1;
-    overflow-y: auto;
-    padding: 40px 0;
-    scrollbar-width: none; /* Firefox */
+  width: 800px;
+  margin: 0 auto;
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 0;
+  scrollbar-width: none; /* Firefox */
 }
 
 #monitor-target::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+  display: none; /* Chrome/Safari */
 }
 
 /* Estilo do Boot Inicial */
 #boot-loader {
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    text-shadow: 0 0 8px var(--fosforo-verde-glow);
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-shadow: 0 0 8px var(--fosforo-verde-glow);
 }
-
 
 /* ── Canvas de noise (injetado pelo crt-effects.js) ──────── */
 #crt-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 49; /* abaixo das .camada-crt */
-    opacity: 0.2;
-    mix-blend-mode: screen;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 49; /* abaixo das .camada-crt */
+  opacity: 0.2;
+  mix-blend-mode: screen;
 }
 
 /* ── Rolo de interferência ───────────────────────────────── */
 .crt-roll {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 51;
-    background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(14, 220, 195, 0) 45%,
-        rgba(14, 220, 195, 0.012) 50%,
-        rgba(14, 220, 195, 0.022) 51%,
-        rgba(14, 220, 195, 0.010) 53%,
-        rgba(14, 220, 195, 0) 58%,
-        transparent 100%
-    );
-    transform: translateY(-100%);
-    animation: crt-roll-scroll 8s linear infinite;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 51;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(14, 220, 195, 0) 45%,
+    rgba(14, 220, 195, 0.012) 50%,
+    rgba(14, 220, 195, 0.022) 51%,
+    rgba(14, 220, 195, 0.01) 53%,
+    rgba(14, 220, 195, 0) 58%,
+    transparent 100%
+  );
+  transform: translateY(-100%);
+  animation: crt-roll-scroll 8s linear infinite;
 }
 @keyframes crt-roll-scroll {
-    from { transform: translateY(-100%); }
-    to   { transform: translateY(200%); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
 }
 
 /* ── Boot sequence ───────────────────────────────────────── */
 .boot-linha {
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    text-shadow: 0 0 8px var(--fosforo-verde-glow);
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-shadow: 0 0 8px var(--fosforo-verde-glow);
 }
-.boot-linha.dim  { opacity: 0.45; }
-.boot-linha.ok   { color: var(--fosforo-verde); opacity: 0.9; }
+.boot-linha.dim {
+  opacity: 0.45;
+}
+.boot-linha.ok {
+  color: var(--fosforo-verde);
+  opacity: 0.9;
+}
 
 .boot-pronto {
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 0.8rem;
-    line-height: 2;
-    opacity: 0.6;
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 0.8rem;
+  line-height: 2;
+  opacity: 0.6;
 }
-.boot-pronto .dim { opacity: 0.35; }
+.boot-pronto .dim {
+  opacity: 0.35;
+}
 
 /* ── Nav ativo ───────────────────────────────────────────── */
 .nav-bloco-link.nav-ativo {
-    background: var(--fosforo-verde);
-    color: #000;
-    outline: 3px solid var(--fosforo-verde);
-    outline-offset: 4px;
+  background: var(--fosforo-verde);
+  color: #000;
+  outline: 3px solid var(--fosforo-verde);
+  outline-offset: 4px;
 }
 
 /* ── Collapse (notas) ────────────────────────────────────── */
 .nota-conteudo {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease;
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 9.5pt;
-    color: var(--fosforo-verde);
-    opacity: 0.75;
-    padding: 0 12px;
-    margin: 0 0 8px 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 9.5pt;
+  color: var(--fosforo-verde);
+  opacity: 0.75;
+  padding: 0 12px;
+  margin: 0 0 8px 0;
 }
 .nota-conteudo.collapse-aberto {
-    padding-top: 8px;
-    padding-bottom: 12px;
+  padding-top: 8px;
+  padding-bottom: 12px;
 }
 
 /* ── Modal (definições) ──────────────────────────────────── */
 #transmissoes-modal {
-    position: absolute;
-    inset: 0;
-    z-index: 300;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--fosforo-verde-glow-light);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    
+  position: absolute;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fosforo-verde-glow-light);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
 #transmissoes-modal.modal-visivel {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 }
-#transmissoes-modal-box, #transmissoes-modal-box * {
-    cursor: pointer!important;
+#transmissoes-modal-box,
+#transmissoes-modal-box * {
+  cursor: pointer !important;
 }
 #transmissoes-modal-box {
-    scrollbar-width: thin;
-    scrollbar-color: var(--fosforo-verde-glow) transparent;
-    position: relative;
-    width: min(500px, 80%);
-    max-height: 60%;
-    overflow-y: auto;
-    background: #020502;
-    border: 1px solid var(--fosforo-verde-glow);
-    box-shadow:
-        0 0 40px var(--fosforo-verde-glow-light),
-        inset 0 0 20px rgba(0,0,0,0.5);
-    padding: 32px;
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-optical-sizing: auto;
-    font-style: normal;
-    font-size: 9pt;
-    font-weight: lighter;
-    line-height: 1.7;
-    text-shadow: 0 0 6px var(--fosforo-verde-glow);
-    /* Scanlines dentro do modal também */
-    background-image: repeating-linear-gradient(
-        0deg,
-        rgba(0,0,0,0.2),
-        rgba(0,0,0,0.2) 1px,
-        transparent 1px,
-        transparent 2px
-    );
+  scrollbar-width: thin;
+  scrollbar-color: var(--fosforo-verde-glow) transparent;
+  position: relative;
+  width: min(500px, 80%);
+  max-height: 60%;
+  overflow-y: auto;
+  background: #020502;
+  border: 1px solid var(--fosforo-verde-glow);
+  box-shadow:
+    0 0 40px var(--fosforo-verde-glow-light),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  padding: 32px;
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 9pt;
+  font-weight: lighter;
+  line-height: 1.7;
+  text-shadow: 0 0 6px var(--fosforo-verde-glow);
+  /* Scanlines dentro do modal também */
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 2px
+  );
 }
-#transmissoes-modal-box::-webkit-scrollbar { display: none; }
-#transmissoes-modal-box { scrollbar-width: thin; }
+#transmissoes-modal-box::-webkit-scrollbar {
+  display: none;
+}
+#transmissoes-modal-box {
+  scrollbar-width: thin;
+}
 
 #transmissoes-modal-fechar {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: none;
-    border: none;
-    color: var(--fosforo-verde-glow);
-    font-size: 14px;
-    transition: color 0.1s;
-    font-family: 'JetBrains Mono Variable', monospace;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--fosforo-verde-glow);
+  font-size: 14px;
+  transition: color 0.1s;
+  font-family: "JetBrains Mono Variable", monospace;
 }
-#transmissoes-modal-fechar:hover { color: var(--fosforo-vermelho); }
+#transmissoes-modal-fechar:hover {
+  color: var(--fosforo-vermelho);
+}
 
 #transmissoes-modal-box h3 {
-    font-family: "Fraunces", serif;
-    font-optical-sizing: auto;
-    font-weight: 300;
-    font-style: normal;
-    font-variation-settings:
-        "SOFT" 0,
-        "WONK" 0;
-    font-size: 12pt;
-    line-height: 2;
-    border-bottom: 1px dotted var(--fosforo-verde-glow);
-    padding-bottom: 10px;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "SOFT" 0,
+    "WONK" 0;
+  font-size: 12pt;
+  line-height: 2;
+  border-bottom: 1px dotted var(--fosforo-verde-glow);
+  padding-bottom: 10px;
 }
 #transmissoes-modal-box p {
-    color: var(--fosforo-verde-glow);
+  color: var(--fosforo-verde-glow);
 }
 
 /* ── Fullscreen (análises) ───────────────────────────────── */
 .fullscreen-wrapper {
-    width: 100%;
-    height: 100%;
-    color: var(--fosforo-verde);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 10pt;
-    line-height: 1.9;
-    text-shadow: 0 0 6px var(--fosforo-verde-glow);
-    padding-bottom: 80px;
+  width: 100%;
+  height: 100%;
+  color: var(--fosforo-verde);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 10pt;
+  line-height: 1.9;
+  text-shadow: 0 0 6px var(--fosforo-verde-glow);
+  padding-bottom: 80px;
 }
 
 .fullscreen-voltar {
-    display: inline-block;
-    margin-bottom: 24px;
-    background: none;
-    border: none;
-    color: rgba(20, 253, 206, 0.5);
-    font-family: 'JetBrains Mono Variable', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    transition: color 0.1s steps(1);
-    padding: 0;
+  display: inline-block;
+  margin-bottom: 24px;
+  background: none;
+  border: none;
+  color: rgba(20, 253, 206, 0.5);
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  transition: color 0.1s steps(1);
+  padding: 0;
 }
-.fullscreen-voltar:hover { color: var(--fosforo-verde); }
+.fullscreen-voltar:hover {
+  color: var(--fosforo-verde);
+}
 
 /* ── Transição Serpente ──────────────────────────────────── */
 #transicao-sequencia {
-    position: absolute;
-    inset: 0;
-    z-index: 400;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s;
+  position: absolute;
+  inset: 0;
+  z-index: 400;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
 }
 #transicao-sequencia.transicao-ativa {
-    opacity: 1;
-    pointer-events: all;
+  opacity: 1;
+  pointer-events: all;
 }
-#transicao-sequencia.oculto { display: none; }
-
+#transicao-sequencia.oculto {
+  display: none;
+}
