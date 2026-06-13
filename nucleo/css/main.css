@@ -420,6 +420,7 @@ hr.divisor {
     rgba(32, 32, 32, 0.8);
   background-size: 100% 3px;
   color: var(--cor-acento);
+  text-shadow: 0 0 5px var(--cor-acento);
   box-shadow: 0 0 20px #333;
   transition: all 0.1s;
 }
@@ -427,6 +428,7 @@ hr.divisor {
   border-color: var(--cor-acento);
   background-color: var(--cor-acento);
   color: #202020;
+  text-shadow: 0 0 5px #202020;
   box-shadow: 0 0 30px var(--cor-acento);
 }
 

@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Corredor 777 — Colapso</title>
+    <link href="../../nucleo/css/global.css" />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
-
       :root {
         --fundo: #0a0a0a;
-        --texto: #7a7a7a;
+        --texto: #cdcdcd;
         --acento: #ff0037;
         --dim: #333;
         --borda: #222;
@@ -28,7 +27,7 @@
         height: 100%;
         background: var(--fundo);
         color: var(--texto);
-        font-family: "DM Mono", monospace;
+        font-family: "JetBrains Mono", monospace;
         overflow: hidden;
         cursor: none;
         user-select: none;
@@ -45,7 +44,6 @@
         transform: translate(-50%, -50%);
         z-index: 100;
         transition: opacity 0.1s;
-        opacity: 0.8;
       }
 
       /* ─── LAYOUT ─────────────────────────────────────────────────── */
@@ -285,11 +283,12 @@
         blocoH: 14,
         blocoGap: 4,
         paddleH: 6,
-        paddleW: 110,
-        paddleMin: 40,
-        paddleEncolhimento: 8, // reduzido a cada 2 níveis
+        paddleW: 120, // largura inicial — diminui a cada 2 níveis
+        paddleWMin: 40,
+        paddleReducao: 12, // pixels removidos a cada 2 níveis
         bolaR: 5,
         velocidadeBase: 4.2,
+        velocidadeIncremento: 0.3, // aceleração leve por nível
         vidas: 3,
       };
 
@@ -303,6 +302,109 @@
       let animId;
       let paddleX = 0; // controlado por mouse
       let teclando = { esq: false, dir: false };
+
+      // ─── FUNDO (gif animado, engolido pelo glitch) ────────────────
+      // PLACEHOLDER — troque o nome abaixo pelo arquivo do projeto.
+      //
+      // drawImage() em canvas só captura o primeiro frame de um gif
+      // animado — limitação da API, em todos os browsers. Por isso o
+      // gif é decodificado manualmente (gifuct-js) e cada frame é
+      // desenhado como um bitmap normal, no tempo certo. Assim o gif
+      // roda DENTRO do canvas e o glitch (datamosh, inversão, ruído)
+      // atua sobre ele também.
+      const NOME_GIF_FUNDO = "../../assets/images/backgrounds/illusion2_3.gif"; // <- ajuste o nome do arquivo aqui
+
+      let gifFrames = null; // [{ canvas, delay }]
+      let gifIndice = 0;
+      let gifTempoFrame = 0; // ms acumulados no frame atual
+      let gifPronto = false;
+
+      carregarGifFundo(NOME_GIF_FUNDO);
+
+      async function carregarGifFundo(url) {
+        try {
+          // import dinâmico via ESM — não depende de variável global da CDN
+          const { parseGIF, decompressFrames } =
+            await import("https://esm.run/gifuct-js");
+
+          const resp = await fetch(url);
+          const buf = await resp.arrayBuffer();
+          const gif = parseGIF(buf);
+          const frames = decompressFrames(gif, true);
+
+          const lw = gif.lsd.width;
+          const lh = gif.lsd.height;
+
+          // canvas de composição (acumula os frames respeitando disposal)
+          const comp = document.createElement("canvas");
+          comp.width = lw;
+          comp.height = lh;
+          const cctx = comp.getContext("2d");
+
+          gifFrames = [];
+
+          for (let i = 0; i < frames.length; i++) {
+            const frame = frames[i];
+
+            // desenha o patch deste frame numa canvas auxiliar
+            const patch = document.createElement("canvas");
+            patch.width = frame.dims.width;
+            patch.height = frame.dims.height;
+            const pctx = patch.getContext("2d");
+            const imgData = pctx.createImageData(
+              frame.dims.width,
+              frame.dims.height,
+            );
+            imgData.data.set(frame.patch);
+            pctx.putImageData(imgData, 0, 0);
+
+            cctx.drawImage(patch, frame.dims.left, frame.dims.top);
+
+            // snapshot do estado atual = este frame, pronto p/ desenhar
+            const snap = document.createElement("canvas");
+            snap.width = lw;
+            snap.height = lh;
+            snap.getContext("2d").drawImage(comp, 0, 0);
+
+            gifFrames.push({
+              canvas: snap,
+              delay: Math.max(frame.delay || 100, 20),
+            });
+
+            // disposal: limpa a área antes do próximo frame ser composto
+            if (frame.disposalType === 2) {
+              cctx.clearRect(
+                frame.dims.left,
+                frame.dims.top,
+                frame.dims.width,
+                frame.dims.height,
+              );
+            }
+          }
+
+          gifPronto = gifFrames.length > 0;
+        } catch (e) {
+          console.warn("Fundo gif não carregado:", e);
+          gifPronto = false;
+        }
+      }
+
+      // avança o frame do gif conforme o tempo (ms desde o último frame do jogo)
+      function atualizarGif(dt) {
+        if (!gifPronto) return;
+        gifTempoFrame += dt;
+        const atual = gifFrames[gifIndice];
+        while (gifTempoFrame >= atual.delay) {
+          gifTempoFrame -= atual.delay;
+          gifIndice = (gifIndice + 1) % gifFrames.length;
+        }
+      }
+
+      // ─── GLITCH ────────────────────────────────────────────────────
+      let glitchPulso = 0; // pico instantâneo, decai a cada frame
+      let glitchBase = 0; // intensidade de fundo, cresce com a progressão
+      let totalBlocos = CFG.colunas * CFG.linhas;
+      let destruidos = 0;
 
       // ─── PLACAR (localStorage) ────────────────────────────────────
       const CHAVE_PLACAR = "corredor777-colapso-placar";
@@ -428,19 +530,22 @@
 
       // ─── CRIAÇÃO DOS OBJETOS ──────────────────────────────────────
       function criarJogo() {
-        // paddle
+        // paddle: começa larga, encolhe a cada 2 níveis
+        const reducoes = Math.floor((nivel - 1) / 2);
+        let larguraPaddle = CFG.paddleW - reducoes * CFG.paddleReducao;
+        larguraPaddle = Math.max(CFG.paddleWMin, larguraPaddle);
+
         paddle = {
-          w: CFG.paddleW - Math.floor((nivel - 1) / 2) * CFG.paddleEncolhimento,
+          w: larguraPaddle,
           h: CFG.paddleH,
-          x: W / 2 - CFG.paddleW / 2,
+          x: W / 2 - larguraPaddle / 2,
           y: H - 28,
         };
-        paddle.w = Math.max(CFG.paddleMin, paddle.w);
 
         paddleX = paddle.x;
 
-        // bola
-        const vel = CFG.velocidadeBase + (nivel - 1) * 0.4;
+        // bola — acelera levemente a cada nível
+        const vel = velocidadeNivel();
         bola = {
           x: W / 2,
           y: H - 60,
@@ -455,8 +560,13 @@
         atualizarHUD();
       }
 
+      function velocidadeNivel() {
+        return CFG.velocidadeBase + (nivel - 1) * CFG.velocidadeIncremento;
+      }
+
       function criarBlocos() {
         blocos = [];
+        destruidos = 0;
         const margemX = 12;
         const totalW = W - margemX * 2;
         const bW = (totalW - (CFG.colunas - 1) * CFG.blocoGap) / CFG.colunas;
@@ -469,7 +579,7 @@
               y: topoY + l * (CFG.blocoH + CFG.blocoGap),
               w: bW,
               h: CFG.blocoH,
-              linha: l,
+              andar: l,
               ativo: true,
             });
           }
@@ -477,9 +587,18 @@
       }
 
       // ─── LOOP PRINCIPAL ───────────────────────────────────────────
-      function loop() {
+      let ultimoTimestamp = 0;
+
+      function loop(timestamp) {
+        const dt = ultimoTimestamp ? timestamp - ultimoTimestamp : 16;
+        ultimoTimestamp = timestamp;
+
         atualizar();
+        atualizarGif(dt);
         desenhar();
+        aplicarGlitch();
+        glitchPulso *= 0.82; // decaimento do pulso instantâneo
+        if (glitchPulso < 0.02) glitchPulso = 0;
         animId = requestAnimationFrame(loop);
       }
 
@@ -550,8 +669,15 @@
             bola.y - bola.r < b.y + b.h
           ) {
             b.ativo = false;
-            pontos += 10 + b.linha * 5; // linhas inferiores valem mais
+            destruidos++;
+            pontos += 10 + b.andar * 5; // subsolos valem mais
             atualizarHUD();
+
+            // glitch: pulso instantâneo + aumento da intensidade de fundo
+            glitchPulso = 1;
+            const progressoNivel = destruidos / totalBlocos;
+            const progressoGeral = (nivel - 1 + progressoNivel) / 5; // 0–1 ao longo do jogo
+            glitchBase = Math.min(progressoGeral, 1);
 
             // de qual lado bateu
             const overlapX = Math.min(
@@ -568,6 +694,7 @@
           }
         }
 
+        // nível só termina quando TODOS os blocos foram destruídos
         const restantes = blocos.filter((b) => b.ativo).length;
         if (restantes === 0) {
           nivel++;
@@ -577,24 +704,51 @@
             criarJogo();
             bola.presa = true;
           }
+          return;
+        }
+
+        // ─── colapso estrutural — blocos restantes mudam de lugar ────
+        // quanto maior glitchBase, maior a chance e a frequência de
+        // blocos ativos serem teleportados para posições aleatórias.
+        // não altera a velocidade/direção da bola.
+        if (glitchBase > 0.25) {
+          const chance = (glitchBase - 0.25) * 0.06;
+          if (Math.random() < chance) {
+            const ativos = blocos.filter((b) => b.ativo);
+            const alvo = ativos[Math.floor(Math.random() * ativos.length)];
+            alvo.x = Math.random() * (W - alvo.w);
+            alvo.y = Math.random() * Math.max(0, paddle.y - alvo.h - 10);
+          }
         }
       }
 
       // ─── DESENHO ──────────────────────────────────────────────────
       function desenhar() {
-        ctx.clearRect(0, 0, W, H);
+        if (gifPronto) {
+          const frame = gifFrames[gifIndice].canvas;
+          const tw = frame.width;
+          const th = frame.height;
+          for (let y = 0; y < H; y += th) {
+            for (let x = 0; x < W; x += tw) {
+              ctx.drawImage(frame, x, y, tw, th);
+            }
+          }
+        } else {
+          ctx.fillStyle = COR.fundo;
+          ctx.fillRect(0, 0, W, H);
+        }
 
         // blocos
         for (const b of blocos) {
           if (!b.ativo) continue;
 
-          // cor por linha
-          const t = b.linha / (CFG.linhas - 1); // 0 = topo, 1 = base
+          // cor por andar
+          const t = b.andar / (CFG.linhas - 1); // 0 = topo, 1 = base
           const alpha = 0.25 + t * 0.5;
 
           ctx.fillStyle =
-            b.linha === CFG.linhas - 1
-              ? COR.acento // última linha: vermelho
+            b.andar === CFG.linhas - 1
+              ? COR.acento // última fileira: vermelho
               : `rgba(205, 205, 205, ${alpha})`; // demais: cinza com gradação
           ctx.fillRect(b.x, b.y, b.w, b.h);
         }
@@ -638,6 +792,94 @@
         }
       }
 
+      // ─── GLITCH ─────────────────────────────────────────────────
+      // Intensidade combina o pulso instantâneo (a cada bloco destruído)
+      // com a base progressiva (cresce conforme o jogo avança).
+      // Efeito é puramente estético — não afeta colisão nem física.
+      // Atua sobre o frame inteiro, incluindo qualquer fundo (ex.: gif).
+      function aplicarGlitch() {
+        const intensidade = Math.min(glitchBase + glitchPulso, 1.4);
+        if (intensidade <= 0.001) return;
+
+        // 1. separação de canais RGB (chromatic aberration) via composição
+        // — cópias deslocadas em vermelho/azul somadas com 'lighter',
+        // bem mais barato que manipular pixel a pixel.
+        const desloc = Math.round(intensidade * 6);
+        if (desloc > 0) {
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.globalAlpha = 0.5;
+
+          ctx.fillStyle = "#ff0037";
+          ctx.globalCompositeOperation = "multiply";
+          ctx.drawImage(canvas, desloc, 0);
+
+          ctx.fillStyle = "#0037ff";
+          ctx.drawImage(canvas, -desloc, 0);
+
+          ctx.restore();
+        }
+
+        // 2. fatias horizontais deslocadas (datamosh)
+        const numFatias = Math.floor(intensidade * 8);
+        for (let i = 0; i < numFatias; i++) {
+          const altura = 2 + Math.random() * 14;
+          const y = Math.random() * H;
+          const deslocX = (Math.random() - 0.5) * intensidade * 60;
+          ctx.drawImage(canvas, 0, y, W, altura, deslocX, y, W, altura);
+        }
+
+        // 3. inversão — flicker total + blocos invertidos localizados
+        if (Math.random() < intensidade * 0.35) {
+          ctx.save();
+          ctx.globalCompositeOperation = "difference";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, W, H);
+          ctx.restore();
+        }
+
+        const numBlocosInv = Math.floor(intensidade * 4);
+        for (let i = 0; i < numBlocosInv; i++) {
+          const rw = 10 + Math.random() * 60 * intensidade;
+          const rh = 4 + Math.random() * 20 * intensidade;
+          const rx = Math.random() * W;
+          const ry = Math.random() * H;
+          ctx.save();
+          ctx.globalCompositeOperation = "difference";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(rx, ry, rw, rh);
+          ctx.restore();
+        }
+
+        // 4. scanlines
+        if (intensidade > 0.15) {
+          ctx.fillStyle = `rgba(0,0,0,${0.08 * intensidade})`;
+          for (let y = 0; y < H; y += 3) {
+            ctx.fillRect(0, y, W, 1);
+          }
+        }
+
+        // 5. ruído — poucos blocos sólidos esparsos (cap baixo p/ não pesar)
+        const numRuido = Math.min(Math.floor(intensidade * 10), 12);
+        ctx.save();
+        for (let i = 0; i < numRuido; i++) {
+          const rw = 2 + Math.random() * 30 * intensidade;
+          const rh = 1 + Math.random() * 4;
+          const rx = Math.random() * W;
+          const ry = Math.random() * H;
+          ctx.fillStyle = Math.random() > 0.5 ? COR.acento : "#ffffff";
+          ctx.globalAlpha = 0.04 + Math.random() * 0.3 * intensidade;
+          ctx.fillRect(rx, ry, rw, rh);
+        }
+        ctx.restore();
+
+        // 6. tremor — desloca o frame inteiro verticalmente
+        if (intensidade > 0.5 && Math.random() < intensidade * 0.3) {
+          const jitter = Math.round((Math.random() - 0.5) * 10 * intensidade);
+          ctx.drawImage(canvas, 0, jitter);
+        }
+      }
+
       // ─── LÓGICA DE ESTADO ─────────────────────────────────────────
       function acaoInicio() {
         if (
@@ -648,6 +890,8 @@
           pontos = 0;
           nivel = 1;
           vidas = CFG.vidas;
+          glitchBase = 0;
+          glitchPulso = 0;
           criarJogo();
           estado = "rodando";
           ocultarOverlay();
@@ -668,14 +912,14 @@
           renderizarPlacar(pos);
           const rec = melhorPontuacao();
           mostrarOverlay(
-            "Colapso interrompido.",
+            "Colapso.",
             `${pontos} pts`,
             rec,
             "espaço ou clique para tentar novamente",
           );
         } else {
           // reposiciona bola sem reiniciar nível
-          const vel = CFG.velocidadeBase + (nivel - 1) * 0.4;
+          const vel = velocidadeNivel();
           bola = {
             x: paddle.x + paddle.w / 2,
             y: paddle.y - 20,
