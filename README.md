@@ -124,7 +124,6 @@ A Recepção está publicada e operacional. O Caminho da Serpente tem estrutura 
 ## Próximos passos
  
 - Finalizar conteúdo das 32 páginas do Caminho da Serpente
-- Disponibilizar link na `main.html` para as Transmissões
 - Desenvolver o Grimório
 - Galeria em grid masonry + comportamento procedural
 - Desenvolver o Guestbook
