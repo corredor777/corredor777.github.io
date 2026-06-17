@@ -8,6 +8,8 @@
 O Corredor 777 é um projeto artístico de literatura ficcional-biográfica em formato de site. Não é um blog, nem um portfólio. É uma espécie de instalação mental navegável onde o vivido e o inventado dividem o mesmo espaço.
 
 
+
+
 ## Conceito
  
 A metáfora estruturante é arquitetônica: o site se mostra como um edifício. As seções são cômodos, galerias, câmaras, andares. O eu lírico é Tiamat, O Zelador, que guia o usuário através dos fragmentos de conteúdo presentes ali.
