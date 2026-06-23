@@ -130,5 +130,10 @@ A Recepção está publicada e operacional. O Caminho da Serpente tem estrutura 
 - Galeria em grid masonry + comportamento procedural
 - Desenvolver o Guestbook
 ---
+
+
+
+
+---
  
 *Bruno Oliveira Marrega, 2026–*
