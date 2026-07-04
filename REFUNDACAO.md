@@ -106,5 +106,8 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [002] TypeScript escolhido (primeira decisão em aberto resolvida).
 [003] Próximo: F1 — Base.astro, cursor-manager religado em astro:page-load, Entrada e Recepção.
 [004] Método revisto (2026-07-04): reconstrução manual pelo Bruno, Claude Code como revisor/professor. src/data/ adicionado à arquitetura. Efeitos: adaptar, nunca reescrever.
-[005] _
+[005] Landing da F1 concluída (2026-07-04): Entrada reconstruída (index.astro + intro.css) com sorteio arcano+frase via localStorage, chuva de sangue, strobo, cursores e favicon animado; build estático gerando index.html na raiz de dist/.
+[006] Padrão de efeitos estabelecido: módulo em src/scripts/ + export iniciar*() + guarda de idempotência + religação via astro:page-load + checagem de página no browser antes de fechar.
+[007] Próximo: main.astro (Recepção) — contadores, logs, painel, pendências.
+[008] _
 ```
