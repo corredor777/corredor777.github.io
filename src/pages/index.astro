@@ -7,7 +7,11 @@ import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
 import { iniciarStrobo } from "../scripts/strobo.js";
 ---
 
-<Base mensagensConsole={falas.entrada} class="cur-chama">
+<Base
+  favicon="/assets/images/favicon/index.gif"
+  mensagensConsole={falas.entrada}
+  class="cur-chama"
+>
   <div class="container">
     <header class="intro">
       <div>
@@ -29,18 +33,20 @@ import { iniciarStrobo } from "../scripts/strobo.js";
 <script>
   import arcanos from "../data/arcanos.json";
   import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
-  import { iniciarStrobo } from "../scripts/strobo.js";
+  import { stroboGlobal } from "../scripts/strobo.js";
 
   // Banco de frases do sorteio da intro
   const bancoDeDados = arcanos;
 
   document.addEventListener("astro:page-load", () => {
     iniciarChuva();
-    iniciarStrobo();
+    stroboGlobal();
     selecionarFrase();
 
     // Redirecionamento automático:
-    const destino = "main.html";
+    // o dev server do Astro só roteia /main (build.format: "file" vale
+    // apenas para o build) — em produção segue main.html, URL preservada
+    const destino = import.meta.env.DEV ? "/main" : "main.html";
 
     // 1. Redirecionamento automático após 6 segundos
     const timer = setTimeout(() => {

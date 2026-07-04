@@ -1,6 +1,14 @@
 * {
   cursor: help;
 }
+html {
+  background: #cdcdcd;
+}
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
 body {
   display: flex;
   justify-content: center;
@@ -95,7 +103,7 @@ body {
 }
 
 /* Efeito strobo */
-.negativo {
+html.negativo body {
   filter: invert(100%) contrast(150%);
-  transform: translate(1px, -1px); /* Pequeno tremor visual no strobo */
+  transform: translate(1px, -1px);
 }
