@@ -1,104 +1,109 @@
 ---
-// Página provisória da F0 — valida a fundação: fontes, paleta, seleção
-// invertida e cursores customizados rodando dentro do Astro.
-// Será substituída pela Entrada real (sorteio arcano + frase) na F1.
+import Base from "../layouts/Base.astro";
+import falas from "../data/console.json";
+import identidade from "../data/identidade.json";
+import "../styles/intro.css";
+import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
+import { iniciarStrobo } from "../scripts/strobo.js";
 ---
 
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1200" />
-    <title>corredor 777 — fundação</title>
-  </head>
-  <body>
-    <main>
-      <h1>corredor 777 <span class="foco-vermelho">/ refundação</span></h1>
-
-      <div class="log">
-        <p><span class="log-index foco-vermelho">[000]</span> Fundação estabelecida sobre a nova stack.</p>
-        <p><span class="log-index foco-vermelho">[001]</span> Fontes importadas. Paleta verificada.</p>
-        <p><span class="log-index foco-vermelho">[002]</span> Seleção invertida — selecione esta linha.</p>
-        <p><span class="log-index foco-vermelho">[003]</span> Cursores religados abaixo.</p>
-        <p><span class="log-index foco-vermelho">[004]</span> <span class="blink">_</span></p>
+<Base mensagensConsole={falas.entrada} class="cur-chama">
+  <div class="container">
+    <header class="intro">
+      <div>
+        <p id="frase"><span id="frase-display"></span></p>
+        <p id="arcano"><span id="carta-display"></span></p>
       </div>
+    </header>
 
-      <div class="teste-cursores">
-        <span class="cur-chama">chama</span>
-        <span class="cur-eye">olho</span>
-        <span class="cur-skeleton-hand">mão</span>
-        <span class="cur-help">dúvida</span>
-        <span class="cur-blocked-default">bloqueado</span>
+    <footer class="credits">
+      <div>
+        <p>
+          <span>{identidade.site.nome} © {identidade.site.anoCriacao}</span>
+        </p>
       </div>
-    </main>
-  </body>
-</html>
+    </footer>
+  </div>
+</Base>
 
-<style is:global>
-  /* Espelho mínimo do global.css vanilla — o realocamento completo é na F1 */
-  @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+<script>
+  import arcanos from "../data/arcanos.json";
+  import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
+  import { iniciarStrobo } from "../scripts/strobo.js";
 
-  ::selection {
-    background: #070707;
-    color: #cdcdcd;
-  }
+  // Banco de frases do sorteio da intro
+  const bancoDeDados = arcanos;
 
-  body {
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: #cdcdcd;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    font-size: 12pt;
-    font-weight: 400;
-    color: #000;
-  }
+  document.addEventListener("astro:page-load", () => {
+    iniciarChuva();
+    iniciarStrobo();
+    selecionarFrase();
 
-  main {
-    max-width: 720px;
-    margin: 120px auto;
-  }
+    // Redirecionamento automático:
+    const destino = "main.html";
 
-  .foco-vermelho {
-    color: #ff0037;
-  }
+    // 1. Redirecionamento automático após 6 segundos
+    const timer = setTimeout(() => {
+      window.location.href = destino;
+    }, 6000);
 
-  .log {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10pt;
-    margin-top: 40px;
-  }
+    // 2. Redirecionamento instantâneo via clique (interação)
+    // once: o navegador descarta o listener após o primeiro clique —
+    // sem acúmulo no document, que sobrevive às navegações do ClientRouter
+    document.addEventListener(
+      "click",
+      () => {
+        clearTimeout(timer); // Cancela o timer de 6s para evitar conflito
+        window.location.href = destino;
+      },
+      { once: true },
+    );
 
-  .log p {
-    margin: 0;
-    padding: 2px 0;
-  }
+    // Sorteio de frases para a intro
+    function selecionarFrase() {
+      // 2. Busca no armazenamento do navegador a lista de frases já vistas e converte de texto (JSON) para Array
+      let exibidas = JSON.parse(localStorage.getItem("frasesExibidas")) || [];
 
-  .log-index {
-    margin-right: 8px;
-  }
+      // 3. Cria uma lista temporária contendo apenas os itens cujo índice ainda não consta na lista de exibidas
+      let disponiveis = bancoDeDados.filter(
+        (_, index) => !exibidas.includes(index),
+      );
 
-  .blink {
-    animation: blink 1s steps(1) infinite;
-  }
+      // 4. Verificação de ciclo: se não houver mais frases disponíveis, limpa a memória para reiniciar o sorteio
+      if (disponiveis.length === 0) {
+        exibidas = [];
+        disponiveis = bancoDeDados;
+        console.log(
+          "A serpente morde sua própria cauda. A roda gira mais uma vez.",
+        );
+      }
 
-  @keyframes blink {
-    50% {
-      opacity: 0;
+      // 5. Realiza o sorteio matemático escolhendo um item aleatório dentro do conjunto de frases disponíveis
+      const itemSorteado =
+        disponiveis[Math.floor(Math.random() * disponiveis.length)];
+
+      // 6. Localiza a posição original (0-21) do item sorteado no banco de dados principal
+      const indexOriginal = bancoDeDados.indexOf(itemSorteado);
+
+      // 7. Adiciona o índice sorteado ao registro de frases já vistas para evitar repetição no próximo carregamento
+      exibidas.push(indexOriginal);
+
+      // 8. Salva a lista atualizada de frases vistas no LocalStorage do navegador em formato de texto
+      localStorage.setItem("frasesExibidas", JSON.stringify(exibidas));
+
+      // 9. Captura os elementos do HTML através de seus IDs para manipulação
+      const elementoFrase = document.getElementById("frase-display");
+      const elementoCarta = document.getElementById("carta-display");
+
+      // 10. Insere o texto da frase sorteada no parágrafo correspondente
+      if (elementoFrase) {
+        elementoFrase.innerText = itemSorteado.frase;
+      }
+
+      // 11. Insere o nome da carta sorteada no parágrafo correspondente
+      if (elementoCarta) {
+        elementoCarta.innerText = itemSorteado.carta;
+      }
     }
-  }
-
-  .teste-cursores {
-    margin-top: 40px;
-    display: flex;
-    gap: 24px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10pt;
-  }
-
-  .teste-cursores span {
-    border: 1px solid #000;
-    padding: 6px 14px;
-  }
-</style>
-
-<script src="../scripts/cursor-manager.js"></script>
+  });
+</script>
