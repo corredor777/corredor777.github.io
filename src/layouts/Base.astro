@@ -1,0 +1,64 @@
+---
+import { ClientRouter } from "astro:transitions";
+import identidade from "../data/identidade.json";
+import "../styles/global.css";
+
+const {
+  titulo = identidade.site.nome,
+  descricao = identidade.site.descricaoPadrao,
+  mensagensConsole = [],
+  class: classeBody,
+} = Astro.props;
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200" />
+
+    <title>{titulo}</title>
+
+    <meta name="description" content={descricao} />
+    <meta name="author" content={identidade.euLirico.nome} />
+    <meta name="designer" content={identidade.dev.nome} />
+    <meta name="copyright" content={identidade.site.copyright} />
+
+    <meta name="access-protocol" content="Desktop-Only Architecture" />
+    <meta name="keywords" content={identidade.site.keywords} />
+
+    <meta name="robots" content="noindex, nofollow, nosnippet, noarchive" />
+    <meta name="googlebot" content="nosnippet" />
+    <meta name="thumbnail" content="none" />
+
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="false" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/assets/images/favicon/index.gif"
+    />
+
+    <ClientRouter />
+  </head>
+  <body class={classeBody}>
+    <slot />
+
+    <script>
+      import { iniciarCursores } from "../scripts/cursor-manager.js";
+      import { iniciarFaviconAnimado } from "../scripts/favicon-animator.js";
+      document.addEventListener("astro:page-load", () => {
+        iniciarCursores();
+        iniciarFaviconAnimado();
+      });
+    </script>
+
+    {mensagensConsole.length > 0 && (
+      <script is:inline define:vars={{ mensagensConsole }} data-astro-rerun>
+        for (const linha of mensagensConsole) {
+          Array.isArray(linha) ? console.log(...linha) : console.log(linha);
+        }
+      </script>
+    )}
+  </body>
+</html>
