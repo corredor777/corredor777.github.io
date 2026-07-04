@@ -14,27 +14,46 @@ const globalCursorMap = {
   ".cur-angel": "/assets/images/cursor/angel-wings.gif",
 };
 
-function gerenciarCursoresGeral(mapa) {
-  // 1. Cria o elemento para GIFs
-  const fakeCursor = document.createElement("img");
-  fakeCursor.id = "fake-cursor";
-  Object.assign(fakeCursor.style, {
-    position: "fixed",
-    pointerEvents: "none",
-    zIndex: "99999",
-    display: "none",
-    width: "auto",
-    height: "auto",
-  });
-  document.body.appendChild(fakeCursor);
+// Referência viva ao <img> do cursor falso. Vive fora da função para que os
+// listeners (ligados uma única vez) sempre enxerguem o elemento atual, mesmo
+// quando uma troca de página descarta o <body> antigo junto com o <img>.
+let fakeCursor = null;
 
-  // 2. CSS Global (Esconde por padrão)
-  const estilo = document.createElement("style");
-  estilo.innerHTML = `* { cursor: none !important; } html, body { cursor: none !important; min-height: 100vh; }`;
-  document.head.appendChild(estilo);
+// Listeners em document/window sobrevivem à navegação do Astro; religá-los a
+// cada página os duplicaria. Esta flag garante que só ligam na primeira vez.
+let listenersLigados = false;
+
+function gerenciarCursoresGeral(mapa) {
+  // 1. Cria o elemento para GIFs — ou reaproveita, se a página já tem um
+  fakeCursor = document.getElementById("fake-cursor");
+  if (!fakeCursor) {
+    fakeCursor = document.createElement("img");
+    fakeCursor.id = "fake-cursor";
+    Object.assign(fakeCursor.style, {
+      position: "fixed",
+      pointerEvents: "none",
+      zIndex: "99999",
+      display: "none",
+      width: "auto",
+      height: "auto",
+    });
+    document.body.appendChild(fakeCursor);
+  }
+
+  // 2. CSS Global (Esconde por padrão) — injeta uma única vez
+  if (!document.getElementById("cursor-manager-estilo")) {
+    const estilo = document.createElement("style");
+    estilo.id = "cursor-manager-estilo";
+    estilo.innerHTML = `* { cursor: none !important; } html, body { cursor: none !important; min-height: 100vh; }`;
+    document.head.appendChild(estilo);
+  }
 
   // 1. Monitora quando o mouse entra em qualquer iframe
+  // (a marca no dataset evita listener duplicado num iframe que
+  // persistir entre navegações)
   document.querySelectorAll("iframe").forEach((iframe) => {
+    if (iframe.dataset.cursorMonitorado) return;
+    iframe.dataset.cursorMonitorado = "true";
     iframe.addEventListener("mouseover", () => {
       const fakeCursor = document.getElementById("fake-cursor");
       if (fakeCursor) {
@@ -42,6 +61,10 @@ function gerenciarCursoresGeral(mapa) {
       }
     });
   });
+
+  // Daqui para baixo tudo é ligado em document/window: uma vez só
+  if (listenersLigados) return;
+  listenersLigados = true;
 
   // 2. Correção específica para o Firefox (Perda de foco da janela)
   window.addEventListener("blur", () => {
@@ -116,4 +139,8 @@ function gerenciarCursoresGeral(mapa) {
   });
 }
 
-gerenciarCursoresGeral(globalCursorMap);
+// Ponto de entrada público: idempotente — pode ser chamado a cada
+// astro:page-load sem duplicar o fake cursor, o estilo nem os listeners.
+export function iniciarCursores() {
+  gerenciarCursoresGeral(globalCursorMap);
+}
