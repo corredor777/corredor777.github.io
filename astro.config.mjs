@@ -6,4 +6,9 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://corredor777.github.io",
   integrations: [react()],
+  build: {
+    // Uma página = um .html (main.astro → /main.html, não /main/):
+    // permalinks do site vanilla são parte da obra (REFUNDACAO.md, princípio 4).
+    format: "file",
+  },
 });
