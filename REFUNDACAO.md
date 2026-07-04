@@ -21,7 +21,9 @@ Documento vivo da migração. É lido tanto pelo Bruno quanto pelo Claude Code n
 │   │                    CRT.astro (Transmissões), Escuro.astro (Colapso etc.)
 │   ├── components/      *.astro (estáticos) e *.jsx (islands React)
 │   ├── scripts/         cursor-manager, crt-effects, duat — vanilla preservado
-│   ├── styles/          CSS atual realocado, sem reescrita estética
+│   ├── data/            dados reutilizáveis: identidade.json (Zelador, Virgílio,
+│   │                    Tiamat, dados do dev), arcanos, playlists
+│   ├── styles/          CSS reconstruído pelo Bruno, fiel ao original
 │   └── content/         collections: diario, arquivos, definicoes, ensaios
 │                        (futuro: serpente como grafo de dados, obras da galeria)
 ├── public/              assets/ como está hoje
@@ -78,13 +80,15 @@ Merge na `main`, ativar o deploy por Actions, **reescrever o CLAUDE.md** para a 
 ### F6 — O novo nasce nativo
 Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (galeria masonry + repositórios satélites), e então a Serpente como grafo de dados. Nenhuma dessas seções deve ser construída em vanilla na `main` enquanto a refundação estiver ativa — seria retrabalho garantido.
 
-## Divisão de trabalho
+## Divisão de trabalho e método
 
-**Claude Code (terminal):** todo o git (branch, commits `tipo(escopo):`, merge), scaffold e configuração, conversões em lote, movimentação de arquivos, debugging de build, refatorações que tocam muitos arquivos — sempre expondo o plano antes de executar, como manda o CLAUDE.md.
+**Método central (revisto em 2026-07-04): reconstrução manual.** O Bruno reconstrói o site do zero na stack nova — páginas, componentes, CSS, dados — digitando ele mesmo, com o site antigo (`main`) aberto como gabarito. O Claude Code atua como **revisor e professor**, não como executor: quando o Bruno travar, o pedido é "me explique como resolver e revise o que eu escrever", nunca "escreva para mim". O checklist de paridade da F5 continua sendo o portão — reconstruir com liberdade, comparar com rigor.
 
-**Bruno sozinho:** os componentes React (começando pelo player na F3), os `.astro` simples, todo o CSS, e o ajuste fino de qualquer efeito — a mão autoral nos mecanismos de linguagem não se delega. Errar aqui é o método de aprendizado.
+**Exceção — os efeitos:** cursor-manager, glitch, CRT, canvas do Duat, WebGL não se reescrevem do zero; o código vanilla existente já É o comportamento exato da obra, e reescrever de memória arrisca deriva sutil. Para esses, adaptar o arquivo original (com o Claude Code explicando linha a linha), preservando o comportamento (princípio 1 acima do aprendizado, só aqui).
 
-**Em par (qualquer ferramenta):** decisões de arquitetura no início de cada fase, revisão do código que o Bruno escreveu, os conceitos novos conforme aparecem (islands, diretivas `client:*`, ciclo de vida com View Transitions, collections/schemas).
+**Claude Code (terminal):** todo o git (commits `tipo(escopo):`, merge), configuração, conversões em lote de conteúdo (F2), debugging de build, revisão do código do Bruno, explicação de conceitos — sempre assumindo que o Bruno sabe HTML/CSS e está aprendendo o resto.
+
+**Dados reutilizáveis em `src/data/`:** identidade (Zelador, Virgílio, Tiamat, dados do dev Bruno Oliveira Marrega), arcanos+frases, playlists. JSON importado direto nas páginas — nome muda uma vez, muda em todo lugar.
 
 **Ritual:** toda sessão começa lendo a seção Estado abaixo e termina atualizando-a. Uma fase por vez; commits enxutos dentro da fase.
 
@@ -101,5 +105,6 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [001] F0 concluída (2026-07-03). Branch refundacao criada; scaffold Astro 7 + React 19 em TypeScript; estrutura alvo montada; assets movidos para public/; workflow de deploy criado, inerte; página de validação respondendo em npm run dev.
 [002] TypeScript escolhido (primeira decisão em aberto resolvida).
 [003] Próximo: F1 — Base.astro, cursor-manager religado em astro:page-load, Entrada e Recepção.
-[004] _
+[004] Método revisto (2026-07-04): reconstrução manual pelo Bruno, Claude Code como revisor/professor. src/data/ adicionado à arquitetura. Efeitos: adaptar, nunca reescrever.
+[005] _
 ```
