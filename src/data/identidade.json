@@ -1,0 +1,17 @@
+{
+  "site": {
+    "nome": "Corredor 777",
+    "url": "https://corredor777.github.io",
+    "descricaoPadrao": "Instalação mental navegável. Transmissões de Tiamat, o Zelador, através dos corredores do Abismo.",
+    "copyright": "Copyright Corredor 777. All rights reserved.",
+    "anoCriacao": "2026",
+    "keywords": "corredor777"
+  },
+  "euLirico": {
+    "nome": "Tiamat, O Zelador"
+  },
+  "dev": {
+    "nome": "Bruno Oliveira Marrega",
+    "email": "brunomarrega@usp.br"
+  }
+}
