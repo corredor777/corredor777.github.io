@@ -1,0 +1,35 @@
+# Deploy do site Astro para o GitHub Pages.
+#
+# INERTE até a F5 da refundação (ver REFUNDACAO.md): sem trigger automático,
+# só roda por disparo manual. O site publicado continua sendo o vanilla da
+# main, servido direto da branch. Na F5: adicionar o trigger
+# `push: { branches: [main] }` e trocar a fonte do Pages para GitHub Actions.
+name: deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Astro
+        uses: withastro/action@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

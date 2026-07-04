@@ -3,3 +3,8 @@ CLAUDE.md
 
 # Configuração local da IDE
 .vscode/
+
+# Astro / Node
+node_modules/
+dist/
+.astro/

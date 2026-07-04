@@ -1,0 +1,104 @@
+---
+// Página provisória da F0 — valida a fundação: fontes, paleta, seleção
+// invertida e cursores customizados rodando dentro do Astro.
+// Será substituída pela Entrada real (sorteio arcano + frase) na F1.
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200" />
+    <title>corredor 777 — fundação</title>
+  </head>
+  <body>
+    <main>
+      <h1>corredor 777 <span class="foco-vermelho">/ refundação</span></h1>
+
+      <div class="log">
+        <p><span class="log-index foco-vermelho">[000]</span> Fundação estabelecida sobre a nova stack.</p>
+        <p><span class="log-index foco-vermelho">[001]</span> Fontes importadas. Paleta verificada.</p>
+        <p><span class="log-index foco-vermelho">[002]</span> Seleção invertida — selecione esta linha.</p>
+        <p><span class="log-index foco-vermelho">[003]</span> Cursores religados abaixo.</p>
+        <p><span class="log-index foco-vermelho">[004]</span> <span class="blink">_</span></p>
+      </div>
+
+      <div class="teste-cursores">
+        <span class="cur-chama">chama</span>
+        <span class="cur-eye">olho</span>
+        <span class="cur-skeleton-hand">mão</span>
+        <span class="cur-help">dúvida</span>
+        <span class="cur-blocked-default">bloqueado</span>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  /* Espelho mínimo do global.css vanilla — o realocamento completo é na F1 */
+  @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+  ::selection {
+    background: #070707;
+    color: #cdcdcd;
+  }
+
+  body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #cdcdcd;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 12pt;
+    font-weight: 400;
+    color: #000;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 120px auto;
+  }
+
+  .foco-vermelho {
+    color: #ff0037;
+  }
+
+  .log {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10pt;
+    margin-top: 40px;
+  }
+
+  .log p {
+    margin: 0;
+    padding: 2px 0;
+  }
+
+  .log-index {
+    margin-right: 8px;
+  }
+
+  .blink {
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .teste-cursores {
+    margin-top: 40px;
+    display: flex;
+    gap: 24px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10pt;
+  }
+
+  .teste-cursores span {
+    border: 1px solid #000;
+    padding: 6px 14px;
+  }
+</style>
+
+<script src="../scripts/cursor-manager.js"></script>
