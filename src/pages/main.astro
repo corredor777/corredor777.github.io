@@ -1,0 +1,492 @@
+---
+import Base from "../layouts/Base.astro";
+import TickerHeader from "../components/TickerHeader.astro";
+import Painel from "../components/Painel.astro";
+import Porta from "../components/Porta.astro";
+import falas from "../data/console.json";
+import identidade from "../data/identidade.json";
+import "../styles/global.css";
+import "../styles/main.css";
+
+const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
+---
+
+<Base mensagensConsole={falas.recepcao}>
+  <div class="container">
+    <TickerHeader />
+
+    <!-- =========================================================================
+            [LAYOUT: PRINCIPAL] 
+            Organização binária: Sidebar (fixa à esquerda) e Content (rolagem à direita).
+         ========================================================================= -->
+    <div class="main-layout cur-angel">
+      <!-- [COMPONENTE: SIDEBAR] -->
+      <aside class="sidebar">
+        <div id="sidebar-content">
+          <div class="logo">
+            <img
+              src="assets/images/arts/777-logo.png"
+              class="link-duat cur-help"
+            />
+          </div>
+
+          <!-- PLAYER -->
+          <div id="corredor-player">
+            <div class="player-controls">
+              <div class="player-controls-container">
+                <button
+                  class="cur-none"
+                  onclick="faixaAnterior()"
+                  title="Anterior"
+                >
+                  ⏮
+                </button>
+                <button
+                  class="cur-none"
+                  id="player-btn-play"
+                  onclick="togglePlay()"
+                  title="Play/Pause"
+                  data-estado="pausado"
+                >
+                  ▶
+                </button>
+                <button
+                  class="cur-none"
+                  onclick="proximaFaixa()"
+                  title="Próxima"
+                >
+                  ⏭
+                </button>
+              </div>
+            </div>
+
+            <div class="player-ticker">
+              <div class="player-ticker-text-wrapper">
+                <div id="player-ticker-content" class="player-ticker-text">
+                </div>
+              </div>
+              <button
+                class="cur-help"
+                onclick="toggleLista()"
+                title="Playlist"
+                id="player-menu"
+              >
+                ≡
+              </button>
+            </div>
+
+            <div id="player-lista" class="player-popup cur-vscroll"></div>
+
+            <div
+              id="yt-player"
+              style="
+                  position: absolute;
+                  top: -9999px;
+                  left: -9999px;
+                  width: 1px;
+                  height: 1px;
+                "
+            >
+            </div>
+          </div>
+
+          <div class="bio">
+            <div class="bio-stamp">
+              <img src="assets/images/stamps/hypno.gif" />
+            </div>
+
+            <p id="credits">&copy;{identidade.site.anoCriacao}</p>
+
+            <div class="blinkies"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- [COMPONENTE: CONTENT] -->
+      <main class="content">
+        <div id="main-content">
+          <!-- =================================
+                [MÓDULO: PAINEL DE MONITORAMENTO]
+                Tabela técnica de status.
+            ====================================== -->
+          <Painel />
+
+          <Porta
+            destino="/fragmentos/transmissoes/main.html"
+            imagem="/assets/images/gifs/Door (13).gif"
+            decoracao="/assets/images/arts/stars.png"
+          />
+        </div>
+
+        <!-- [DIVISOR] -->
+        <article class="line">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <!-- =================================
+                        [MÓDULO: OCORRÊNCIAS]
+                        Contém:
+                            - Contador de dias: Calculado por lógica de datas.
+                            - Visitas: Recuperadas do LocalStorage.
+                    ====================================== -->
+        <article class="ocorrencias">
+          <header class="section-header">
+            <h1>Ocorrências</h1>
+          </header>
+
+          <section class="section-container">
+            <div class="contador-wrapper">
+              <div class="contador-grupo-info">
+                <div class="contador-box">
+                  <!-- Valor "--" substituído pela lógica de cronologia em main.js -->
+                  <span class="contador-numero">--</span>
+                </div>
+                <span class="contador-label">carregando...</span>
+              </div>
+
+              <img
+                src="assets/images/gifs/eye (1).gif"
+                alt="animação"
+                class="gif-ocorrencia"
+              />
+            </div>
+
+            <hr class="divisor" />
+
+            <div class="ocorrencias-texto">
+              <p id="ocor-slogan">
+                <span>Referência em segurança, qualidade e excelência.</span>
+              </p>
+              <p id="ocor-777">
+                <!-- <span>777</span> -->
+                <img src="assets/images/gifs/count.gif" />
+              </p>
+              <p id="ocor-visita">
+                <span>Carregando registros...</span>
+              </p>
+            </div>
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <article class="line">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <article class="colapso">
+          <header class="section-header">
+            <button
+              class="cur-skeleton-hand"
+              onclick="
+                    window.open(
+                      './fragmentos/simulacros/colapso.html',
+                      'colapso',
+                      'width=520,height=620,resizable=no',
+                    )
+                  "
+            >
+              Algumas paredes precisam cair!
+            </button>
+          </header>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <article class="line">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <!-- =================================
+                        [MÓDULO: LOGS]
+                        Terminal de eventos com estética CRT/Monitor antigo.
+                    ====================================== -->
+        <article class="logs">
+          <header class="section-header">
+            <h1>Registro de Eventos</h1>
+          </header>
+
+          <section class="section-container">
+            <div class="log-box cur-vscroll">
+              <div class="log-content">
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[000]</span><span
+                    class="foco-vermelho">FIAT LUX :</span
+                  >&nbsp;Corredor em estado de vigília.
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[001]</span><span
+                    class="foco-vermelho">ACESSO LIBERADO :</span
+                  >&nbsp;Recepção operacional. O corredor agradece sua visita
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[002]</span><span
+                    class="foco-vermelho"
+                    >Manutenção :
+                  </span>Correções visuais implementadas
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[003]</span><a
+                    href="#"
+                    class="link-duat cur-help"
+                    ><span class="foco-vermelho">DUAT</span></a
+                  >
+                  Protocolo de boas-vindas disponível
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[004]</span><span
+                    class="foco-vermelho"
+                    >ARTEFATO ENCONTRADO :
+                  </span><a
+                    href="/fragmentos/juramento/index.html"
+                    class="cur-none">TERMO DE CONDUTA - JURAMENTO DO ABISMO</a
+                  >
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[005]</span><span
+                    class="foco-vermelho"
+                    >Manutenção :
+                  </span>Superfície recalibrada
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[006]</span><span
+                    class="foco-vermelho"
+                    >Manutenção :
+                  </span>Comportamento do corredor normalizado
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[007]</span><span
+                    class="foco-vermelho"
+                    >Manutenção :
+                  </span>Som ambiente instalado na recepção
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[008]</span><span
+                    class="foco-vermelho"
+                    >REVISÃO DAS ESPECIFICAÇÕES TÉCNICAS :
+                  </span>Registros de design e execução atualizados nos
+                  metadados
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[009]</span><span
+                    class="foco-vermelho"
+                    >IMPLEMENTAÇÃO :
+                  </span>Sala de transmissões construída. Acesso restrito até a
+                  finalização dos testes operacionais
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[010]</span><span
+                    class="foco-vermelho"
+                    >IMPLEMENTAÇÃO :
+                  </span>Testes operacionais concluídos. Procure pela porta da
+                  sala de transmissões.
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[011]</span><span
+                    class="foco-vermelho"
+                    >REGISTRO :
+                  </span>Entradas adicionadas ao diário na
+                  <a href="/fragmentos/transmissoes/main.html" class="cur-help"
+                    >Sala de Transmissões</a
+                  >.
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[012]</span><span
+                    class="foco-vermelho"
+                    >REGISTRO :
+                  </span>Caderno de notas do Zelador encontrado.
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[013]</span><span
+                    class="foco-vermelho"
+                    >IMPLEMENTAÇÃO :
+                  </span>Mecanismo de tradução dos glifos e suporte para
+                  diagramas e visuais adicionados ao painel de transmissões.
+                </p>
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">[014]</span><span
+                    class="foco-vermelho"
+                    >ARTEFATO ENCONTRADO :
+                  </span>Simulação do colapso das paredes do corredor. Me ajude
+                  a demolir.
+                </p>
+
+                <!-- Cursor do terminal animado via CSS (blink animation) -->
+                <p class="log-entry">
+                  <span class="log-index foco-vermelho">_</span>
+                </p>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <article class="line">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <!-- =================================
+                        [MÓDULO: CHATBOX]
+                        Integração de chat externo via iframe.
+                    ====================================== -->
+        <article class="chatbox">
+          <header class="section-header">
+            <h1>Ecos e Ruídos</h1>
+          </header>
+
+          <div class="chat-container">
+            <iframe
+              src="https://www3.cbox.ws/box/?boxid=3554478&boxtag=Vu6Gs1"
+              width="100%"
+              height="450"
+              allowtransparency="yes"
+              allow="autoplay"
+              frameborder="0"
+              marginheight="0"
+              marginwidth="0"
+              scrolling="auto"></iframe>
+          </div>
+
+          <div class="center-image img-insert">
+            <img src="assets/images/blinkies/open24.gif" />
+          </div>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <article class="line" id="line-pos-chat">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <!-- =================================
+                        [MÓDULO: TO-DO]
+                        Lista de pendências e próximos passos.
+                    ====================================== -->
+        <article class="to-do">
+          <header class="section-header">
+            <h1>Pendências</h1>
+          </header>
+
+          <section class="section-container">
+            <ul class="todo-list">
+              <!-- To do -->
+              <li class="todo-item">
+                <input type="checkbox" id="item-00" disabled />
+                <label for="item-00"
+                  >Construir a entrada para o Caminho da Serpente</label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-01" disabled />
+                <label for="item-01"
+                  >Disponibilizar os manuscritos ocultos</label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-02" disabled />
+                <label for="item-02"
+                  >Inaugurar o salão de obras e artefatos</label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-03" disabled />
+                <label for="item-03"
+                  >Encontrar o livro de registro de passagens</label
+                >
+              </li>
+
+              <!-- Terminadas -->
+              <li class="todo-item">
+                <input type="checkbox" id="item-04" disabled checked />
+                <label for="item-04">Deixar a porta entreaberta.</label>
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-05" disabled checked />
+                <label for="item-05"
+                  >Abrir os portões para
+                  <a href="#" class="link-duat cur-help">o limiar</a></label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-06" disabled checked />
+                <label for="item-06"
+                  >Esconder o Juramento nos andares inferiores</label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-07" disabled checked />
+                <label for="item-07"
+                  >Instalar sistema de áudio no corredor</label
+                >
+              </li>
+              <li class="todo-item">
+                <input type="checkbox" id="item-08" disabled checked />
+                <label for="item-08"
+                  >Receber as primeiras
+                  <a href="/fragmentos/transmissoes/main.html" class="cur-doubt"
+                    >transmissões</a
+                  ></label
+                >
+              </li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <article class="line">
+          <div class="line-container">
+            <img src="assets/images/lines/barbedwire.png" />
+          </div>
+        </article>
+
+        <!-- =================================
+                        [MÓDULO: NOTA DE RODAPÉ]
+                    ====================================== -->
+        <footer class="endnote">
+          <div class="note-button">
+            <a href="/fragmentos/juramento/index.html"
+              ><img
+                class="cur-skeleton-hand"
+                src="assets/images/buttons/3void.png"
+              /></a
+            >
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { iniciarBarraDeRolagem } from "../scripts/barra-de-rolagem.js";
+  import { stroboVelocidade, stroboFlash } from "../scripts/strobo.js";
+
+  document.addEventListener("astro:page-load", () => {
+    iniciarBarraDeRolagem(".content");
+
+    // Strobo do painel: linha a linha, guiado pela velocidade do mouse
+    document.querySelectorAll(".painel tr").forEach((linha) => {
+      stroboVelocidade(linha, { classe: "strobo-painel" });
+    });
+
+    // Strobo do log: flashes nos focos coloridos e na scrollbar
+    // (o if é a checagem de página — este handler também dispara nas
+    // navegações do ClientRouter para páginas sem log)
+    const logBox = document.querySelector(".log-box");
+    if (logBox) {
+      stroboFlash(logBox, {
+        classe: "strobo-texto",
+        seletorFilhos: ".foco-vermelho, .foco-amarelo, .foco-azul",
+        chance: 0.2,
+      });
+      stroboFlash(logBox, { classe: "strobo-scroll" });
+    }
+  });
+</script>

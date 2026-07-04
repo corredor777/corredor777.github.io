@@ -1,0 +1,12 @@
+---
+const { destino, imagem, decoracao = null, cursor = "cur-lupa" } = Astro.props;
+---
+
+<article class="porta">
+  <section class="section-container">
+    <div class="center-image img-insert">
+      {decoracao && <img src={decoracao} />}
+      <a href={destino} class={cursor}><img src={imagem} /></a>
+    </div>
+  </section>
+</article>

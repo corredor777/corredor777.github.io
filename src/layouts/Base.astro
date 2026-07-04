@@ -6,6 +6,7 @@ import "../styles/global.css";
 const {
   titulo = identidade.site.nome,
   descricao = identidade.site.descricaoPadrao,
+  favicon = "/assets/images/favicon/censor.gif",
   mensagensConsole = [],
   class: classeBody,
 } = Astro.props;
@@ -36,7 +37,7 @@ const {
     <link
       rel="icon"
       type="image/x-icon"
-      href="/assets/images/favicon/index.gif"
+      href={favicon}
     />
 
     <ClientRouter />

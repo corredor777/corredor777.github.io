@@ -1,0 +1,114 @@
+---
+const { texto = "encare o abismo", gif = "assets/images/favicon/eye.gif" } =
+  Astro.props;
+---
+
+<div class="ticker">
+  <div class="ticker-content">
+    <p id="frase-ticker">
+      <span
+        >{texto}&nbsp;&nbsp;<img
+          height="13px"
+          src={gif}
+          alt="777"
+        />&nbsp;&nbsp;</span
+      >
+    </p>
+  </div>
+</div>
+
+<script>
+  // Repete o conteúdo e calcula a duração da animação (gabarito: main.js antigo)
+  document.addEventListener("astro:page-load", () => {
+    const ticker = document.getElementById("frase-ticker");
+
+    if (ticker) {
+      const conteudoOriginal = ticker.innerHTML;
+      ticker.innerHTML = conteudoOriginal.repeat(30);
+
+      // Função para aplicar a animação com velocidade constante
+      const aplicarAnimacao = () => {
+        const larguraTotal = ticker.scrollWidth;
+        const velocidadeNormal = 150; // pixels por segundo
+        const duracaoNormal = larguraTotal / velocidadeNormal;
+        const duracaoSlow = larguraTotal / (velocidadeNormal / 2); // Metade da velocidade
+
+        // Define as variáveis no elemento
+        ticker.style.setProperty("--duracao-normal", `${duracaoNormal}s`);
+        ticker.style.setProperty("--duracao-slow", `${duracaoSlow}s`);
+
+        // Inicia a animação usando a variável
+        ticker.style.animation = `ticker var(--duracao-normal) linear infinite`;
+      };
+
+      // Com o ClientRouter, o astro:page-load dispara depois do load da
+      // janela — um listener registrado agora nunca dispararia. Se o
+      // documento já carregou (scrollWidth confiável, imagens prontas),
+      // mede na hora; senão, espera o load como o main.js antigo fazia.
+      if (document.readyState === "complete") {
+        aplicarAnimacao();
+      } else {
+        window.addEventListener("load", aplicarAnimacao, { once: true });
+      }
+    }
+  });
+</script>
+
+<style is:global>
+  /* Efeito ticker horizontal */
+  .ticker {
+    display: flex;
+    flex-shrink: 0;
+    overflow: hidden;
+
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+  }
+  .ticker:hover {
+    background-color: #202020;
+    color: #fdfdfd;
+  }
+  .ticker-content {
+    backface-visibility: hidden;
+  }
+  .ticker:hover .ticker-content {
+    pointer-events: auto;
+  }
+  #frase-ticker {
+    display: flex;
+    flex-shrink: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+    font-variation-settings:
+      "SOFT" 0,
+      "WONK" 0;
+    font-size: 9pt;
+    text-align: center;
+
+    animation: ticker var(--duracao-normal) linear infinite;
+  }
+  .ticker:hover #frase-ticker {
+    animation-duration: var(--duracao-slow);
+  }
+  #frase-ticker span {
+    padding-right: 1px;
+  }
+  #frase-ticker span img {
+    vertical-align: middle;
+    margin: 0 4px 0 6px;
+  }
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>
