@@ -110,5 +110,7 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [006] Padrão de efeitos estabelecido: módulo em src/scripts/ + export iniciar*() + guarda de idempotência + religação via astro:page-load + checagem de página no browser antes de fechar.
 [007] Próximo: main.astro (Recepção) — contadores, logs, painel, pendências.
 [008] Strobo unificado (2026-07-04): strobo.js exporta stroboGlobal (página inteira, Entrada), stroboVelocidade (proporcional à velocidade do mouse, painel) e stroboFlash (liga/desliga probabilístico, texto e scrollbar do log). Dois bugs corrigidos: estado invertido persistindo na volta via bfcache (pageshow limpa) e scrollbars fantasma na landing (overflow travado no intro.css). Módulo commitado; usos nas páginas e CSS aguardam o commit da Recepção em reconstrução.
-[009] _
+[009] Incidente (2026-07-04): o .git da cópia de trabalho foi corrompido por bytes nulos — causa: sincronização de nuvem por cima do .git na localização antiga (Documents). Working tree intacto; os dois commits que só existiam localmente (f793ac6, 1e5ca83) foram empurrados ao remoto antes da recuperação.
+[010] Repositório refundado em clone limpo (2026-07-04): endereço definitivo C:\dev\corredor777.github.io, fora de qualquer área sincronizada. A cópia corrompida virou C:\dev\corredor777-backup-corrompido. Transplantados o trabalho em andamento (Recepção + ajustes) e os arquivos fora do versionamento (CLAUDE.md, configs locais); fsck, npm install e build limpos no destino.
+[011] _
 ```
