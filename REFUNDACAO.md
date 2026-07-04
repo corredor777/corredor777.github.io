@@ -109,5 +109,6 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [005] Landing da F1 concluída (2026-07-04): Entrada reconstruída (index.astro + intro.css) com sorteio arcano+frase via localStorage, chuva de sangue, strobo, cursores e favicon animado; build estático gerando index.html na raiz de dist/.
 [006] Padrão de efeitos estabelecido: módulo em src/scripts/ + export iniciar*() + guarda de idempotência + religação via astro:page-load + checagem de página no browser antes de fechar.
 [007] Próximo: main.astro (Recepção) — contadores, logs, painel, pendências.
-[008] _
+[008] Strobo unificado (2026-07-04): strobo.js exporta stroboGlobal (página inteira, Entrada), stroboVelocidade (proporcional à velocidade do mouse, painel) e stroboFlash (liga/desliga probabilístico, texto e scrollbar do log). Dois bugs corrigidos: estado invertido persistindo na volta via bfcache (pageshow limpa) e scrollbars fantasma na landing (overflow travado no intro.css). Módulo commitado; usos nas páginas e CSS aguardam o commit da Recepção em reconstrução.
+[009] _
 ```
