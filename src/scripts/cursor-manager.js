@@ -23,6 +23,28 @@ let fakeCursor = null;
 // cada página os duplicaria. Esta flag garante que só ligam na primeira vez.
 let listenersLigados = false;
 
+// Scrollbar é cromo nativo: o CSS `cursor` é ignorado sobre ela e a seta
+// do sistema sempre aparece — esconder o fake evita cursor duplicado.
+// clientWidth/clientHeight excluem a scrollbar; o retângulo do elemento não.
+function sobreScrollbar(e) {
+  const alvo = e.target;
+  if (!(alvo instanceof Element)) return false;
+
+  // Sem conteúdo rolável não há scrollbar — e elementos inline têm
+  // clientWidth/clientHeight zero, o que falsearia a checagem abaixo
+  const temBarraVertical = alvo.scrollHeight > alvo.clientHeight;
+  const temBarraHorizontal = alvo.scrollWidth > alvo.clientWidth;
+  if (!temBarraVertical && !temBarraHorizontal) return false;
+
+  const caixa = alvo.getBoundingClientRect();
+  const x = e.clientX - caixa.left - alvo.clientLeft;
+  const y = e.clientY - caixa.top - alvo.clientTop;
+  return (
+    (temBarraVertical && x >= alvo.clientWidth) ||
+    (temBarraHorizontal && y >= alvo.clientHeight)
+  );
+}
+
 function gerenciarCursoresGeral(mapa) {
   // 1. Cria o elemento para GIFs — ou reaproveita, se a página já tem um
   fakeCursor = document.getElementById("fake-cursor");
@@ -91,7 +113,7 @@ function gerenciarCursoresGeral(mapa) {
   );
 
   document.addEventListener("mousemove", (e) => {
-    if (e.target.tagName === "IFRAME") {
+    if (e.target.tagName === "IFRAME" || sobreScrollbar(e)) {
       const fakeCursor = document.getElementById("fake-cursor");
       if (fakeCursor) fakeCursor.style.display = "none";
       return;
