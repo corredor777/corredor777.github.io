@@ -1,9 +1,6 @@
 * {
   cursor: help;
 }
-html {
-  background: #cdcdcd;
-}
 html,
 body {
   overflow: hidden;
@@ -102,8 +99,10 @@ body {
   text-decoration: underline;
 }
 
-/* Efeito strobo */
-html.negativo body {
+/* Efeito strobo — o filtro fica no elemento raiz, como no vanilla: filtro
+   na raiz alcança o canvas inteiro (inclusive o fundo propagado do body),
+   então o tremor do translate não expõe nenhuma cor sem filtro nas bordas */
+html.negativo {
   filter: invert(100%) contrast(150%);
-  transform: translate(1px, -1px);
+  transform: translate(1px, -1px); /* Pequeno tremor visual no strobo */
 }
