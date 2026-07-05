@@ -442,9 +442,14 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
 <script>
   import { iniciarBarraDeRolagem } from "../scripts/barra-de-rolagem.js";
   import { stroboVelocidade, stroboFlash } from "../scripts/strobo.js";
+  import { iniciarContadores } from "../scripts/contadores.js";
+  import ocorrencias from "../data/ocorrencias.json";
 
   document.addEventListener("astro:page-load", () => {
     iniciarBarraDeRolagem(".content");
+
+    // Contadores das Ocorrências (a checagem de página vive no módulo)
+    iniciarContadores(ocorrencias);
 
     // Strobo do painel: linha a linha, guiado pela velocidade do mouse
     document.querySelectorAll(".painel tr").forEach((linha) => {
