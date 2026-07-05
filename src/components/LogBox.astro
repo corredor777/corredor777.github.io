@@ -1,0 +1,27 @@
+---
+import registro from "../data/registro.json";
+---
+
+<div class="log-box cur-vscroll">
+  <div class="log-content">
+    {
+      registro.map((entrada) => (
+        <p class="log-entry">
+          <span class="log-index foco-vermelho">
+            [{String(entrada.indice).padStart(3, "0")}]
+          </span>
+          {entrada.label && (
+            <>
+              <span class="foco-vermelho">{entrada.label} :</span>&nbsp;
+            </>
+          )}
+          <Fragment set:html={entrada.texto} />
+        </p>
+      ))
+    }
+    <!-- Cursor do terminal: moldura, sempre o último elemento -->
+    <p class="log-entry">
+      <span class="log-index foco-vermelho">_</span>
+    </p>
+  </div>
+</div>
