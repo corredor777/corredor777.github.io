@@ -1,0 +1,11 @@
+[
+    { "texto": "Construir a entrada para o Caminho da Serpente", "feito": false  },
+    { "texto": "Organizar os manuscritos ocultos", "feito": false  },
+    { "texto": "Inaugurar o salão de obras e artefatos", "feito": false  },
+    { "texto": "Encontrar o livro de registro de passagens", "feito": false  },
+    { "texto": "Deixar a porta entreaberta", "feito": true  },
+    { "texto": "Abrir os portões para <a href='#' class='link-duat cur-help'>o limiar</a>", "feito": true  },
+    { "texto": "Esconder o Juramento nos andares inferiores", "feito": true  },
+    { "texto": "Instalar sistema de áudio no corredor", "feito": true  },
+    { "texto": "Receber as primeiras <a href='/fragmentos/transmissoes/main.html' class='cur-doubt'>transmissões</a>", "feito": true  }
+]
