@@ -1,5 +1,8 @@
 # Documentação interna de trabalho com IA — não publicar
 CLAUDE.md
+HANDOFF.md
+REFUNDACAO.md
+.claude/
 
 # Configuração local da IDE
 .vscode/
