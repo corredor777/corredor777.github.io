@@ -1,0 +1,31 @@
+---
+const { boxid, boxtag, altura = 450, titulo = "Chat ao vivo" } = Astro.props;
+---
+
+<div class="chat-container">
+  <iframe
+    src={`https://www3.cbox.ws/box/?boxid=${boxid}&boxtag=${boxtag}`}
+    title={titulo}
+    width="100%"
+    height={altura}
+    allowtransparency="yes"
+    allow="autoplay"
+    loading="lazy"></iframe>
+</div>
+
+<style>
+  .chat-container {
+    margin: 0 30px;
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: 0.5;
+    transition: opacity ease 0.05s;
+  }
+  .chat-container:hover {
+    opacity: 1;
+  }
+  .chat-container iframe {
+    display: block; /* elimina o vão fantasma embaixo do iframe */
+    border: none; /* substitui o frameborder="0" obsoleto */
+    width: 100%;
+  }
+</style>
