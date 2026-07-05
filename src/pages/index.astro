@@ -3,8 +3,6 @@ import Base from "../layouts/Base.astro";
 import falas from "../data/console.json";
 import identidade from "../data/identidade.json";
 import "../styles/intro.css";
-import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
-import { iniciarStrobo } from "../scripts/strobo.js";
 ---
 
 <Base
@@ -68,7 +66,7 @@ import { iniciarStrobo } from "../scripts/strobo.js";
     // Sorteio de frases para a intro
     function selecionarFrase() {
       // 2. Busca no armazenamento do navegador a lista de frases já vistas e converte de texto (JSON) para Array
-      let exibidas = JSON.parse(localStorage.getItem("frasesExibidas")) || [];
+      let exibidas = JSON.parse(localStorage.getItem("frasesExibidas") ?? "[]");
 
       // 3. Cria uma lista temporária contendo apenas os itens cujo índice ainda não consta na lista de exibidas
       let disponiveis = bancoDeDados.filter(
