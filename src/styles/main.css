@@ -446,20 +446,6 @@ hr.divisor {
 .chatbox {
   margin-bottom: 50px !important;
 }
-#line-pos-chat {
-  margin-bottom: 100px !important;
-}
-.chat-container {
-  margin: 0 30px;
-
-  background-color: rgba(255, 255, 255, 0.6);
-  opacity: 0.5;
-
-  transition: opacity ease 0.05s;
-}
-.chatbox:hover .chat-container {
-  opacity: 1;
-}
 .chatbox .img-insert img {
   margin-top: 50px;
   border: 2px solid #000;
