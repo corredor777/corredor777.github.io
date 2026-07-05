@@ -5,6 +5,7 @@ import Painel from "../components/Painel.astro";
 import Porta from "../components/Porta.astro";
 import Linha from "../components/Linha.astro";
 import BotaoGrandeStrobo from "../components/BotaoGrandeStrobo.astro";
+import LogBox from "../components/LogBox.astro";
 import BotaoFooter from "../components/BotaoFooter.astro";
 import falas from "../data/console.json";
 import identidade from "../data/identidade.json";
@@ -132,12 +133,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         <!-- [DIVISOR] -->
         <Linha />
 
-        <!-- =================================
-                        [MÓDULO: OCORRÊNCIAS]
-                        Contém:
-                            - Contador de dias: Calculado por lógica de datas.
-                            - Visitas: Recuperadas do LocalStorage.
-                    ====================================== -->
+        <!-- [OCORRÊNCIAS] -->
         <article class="ocorrencias">
           <header class="section-header">
             <h1>Ocorrências</h1>
@@ -180,6 +176,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         <!-- [DIVISOR] -->
         <Linha />
 
+        <!-- [MINIGAME] -->
         <article class="minigame">
           <header class="section-header">
             <BotaoGrandeStrobo
@@ -194,126 +191,14 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         <!-- [DIVISOR] -->
         <Linha />
 
-        <!-- =================================
-                        [MÓDULO: LOGS]
-                        Terminal de eventos com estética CRT/Monitor antigo.
-                    ====================================== -->
+        <!-- [LOGS] -->
         <article class="logs">
           <header class="section-header">
             <h1>Registro de Eventos</h1>
           </header>
 
           <section class="section-container">
-            <div class="log-box cur-vscroll">
-              <div class="log-content">
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[000]</span><span
-                    class="foco-vermelho">FIAT LUX :</span
-                  >&nbsp;Corredor em estado de vigília.
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[001]</span><span
-                    class="foco-vermelho">ACESSO LIBERADO :</span
-                  >&nbsp;Recepção operacional. O corredor agradece sua visita
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[002]</span><span
-                    class="foco-vermelho"
-                    >Manutenção :
-                  </span>Correções visuais implementadas
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[003]</span><a
-                    href="#"
-                    class="link-duat cur-help"
-                    ><span class="foco-vermelho">DUAT</span></a
-                  >
-                  Protocolo de boas-vindas disponível
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[004]</span><span
-                    class="foco-vermelho"
-                    >ARTEFATO ENCONTRADO :
-                  </span><a
-                    href="/fragmentos/juramento/index.html"
-                    class="cur-none">TERMO DE CONDUTA - JURAMENTO DO ABISMO</a
-                  >
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[005]</span><span
-                    class="foco-vermelho"
-                    >Manutenção :
-                  </span>Superfície recalibrada
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[006]</span><span
-                    class="foco-vermelho"
-                    >Manutenção :
-                  </span>Comportamento do corredor normalizado
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[007]</span><span
-                    class="foco-vermelho"
-                    >Manutenção :
-                  </span>Som ambiente instalado na recepção
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[008]</span><span
-                    class="foco-vermelho"
-                    >REVISÃO DAS ESPECIFICAÇÕES TÉCNICAS :
-                  </span>Registros de design e execução atualizados nos
-                  metadados
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[009]</span><span
-                    class="foco-vermelho"
-                    >IMPLEMENTAÇÃO :
-                  </span>Sala de transmissões construída. Acesso restrito até a
-                  finalização dos testes operacionais
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[010]</span><span
-                    class="foco-vermelho"
-                    >IMPLEMENTAÇÃO :
-                  </span>Testes operacionais concluídos. Procure pela porta da
-                  sala de transmissões.
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[011]</span><span
-                    class="foco-vermelho"
-                    >REGISTRO :
-                  </span>Entradas adicionadas ao diário na
-                  <a href="/fragmentos/transmissoes/main.html" class="cur-help"
-                    >Sala de Transmissões</a
-                  >.
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[012]</span><span
-                    class="foco-vermelho"
-                    >REGISTRO :
-                  </span>Caderno de notas do Zelador encontrado.
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[013]</span><span
-                    class="foco-vermelho"
-                    >IMPLEMENTAÇÃO :
-                  </span>Mecanismo de tradução dos glifos e suporte para
-                  diagramas e visuais adicionados ao painel de transmissões.
-                </p>
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">[014]</span><span
-                    class="foco-vermelho"
-                    >ARTEFATO ENCONTRADO :
-                  </span>Simulação do colapso das paredes do corredor. Me ajude
-                  a demolir.
-                </p>
-
-                <!-- Cursor do terminal animado via CSS (blink animation) -->
-                <p class="log-entry">
-                  <span class="log-index foco-vermelho">_</span>
-                </p>
-              </div>
-            </div>
+            <LogBox />
           </section>
         </article>
 
@@ -466,6 +351,8 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
     // navegações do ClientRouter para páginas sem log)
     const logBox = document.querySelector(".log-box");
     if (logBox) {
+      const logContent = logBox.querySelector(".log-content");
+      if (logContent) logContent.scrollTop = logContent.scrollHeight;
       stroboFlash(logBox, {
         classe: "strobo-texto",
         seletorFilhos: ".foco-vermelho, .foco-amarelo, .foco-azul",
