@@ -3,6 +3,9 @@ import Base from "../layouts/Base.astro";
 import TickerHeader from "../components/TickerHeader.astro";
 import Painel from "../components/Painel.astro";
 import Porta from "../components/Porta.astro";
+import Linha from "../components/Linha.astro";
+import BotaoGrandeStrobo from "../components/BotaoGrandeStrobo.astro";
+import BotaoFooter from "../components/BotaoFooter.astro";
 import falas from "../data/console.json";
 import identidade from "../data/identidade.json";
 import "../styles/global.css";
@@ -109,7 +112,15 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
                 [MÓDULO: PAINEL DE MONITORAMENTO]
                 Tabela técnica de status.
             ====================================== -->
-          <Painel />
+          <article class="monitoramento">
+            <header class="section-header">
+              <h1>Monitoramento das Instalações</h1>
+            </header>
+
+            <section class="section-container">
+              <Painel />
+            </section>
+          </article>
 
           <Porta
             destino="/fragmentos/transmissoes/main.html"
@@ -119,11 +130,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </div>
 
         <!-- [DIVISOR] -->
-        <article class="line">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
         <!-- =================================
                         [MÓDULO: OCORRÊNCIAS]
@@ -171,35 +178,21 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </article>
 
         <!-- [DIVISOR] -->
-        <article class="line">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
-        <article class="colapso">
+        <article class="minigame">
           <header class="section-header">
-            <button
-              class="cur-skeleton-hand"
-              onclick="
-                    window.open(
-                      './fragmentos/simulacros/colapso.html',
-                      'colapso',
-                      'width=520,height=620,resizable=no',
-                    )
-                  "
-            >
-              Algumas paredes precisam cair!
-            </button>
+            <BotaoGrandeStrobo
+              nome="colapso"
+              cursor="cur-skeleton-hand"
+              destino="/fragmentos/simulacros/colapso.html"
+              texto="Algumas paredes precisam cair!"
+            />
           </header>
         </article>
 
         <!-- [DIVISOR] -->
-        <article class="line">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
         <!-- =================================
                         [MÓDULO: LOGS]
@@ -325,11 +318,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </article>
 
         <!-- [DIVISOR] -->
-        <article class="line">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
         <!-- =================================
                         [MÓDULO: CHATBOX]
@@ -359,11 +348,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </article>
 
         <!-- [DIVISOR] -->
-        <article class="line" id="line-pos-chat">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
         <!-- =================================
                         [MÓDULO: TO-DO]
@@ -440,24 +425,14 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </article>
 
         <!-- [DIVISOR] -->
-        <article class="line">
-          <div class="line-container">
-            <img src="assets/images/lines/barbedwire.png" />
-          </div>
-        </article>
+        <Linha />
 
-        <!-- =================================
-                        [MÓDULO: NOTA DE RODAPÉ]
-                    ====================================== -->
         <footer class="endnote">
-          <div class="note-button">
-            <a href="/fragmentos/juramento/index.html"
-              ><img
-                class="cur-skeleton-hand"
-                src="assets/images/buttons/3void.png"
-              /></a
-            >
-          </div>
+          <BotaoFooter
+            destino="/fragmentos/juramento/index.html"
+            cursor="cur-skeleton-hand"
+            imagem="assets/images/buttons/3void.png"
+          />
         </footer>
       </main>
     </div>
@@ -474,6 +449,11 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
     // Strobo do painel: linha a linha, guiado pela velocidade do mouse
     document.querySelectorAll(".painel tr").forEach((linha) => {
       stroboVelocidade(linha, { classe: "strobo-painel" });
+    });
+
+    // Strobo do botão grande: alterna com a velocidade do movimento
+    document.querySelectorAll(".botao-grande-strobo").forEach((botao) => {
+      stroboVelocidade(botao, { classe: "strobo-botao" });
     });
 
     // Strobo do log: flashes nos focos coloridos e na scrollbar

@@ -1,6 +1,8 @@
 :root {
   --cor-acento: #ff0037;
   --cor-acento-glow: rgba(255, 0, 55, 0.8);
+  --barra-cor: rgba(100, 100, 100, 0.3);
+  --barra-cor-glow: rgba(0, 0, 0, 1);
 }
 
 * {
@@ -142,7 +144,10 @@ body {
   display: none;
 }
 .content article {
-  margin-bottom: 100px;
+  margin-bottom: 60px;
+}
+.monitoramento {
+  margin-bottom: 25px !important;
 }
 .content article:hover .section-header h1 {
   text-decoration: underline;
@@ -165,91 +170,15 @@ body {
   font-size: 26pt;
 }
 
-/* Lines */
-.line {
-  margin-bottom: 50px !important;
-}
-.line-container {
-  width: auto;
-  margin: 0 35px;
-}
-.line img,
-.duat-line img {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Painel de Monitoramento */
-.painel {
-  width: 100%;
-
-  border-collapse: collapse;
-
+/* Minigame */
+.minigame header {
+  text-align: center;
+  margin-bottom: 50px;
   font-family: "DotGothic16", sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-style: normal;
-  font-size: 8.5pt;
+  font-size: 18px;
   text-transform: uppercase;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
-  -moz-osx-font-smoothing: grayscale; /* Firefox no macOS */
-  letter-spacing: 1px;
-}
-.painel tr {
-  background-color: transparent;
-  transition: background-color 0.05s;
-}
-.painel tr:hover {
-  background-color: #a40000;
-  color: #fdfdfd;
-}
-.strobo-painel {
-  position: relative;
-  z-index: 10;
-
-  filter: invert(100%) contrast(300%) brightness(1.5) !important;
-}
-/* Flash dos focos coloridos do log (era filter inline no main.js antigo) */
-.strobo-texto {
-  filter: invert(100%) brightness(200%);
-}
-.painel td {
-  padding: 6px;
-}
-.index {
-  padding-left: 35px !important;
-}
-.ultimo-do-grupo {
-  border-bottom: 1px dotted #444;
-}
-.leitura {
-  padding-right: 30px !important;
-  text-align: end;
-}
-#ultima-leitura {
-  margin: 20px 35px 20px 35px;
-
-  color: rgba(32, 32, 32, 0.4);
-  text-align: right;
-}
-#ultima-leitura p {
-  font-family: "Fraunces", serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: italic;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0;
-  line-height: 1.5;
-}
-#ultima-leitura p .leitura-resultado {
-  border-bottom: 1px solid rgba(32, 32, 32, 1);
-
-  color: rgba(32, 32, 32, 1);
-  font-style: normal !important;
-}
-.porta .img-insert {
-  margin-top: 20px;
 }
 
 /* Contador */
@@ -350,39 +279,6 @@ hr.divisor {
   font-weight: bold;
 }
 
-.colapso header {
-  text-align: center;
-  margin-bottom: 50px;
-  font-family: "DotGothic16", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 18px;
-  text-transform: uppercase;
-}
-.colapso button {
-  all: unset;
-  display: block;
-  width: 70%;
-  margin: 0 auto;
-  padding: 15px 20px;
-  background-color: rgba(32, 32, 32, 0.8);
-  background:
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
-    rgba(32, 32, 32, 0.8);
-  background-size: 100% 3px;
-  color: var(--cor-acento);
-  text-shadow: 0 0 5px var(--cor-acento);
-  box-shadow: 0 0 20px #333;
-  transition: all 0.1s;
-}
-.colapso button:hover {
-  border-color: var(--cor-acento);
-  background-color: var(--cor-acento);
-  color: #202020;
-  text-shadow: 0 0 5px #202020;
-  box-shadow: 0 0 30px var(--cor-acento);
-}
-
 /* Registro de Eventos */
 .log-box {
   height: 350px; /* Altere para a altura fixa que desejar */
@@ -449,6 +345,12 @@ hr.divisor {
 }
 .log-box::-webkit-scrollbar {
   display: none; /* Chrome/Safari */
+}
+/* Flash dos focos coloridos do log (era filter inline no main.js antigo).
+   Vive aqui, não em componente: a classe é ligada por JS em nós do log,
+   que ficam fora de qualquer subtree escopado pelo Astro */
+.strobo-texto {
+  filter: invert(100%) brightness(200%);
 }
 /* Flash da scrollbar do log em vermelho-acento */
 .log-box.strobo-scroll {
