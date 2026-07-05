@@ -1,7 +1,8 @@
 # Documentação interna de trabalho com IA — não publicar
+# (REFUNDACAO.md fica versionado de propósito: é o log vivo da migração e
+#  precisa de backup no remoto)
 CLAUDE.md
 HANDOFF.md
-REFUNDACAO.md
 .claude/
 
 # Configuração local da IDE
