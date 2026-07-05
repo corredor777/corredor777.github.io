@@ -4,8 +4,8 @@
 // reais respondem ao cursor-manager como qualquer outro nó da página.
 // Cores por variável CSS: --barra-cor (polegar) e --barra-fundo (trilho).
 
-const LARGURA = 8; // px — equivalente visual do scrollbar-width: thin
-const ALTURA_MINIMA_POLEGAR = 30; // px — polegar clicável mesmo em conteúdo longo
+const LARGURA = 5; // px — equivalente visual do scrollbar-width: thin
+const ALTURA_MINIMA_POLEGAR = 80; // px — polegar clicável mesmo em conteúdo longo
 
 // Referências vivas ao container e à barra atuais. Vivem fora das funções
 // para que os listeners de document (ligados uma vez) sempre enxerguem a
@@ -58,7 +58,14 @@ function injetarEstilo() {
     }
     .barra-rolagem-polegar {
       width: 100%;
+      background: transparent;
+      box-shadow: 0 0 30px var(--barra-cor-glow);
+      transition: box-shadow .2s;
+      
+    }
+    .barra-rolagem-polegar:hover, .barra-rolagem-polegar:active {
       background: var(--barra-cor, #cccccc);
+      box-shadow: 0 0 10px transparent;
     }
   `;
   document.head.appendChild(estilo);
@@ -75,7 +82,7 @@ function montarBarra() {
   trilho = document.createElement("div");
   trilho.className = "barra-rolagem";
   polegar = document.createElement("div");
-  polegar.className = "barra-rolagem-polegar cur-vscroll";
+  polegar.className = "barra-rolagem-polegar cur-none";
   trilho.appendChild(polegar);
   pai.appendChild(trilho);
 
