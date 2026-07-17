@@ -48,13 +48,32 @@ let jitterId = 0; // setInterval do jitter
 let roloId = 0; // setTimeout encadeado do rolo
 let ro = null; // ResizeObserver da tela
 
+// Relógio de fase do rolo. O rolo é uma animação CSS declarativa; quando o nó
+// .crt-fx é REPARENTADO no swap das View Transitions, a animação reinicia do
+// topo (ver ressincronizarRolo). Espelhamos aqui o "currentTime" da animação
+// — tempo acumulado rodando, congelado nas pausas — para reaplicar a fase via
+// animation-delay negativo depois do swap.
+let roloDur = 0; // duração (ms) da passada corrente
+let roloTempo = 0; // ms acumulados de animação (≈ currentTime do CSS)
+let roloUltimo = 0; // performance.now() da última amostragem
+let roloPausado = false;
+
 const noiseInterval = 1000 / CFG.noiseFrameRate;
 
 /* ── Redimensiona ambos os canvas ──────────────────────── */
 function redimensionar() {
   const r = tela.getBoundingClientRect();
-  w = Math.round(r.width);
-  h = Math.round(r.height);
+  const nw = Math.round(r.width);
+  const nh = Math.round(r.height);
+
+  // Sem mudança de tamanho, não há o que recalibrar — e reatribuir
+  // canvas.width/height LIMPA o canvas, o que apagaria o noise por um quadro.
+  // O ResizeObserver dispara uma vez ao (re)observar mesmo sem mudança
+  // (acontece na re-observação pós-navegação); esta guarda evita o flash.
+  if (nw === w && nh === h) return;
+
+  w = nw;
+  h = nh;
 
   canvas.width = w;
   canvas.height = h;
@@ -181,22 +200,60 @@ function desenharCurvaturaBordas() {
 // Uma faixa horizontal (.crt-roll, animada em CSS) que desce a tela. Aqui só
 // variamos a DURAÇÃO da animação e, com 25% de chance, inserimos uma pausa —
 // dá o ritmo irregular de sincronia vertical falhando. É um setTimeout que se
-// reagenda; a guarda `running` corta a corrente no teardown.
+// reagenda; a guarda `running` corta a corrente no teardown. O mecanismo do
+// efeito é o mesmo do vanilla; o que se acrescentou é só a contabilidade de
+// fase (roloTempo) para poder retomar a animação depois do swap.
+
+// Avança o relógio de fase até `now`, sem contar o tempo em que o rolo esteve
+// pausado — espelha o congelamento do currentTime do CSS durante a pausa.
+function avancarRolo(now) {
+  if (!roloPausado) roloTempo += now - roloUltimo;
+  roloUltimo = now;
+}
+
 function agendarRolo() {
   if (!running || !roll) return;
+  avancarRolo(performance.now()); // fecha a contagem da passada anterior
   const dur =
     CFG.rollSpeedMin + Math.random() * (CFG.rollSpeedMax - CFG.rollSpeedMin);
+  roloDur = dur;
   roll.style.animationDuration = dur + "ms";
+  // Trocar SÓ a duração não reinicia a animação CSS (o currentTime é
+  // preservado), então roloTempo não é mexido aqui.
   if (Math.random() < CFG.rollPauseChance) {
     const pausa = 600 + Math.random() * 2000;
     roll.style.animationPlayState = "paused";
+    roloPausado = true;
+    roloUltimo = performance.now(); // congela a contagem a partir daqui
     roloId = setTimeout(() => {
       roll.style.animationPlayState = "running";
+      roloPausado = false;
+      roloUltimo = performance.now(); // retoma a contagem daqui
       roloId = setTimeout(agendarRolo, dur * 0.7);
     }, pausa);
   } else {
     roloId = setTimeout(agendarRolo, dur + Math.random() * 1500);
   }
+}
+
+/**
+ * Reaplica a fase do rolo após o swap das View Transitions.
+ *
+ * O nó .crt-fx é persistido (transition:persist), mas o swap o REPARENTA na
+ * árvore nova, e reinserir um elemento no DOM reinicia suas animações CSS do
+ * zero — o rolo voltaria ao topo. (O canvas é imune: seus pixels e o RAF não
+ * dependem da posição do nó na árvore.) Aqui lemos o tempo acumulado e o
+ * traduzimos num animation-delay negativo, fazendo a animação recém-reiniciada
+ * "pular" para onde estava. Trata a pausa injetada preservando o playState.
+ * Idempotente e inofensiva se o rolo não estiver conectado (rota sem persist).
+ */
+export function ressincronizarRolo() {
+  if (!roll || !roll.isConnected || roloDur <= 0) return;
+  avancarRolo(performance.now());
+  const decorrido = ((roloTempo % roloDur) + roloDur) % roloDur;
+  roll.style.animationDuration = roloDur + "ms";
+  roll.style.animationDelay = -decorrido + "ms";
+  roll.style.animationPlayState = roloPausado ? "paused" : "running";
 }
 
 /* ── Jitter ────────────────────────────────────────────── */
@@ -267,6 +324,14 @@ function montar() {
 
   running = true;
   requestAnimationFrame(loop); // primeiro quadro; loop() já regrava rafId
+
+  // Zera o relógio de fase do rolo para esta montagem e limpa qualquer
+  // animation-delay negativo remanescente (rota sem persist recria o nó, mas
+  // por segurança), antes de ligar o ciclo.
+  roloTempo = 0;
+  roloPausado = false;
+  roloUltimo = performance.now();
+  roll.style.animationDelay = "0ms";
   agendarRolo();
   iniciarJitter();
 }
@@ -292,9 +357,9 @@ function parar() {
  *
  * Três cenários:
  *  - página sem CRT → sai (checagem de página: sem #tela-tubo, nada a fazer);
- *  - CRT persistido (transition:persist) → a mesma tela e os mesmos canvas
- *    sobreviveram à navegação e os laços continuam vivos: NÃO faz nada, para
- *    o efeito não piscar (o ideal — critérios a/b/d do spike);
+ *  - CRT persistido (transition:persist) → os canvas sobreviveram e os laços
+ *    continuam vivos: NÃO remonta (para não piscar), mas RE-APONTA o
+ *    ResizeObserver para o #tela-tubo novo (ver abaixo);
  *  - CRT recriado (sem persist) → há um #tela-tubo novo mas os laços antigos
  *    apontam para nós mortos: desliga (parar) e remonta na tela nova.
  */
@@ -303,8 +368,21 @@ export function iniciarCRT() {
   if (!t) return; // checagem de página
 
   // `canvas` (nó da montagem anterior) ainda dentro da tela atual ⇒ persistiu:
-  // laços vivos sobre nós vivos, não mexer.
-  if (running && canvas && t.contains(canvas)) return;
+  // laços vivos sobre nós vivos, não remontar. Mas o #tela-tubo em si NÃO é
+  // persistido — foi recriado no swap. O ResizeObserver ainda observava o
+  // #tela-tubo morto da página anterior; sem re-apontar, um resize/zoom depois
+  // da 1ª navegação mediria o nó errado e os canvases não recalibrariam.
+  // (A fase do rolo é retomada à parte, no astro:after-swap → ressincronizarRolo.)
+  if (running && canvas && t.contains(canvas)) {
+    if (ro) {
+      ro.disconnect();
+      tela = t; // redimensionar() lê `tela`; aponta antes de re-observar
+      ro.observe(t);
+    } else {
+      tela = t;
+    }
+    return;
+  }
 
   parar(); // encerra laços órfãos de uma tela que foi descartada
   tela = t;
