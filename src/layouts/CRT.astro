@@ -73,6 +73,7 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
           <canvas id="crt-canvas-borda"></canvas>
           <div class="camada-crt overlay-scanlines"></div>
           <div class="camada-crt overlay-flicker"></div>
+          <div class="camada-crt overlay-vidro"></div>
         </div>
 
         <!-- INTERFACE — conteúdo troca a cada página (fora do persist) -->
@@ -116,9 +117,12 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
     --fosforo-verde: #38ecdc;
     --fosforo-verde-glow: rgba(20, 253, 206, 0.25);
     --fosforo-verde-glow-light: rgba(20, 253, 206, 0.08);
+    --bezel-cor: rgba(0, 0, 0, 0.45);
+    --reflexo-intensidade: 0.06; /* 0.02 = sutil, 0.12 = forte */
   }
 
-  /* Fundo escuro do "estúdio" — sobrepõe o #cdcdcd do global.css via classe */
+  /* Fundo do "estúdio": ruído de TV + cinza, igual ao vanilla. Sobrepõe o
+     #cdcdcd do global.css pela classe. */
   body.crt-body {
     margin: 0;
     padding: 0;
@@ -127,10 +131,12 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
     overflow: hidden;
     user-select: none;
     display: flex;
-    background: rgb(24, 24, 24);
+    background: rgb(32, 32, 32)
+      url("/assets/images/backgrounds/tv-noise-background-3.png") no-repeat
+      center / cover;
   }
 
-  /* Gabinete externo (sem a textura de ruído do vanilla — spike enxuto) */
+  /* Gabinete de plástico externo — gradientes de reflexo do vanilla */
   #monitor-carcaca {
     position: relative;
     display: flex;
@@ -138,7 +144,21 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
     max-width: 1200px;
     height: 90vh;
     margin: auto;
-    background-color: rgba(0, 0, 0, 0.45);
+    background:
+      linear-gradient(
+        0deg,
+        rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 1.2)) 5%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.7)) 16%,
+        transparent 42%
+      ),
+      radial-gradient(
+        ellipse 55% 35% at 18% 12%,
+        rgba(0, 0, 0, calc(var(--reflexo-intensidade) * 0.5)) 25%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.2)) 60%,
+        transparent 70%
+      ),
+      radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
+    background-color: var(--bezel-cor);
     border: 2px solid rgba(245, 245, 245, 0.05);
     border-radius: 40px;
     overflow: hidden;
@@ -148,15 +168,20 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
     box-shadow:
       inset 0 0 40px var(--fosforo-verde-glow-light),
       inset 0 -50px 30px rgba(0, 0, 0, 0.25),
+      inset 10px 10px 20px rgba(255, 255, 255, 0.01),
       0 0 120px rgba(0, 0, 0, 0.5);
   }
 
-  /* O vidro do tubo, com a aberração cromática aplicada por filtro SVG */
+  /* O vidro do tubo, com a aberração cromática por filtro SVG. Geometria do
+     vanilla: relativa à viewport (não à carcaça), 80vw/max 1050px/75vh. */
   #tela-filtro {
     filter: url(#crt-barrel);
+    transform-style: preserve-3d;
+    perspective: 800px;
     position: relative;
-    width: 80%;
-    height: 82%;
+    width: 80vw;
+    max-width: 1050px;
+    height: 75vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -169,6 +194,7 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
       inset 0 20px 50px rgba(0, 0, 0, 0.5),
       inset 0 0 90px var(--fosforo-verde-glow),
       0 0 30px rgba(0, 0, 0, 0.4);
+    margin: auto;
     overflow: hidden;
   }
 
@@ -217,6 +243,26 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
     100% {
       opacity: 0.15;
     }
+  }
+  /* Reflexo diagonal no vidro + mancha difusa + vinheta interna SUAVE — é
+     esta camada que dilui a vinheta dura do canvas de curvatura (por isso o
+     spike sem ela parecia mais agressivo que o vanilla). */
+  .overlay-vidro {
+    z-index: 50;
+    background:
+      linear-gradient(
+        128deg,
+        rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 1.2)) 0%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.8)) 18%,
+        transparent 42%
+      ),
+      radial-gradient(
+        ellipse 55% 35% at 18% 12%,
+        rgba(255, 255, 255, calc(var(--reflexo-intensidade) * 0.6)) 0%,
+        rgba(56, 236, 220, calc(var(--reflexo-intensidade) * 0.3)) 45%,
+        transparent 70%
+      ),
+      radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
   }
 
   /* Canvas de noise (injetado/reaproveitado pelo crt-effects) */
