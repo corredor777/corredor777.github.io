@@ -98,7 +98,13 @@ const { titulo = "SPIKE // CRT" } = Astro.props;
   </div>
 
   <script>
-    import { iniciarCRT } from "../scripts/crt-effects.js";
+    import { iniciarCRT, ressincronizarRolo } from "../scripts/crt-effects.js";
+    // after-swap roda logo após a troca do DOM, ANTES do próximo paint: é onde
+    // reancoramos a fase do rolo para o nó .crt-fx recém-reparentado, evitando
+    // que ele apareça piscando do topo. page-load (depois) faz o resto.
+    document.addEventListener("astro:after-swap", () => {
+      ressincronizarRolo();
+    });
     document.addEventListener("astro:page-load", () => {
       iniciarCRT();
     });
