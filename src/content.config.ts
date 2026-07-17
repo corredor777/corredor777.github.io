@@ -3,7 +3,8 @@
 // Define, valida e tipa o frontmatter de cada entrada; os índices das
 // subseções saem daqui em build (getCollection), aposentando o gerar-indice.py.
 
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 // Campos comuns a TODA entrada de Transmissões, espalhados (...) em cada
