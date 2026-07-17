@@ -3,7 +3,8 @@
 #  precisa de backup no remoto)
 CLAUDE.md
 HANDOFF.md
-player-ui-brief.md  # gabarito de design do player (Figma), não publicar
+# gabarito de design do player (Figma), não publicar
+player-ui-brief.md
 .claude/
 
 # Configuração local da IDE
