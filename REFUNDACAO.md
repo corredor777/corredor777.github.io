@@ -43,6 +43,8 @@ Documento vivo da migração. É lido tanto pelo Bruno quanto pelo Claude Code n
 
 Cada fase tem um critério de saída verificável. Não avançar com a anterior quebrada.
 
+**Ordem de execução (revista em 2026-07-17): F0 → F1 → F2 → F4 → F3 → F5 → F6.** Os números das fases são estáveis (o log de Estado os referencia); o que mudou é a ordem em que se executam. A F3 (player) fica pulada até o layout fechar no Figma, e a F4 vem antes dela para que o player seja o único portão restante antes do switch (F5).
+
 ### F0 — Fundação *(Claude Code)*
 Branch `refundacao` a partir da `main`. Scaffold do Astro + integração React. Estrutura de pastas da arquitetura alvo. Assets movidos para `public/`. Workflow de deploy criado mas **inerte** — o site publicado continua sendo o vanilla da `main` até a F5. Desenvolvimento local via `npm run dev`.
 **Saída:** `npm run dev` mostra uma página com as fontes, a paleta (`#cdcdcd`/`#000`/`#ff0037`), a seleção invertida e o cursor customizado funcionando.
@@ -128,5 +130,6 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [020] Próximo da F1: retomar a casca do player quando o layout novo estiver decidido; depois fechar o critério de saída da F1 lado a lado com o vanilla e resolver View Transitions vs. MPA.
 [021] Planejamento da F2 (2026-07-06, sessão Cowork): três decisões do Bruno — (1) comportamento, transições e efeitos preservados acima de tudo; (2) conteúdo das collections em MDX, prevendo inserções WebGL/componentes como caso recorrente (vesica-piscis é o piloto do padrão "inserção = componente importado no MDX"); (3) player em Transmissões com música ininterrupta na navegação interna (depende da F3). Consequência: MPA puro descartado; fallback das View Transitions passa a ser página única. Seções F2, F3 e Decisões em aberto atualizadas. Pendente: commit desta revisão pelo Claude Code.
 [022] Sequência linear do que falta: fechar critério de saída da F1 (casca do player segue adiada aguardando o layout do Figma — não bloqueia) → spike CRT × View Transitions → schema das collections + content.config (MDX) → conversão em lote + revisão entrada por entrada → reconstrução das páginas de Transmissões → paridade F2 → F3 player (layout do Figma → componente React pelo Bruno → instâncias na Recepção e em Transmissões com persistência) → F4 → F5.
-[023] _
+[023] Ordem das fases revista (2026-07-17, sessão Cowork): passa a ser F2 → F4 → F3 → F5 → F6. A F3 (player) fica pulada até o layout fechar no Figma; a F4 (Duat/Juramento/Colapso) vem logo após a F2 para que, ao fim dela, o player seja o único portão restante antes do switch. Grimório permanece na F6. Player aguardando o Figma (o brief solo virou player-ui-brief.md, agora gitignorado — gabarito de design, não publicado). HANDOFF.md reduzido a stub (o conteúdo antigo descrevia a "segunda corrupção", que foi falso alarme [017] — obsoleto). Ao chegar na F5, este REFUNDACAO.md sai do versionamento e vira arquivo só-local (como o CLAUDE.md), preservando via git o histórico até lá. Seção Fases reordenada para refletir a nova ordem.
+[024] _
 ```
