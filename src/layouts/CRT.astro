@@ -1,0 +1,330 @@
+---
+// CRT.astro — casca MÍNIMA do monitor para o spike F2a. Não é a Transmissões
+// definitiva: só o suficiente para o crt-effects rodar e medir o convívio com
+// as View Transitions. Envolve o Base.astro, que já entrega <ClientRouter />
+// (View Transitions) e a religação do cursor-manager no astro:page-load.
+//
+// A camada de efeito (.crt-fx) leva transition:persist: ao navegar, o Astro
+// REAPROVEITA esse nó em vez de recriá-lo, então os canvas e os laços do
+// crt-effects sobrevivem à troca de página sem piscar. O #monitor-target
+// (conteúdo, via <slot />) fica FORA do persist e troca a cada página.
+import Base from "./Base.astro";
+
+const { titulo = "SPIKE // CRT" } = Astro.props;
+---
+
+<Base titulo={titulo} class="crt-body">
+  <!-- Filtro de aberração cromática do tubo (referenciado por #tela-filtro) -->
+  <svg
+    id="crt-filters"
+    style="position: absolute; width: 0; height: 0; overflow: hidden"
+    aria-hidden="true"
+  >
+    <defs>
+      <filter
+        id="crt-barrel"
+        x="-5%"
+        y="-5%"
+        width="110%"
+        height="110%"
+        color-interpolation-filters="linearRGB"
+      >
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
+          result="r-ch"
+        />
+        <feOffset in="r-ch" dx="2" dy="0" result="r-shift" />
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"
+          result="g-ch"
+        />
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"
+          result="b-ch"
+        />
+        <feOffset in="b-ch" dx="-2" dy="0" result="b-shift" />
+        <feBlend in="r-shift" in2="g-ch" mode="screen" result="rg" />
+        <feBlend in="rg" in2="b-shift" mode="screen" result="rgb" />
+        <feColorMatrix
+          in="rgb"
+          type="matrix"
+          values="0.60 0    0    0 0
+                  0    0.95 0    0 0
+                  0    0    0.92 0 0
+                  0    0    0    1 0"
+        />
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="monitor-carcaca">
+    <div id="tela-filtro">
+      <div id="tela-tubo">
+        <!-- CAMADA DE EFEITO — persiste na navegação (canvas e overlays) -->
+        <div class="crt-fx" transition:persist="crt-fx">
+          <canvas id="crt-canvas"></canvas>
+          <div class="crt-roll"></div>
+          <canvas id="crt-canvas-borda"></canvas>
+          <div class="camada-crt overlay-scanlines"></div>
+          <div class="camada-crt overlay-flicker"></div>
+        </div>
+
+        <!-- INTERFACE — conteúdo troca a cada página (fora do persist) -->
+        <div id="terminal-interface" class="cur-pointer-default">
+          <header id="terminal-topo">
+            <div id="topo-breadcrumb">CORREDOR 777 // SPIKE CRT</div>
+            <div id="topo-status">STATUS: EM VIGÍLIA</div>
+          </header>
+
+          <main id="monitor-target">
+            <slot />
+          </main>
+
+          <footer id="terminal-nav-inferior">
+            <div class="nav-container-transmissoes">
+              <a class="nav-bloco-link cur-help" href="/spike/a.html">PÁGINA A</a>
+              <a class="nav-bloco-link cur-help" href="/spike/b.html">PÁGINA B</a>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { iniciarCRT } from "../scripts/crt-effects.js";
+    document.addEventListener("astro:page-load", () => {
+      iniciarCRT();
+    });
+  </script>
+</Base>
+
+<style is:global>
+  :root {
+    --fosforo-verde: #38ecdc;
+    --fosforo-verde-glow: rgba(20, 253, 206, 0.25);
+    --fosforo-verde-glow-light: rgba(20, 253, 206, 0.08);
+  }
+
+  /* Fundo escuro do "estúdio" — sobrepõe o #cdcdcd do global.css via classe */
+  body.crt-body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    user-select: none;
+    display: flex;
+    background: rgb(24, 24, 24);
+  }
+
+  /* Gabinete externo (sem a textura de ruído do vanilla — spike enxuto) */
+  #monitor-carcaca {
+    position: relative;
+    display: flex;
+    width: 90vw;
+    max-width: 1200px;
+    height: 90vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.45);
+    border: 2px solid rgba(245, 245, 245, 0.05);
+    border-radius: 40px;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      inset 0 0 40px var(--fosforo-verde-glow-light),
+      inset 0 -50px 30px rgba(0, 0, 0, 0.25),
+      0 0 120px rgba(0, 0, 0, 0.5);
+  }
+
+  /* O vidro do tubo, com a aberração cromática aplicada por filtro SVG */
+  #tela-filtro {
+    filter: url(#crt-barrel);
+    position: relative;
+    width: 80%;
+    height: 82%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 20px solid rgba(0, 0, 0, 0.8);
+    border-radius: 24px;
+    box-shadow:
+      0 0 3px rgba(255, 255, 255, 0.08),
+      inset 0 0 8px rgba(0, 0, 0, 1),
+      inset 0 20px 50px rgba(0, 0, 0, 0.5),
+      inset 0 0 90px var(--fosforo-verde-glow),
+      0 0 30px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+
+  #tela-tubo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Camada de efeito: acima do texto (z 20) mas transparente ao clique */
+  .crt-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+  }
+
+  .camada-crt {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .overlay-scanlines {
+    z-index: 50;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.22),
+      rgba(0, 0, 0, 0.22) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  }
+  .overlay-flicker {
+    z-index: 50;
+    background: rgba(18, 16, 16, 0.02);
+    opacity: 0;
+    animation: flicker-tension 0.15s infinite;
+  }
+  @keyframes flicker-tension {
+    0% {
+      opacity: 0.1;
+    }
+    100% {
+      opacity: 0.15;
+    }
+  }
+
+  /* Canvas de noise (injetado/reaproveitado pelo crt-effects) */
+  #crt-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 49;
+    opacity: 0.2;
+    mix-blend-mode: screen;
+  }
+
+  /* Canvas da curvatura de bordas */
+  #crt-canvas-borda {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 52;
+  }
+
+  /* Rolo de interferência */
+  .crt-roll {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 51;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(14, 220, 195, 0) 45%,
+      rgba(14, 220, 195, 0.012) 50%,
+      rgba(14, 220, 195, 0.022) 51%,
+      rgba(14, 220, 195, 0.01) 53%,
+      rgba(14, 220, 195, 0) 58%,
+      transparent 100%
+    );
+    transform: translateY(-100%);
+    animation: crt-roll-scroll 8s linear infinite;
+  }
+  @keyframes crt-roll-scroll {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(200%);
+    }
+  }
+
+  /* Interface (texto do terminal) — sob a camada de efeito */
+  #terminal-interface {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    color: var(--fosforo-verde);
+    font-family: "JetBrains Mono Variable", monospace;
+  }
+
+  #terminal-topo {
+    width: 80%;
+    margin: 30px auto 0;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--fosforo-verde-glow);
+    font-size: 8pt;
+    letter-spacing: 1px;
+  }
+  #topo-status {
+    opacity: 0.3;
+  }
+
+  #monitor-target {
+    width: 80%;
+    margin: 0 auto;
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 0;
+    text-shadow: 0 0 8px var(--fosforo-verde-glow);
+  }
+
+  #terminal-nav-inferior {
+    width: 100%;
+    height: 90px;
+    background: rgba(0, 0, 0, 0.7);
+    border-top: 1px solid var(--fosforo-verde-glow);
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+  }
+  .nav-container-transmissoes {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+  }
+  .nav-bloco-link {
+    padding: 10px 16px;
+    color: var(--fosforo-verde);
+    font-family: "JetBrains Mono Variable", monospace;
+    font-size: 8pt;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.1s steps(1);
+  }
+  .nav-bloco-link:hover {
+    background: var(--fosforo-verde);
+    color: #000;
+    outline: 3px solid var(--fosforo-verde);
+    outline-offset: 4px;
+  }
+</style>
