@@ -25,8 +25,11 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
   },
   build: {
-    // Uma página = um .html (main.astro → /main.html, não /main/):
-    // permalinks do site vanilla são parte da obra (REFUNDACAO.md, princípio 4).
-    format: "file",
+    // "preserve" espelha a estrutura de src/pages no dist: `main.astro` →
+    // `main.html` (permalink de arquivo preservado, princípio 4) E
+    // `transmissoes/index.astro` → `transmissoes/index.html` (URL de diretório
+    // /fragmentos/transmissoes/). O "file" cru transformava index aninhado em
+    // `transmissoes.html` (sem a barra final que a rota do hub pede).
+    format: "preserve",
   },
 });

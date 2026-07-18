@@ -1,0 +1,305 @@
+---
+// Hub das Transmissões (F2d/d2) — TRANSPLANTE do fragmentos/transmissoes/
+// main.html vanilla: a estrutura da carcaça e o CSS (casca.css + componentes.css)
+// vêm do vanilla, adaptados só no necessário (fundo .webp, assets em /assets,
+// Base/cursor, SVGs inline, crt-effects adaptado). A casca é parte do efeito —
+// vale a exceção de transplantar em vez de reconstruir (princípio 1).
+//
+// O CRT.astro do spike foi ABSORVIDO aqui e removido. Decisão de persist: o
+// spike usava transition:persist na camada de efeito para sobreviver à
+// navegação A↔B por View Transitions. Aqui NÃO se usa persist — a navegação
+// interna é página única (pushState, sem reload, d3), então a camada nunca é
+// reparentada: persiste trivialmente. O crt-effects ganhou só o teardown ao
+// SAIR da seção (ver crt-effects.js).
+//
+// Nesta etapa (d1+d2) há só o hub: boot + casca + índices embutidos + nav
+// inerte. O CONTROLE (injeção de fragmentos, pushState, montagem das seções)
+// é a d3.
+import Base from "../../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import "../../../styles/transmissoes/casca.css";
+import "../../../styles/transmissoes/componentes.css";
+
+// ── Índices embutidos no build (d1.2) ──────────────────────────────────────
+// getCollection lê as collections em build; montamos os índices aqui e os
+// gravamos num <script type="application/json">. O controle (d3) lê esse JSON
+// do DOM — zero fetch de índice em runtime, zero gerar-indice.py.
+const diario = await getCollection("diario", (e) => !e.data.rascunho);
+const definicoes = await getCollection("definicoes", (e) => !e.data.rascunho);
+const ensaios = await getCollection("ensaios", (e) => !e.data.rascunho);
+const arquivos = await getCollection("arquivos", (e) => !e.data.rascunho);
+
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+const indice = {
+  diario: diario
+    .sort((a, b) => b.data.data.valueOf() - a.data.data.valueOf()) // data desc
+    .map((e) => ({
+      slug: e.id,
+      data: iso(e.data.data),
+      math: e.data.math,
+      webgl: e.data.webgl,
+    })),
+  definicoes: definicoes.map((e) => ({
+    slug: e.id,
+    termo: e.data.termo,
+    math: e.data.math,
+    webgl: e.data.webgl,
+  })),
+  ensaios: ensaios.map((e) => ({
+    slug: e.id,
+    titulo: e.data.titulo,
+    chamada: e.data.chamada ?? null,
+    math: e.data.math,
+    webgl: e.data.webgl,
+  })),
+  arquivos: arquivos.map((e) => ({
+    slug: e.id,
+    titulo: e.data.titulo,
+    math: e.data.math,
+    webgl: e.data.webgl,
+  })),
+};
+
+// CSS do KaTeX só entra se houver entrada com matemática (a math renderiza no
+// build; o CSS é o que falta para estilizar quando o fragmento é injetado).
+const temMath = [...diario, ...definicoes, ...ensaios, ...arquivos].some(
+  (e) => e.data.math,
+);
+---
+
+<Base titulo="Transmissões // Corredor 777" class="transmissoes">
+  {
+    temMath && (
+      <link
+        slot="head"
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.47/dist/katex.min.css"
+      />
+    )
+  }
+
+  {/* Filtro de aberração cromática do tubo (referenciado por #tela-filtro) */}
+  <svg
+    id="crt-filters"
+    style="position: absolute; width: 0; height: 0; overflow: hidden"
+    aria-hidden="true"
+  >
+    <defs>
+      <filter
+        id="crt-barrel"
+        x="-5%"
+        y="-5%"
+        width="110%"
+        height="110%"
+        color-interpolation-filters="linearRGB"
+      >
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
+          result="r-ch"
+        />
+        <feOffset in="r-ch" dx="2" dy="0" result="r-shift" />
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"
+          result="g-ch"
+        />
+        <feColorMatrix
+          in="SourceGraphic"
+          type="matrix"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"
+          result="b-ch"
+        />
+        <feOffset in="b-ch" dx="-2" dy="0" result="b-shift" />
+        <feBlend in="r-shift" in2="g-ch" mode="screen" result="rg" />
+        <feBlend in="rg" in2="b-shift" mode="screen" result="rgb" />
+        <feColorMatrix
+          in="rgb"
+          type="matrix"
+          values="0.60 0    0    0 0
+                  0    0.95 0    0 0
+                  0    0    0.92 0 0
+                  0    0    0    1 0"
+        />
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="monitor-carcaca">
+    <div id="tela-filtro">
+      <div id="tela-tubo">
+        {/* crt-effects injeta #crt-canvas, .crt-roll e #crt-canvas-borda aqui */}
+        <div class="camada-crt overlay-scanlines"></div>
+        <div class="camada-crt overlay-flicker"></div>
+        <div class="camada-crt overlay-vidro"></div>
+
+        <div id="terminal-interface" class="cur-pointer-default">
+          <header id="terminal-topo">
+            <div id="topo-breadcrumb">CORREDOR 777 // TRANSMISSÕES</div>
+            <div id="topo-status">STATUS: EM VIGÍLIA</div>
+          </header>
+
+          <main id="monitor-target" data-secao="home">
+            <div id="boot-loader"></div>
+          </main>
+
+          {/* Nav visível; RECEPÇÃO sai da seção (link real). DIÁRIO/NOTAS
+              inertes até a d3 (data-secao será o gancho). Serpente bloqueada.
+              .nav-bloqueada some ao fim do boot. Os SVGs foram embutidos inline
+              no build (o injetarSVGs do vanilla deixa de ser necessário). */}
+          <footer id="terminal-nav-inferior" class="nav-bloqueada">
+            <div class="nav-container-transmissoes">
+              <a class="nav-bloco-link cur-none" href="/main.html">
+                <div class="icon-vhs">
+                  <svg
+                    class="svg-injetado"
+                    viewBox="0 0 32 32"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clip-path="url(#clip-sair)">
+                      <path d="M22.855 9.58301V11.103H21.325V12.633H19.805V14.153H18.285V17.203H19.805V18.723H21.325V20.253H22.855V21.773H24.375V17.203H30.475V14.153H24.375V9.58301H22.855Z"/>
+                      <path d="M22.8551 24.823H21.3251V27.873H22.8551V24.823Z"/>
+                      <path d="M22.8551 1.96298H21.3251V6.53298H22.8551V1.96298Z"/>
+                      <path d="M15.235 30.913V29.393H21.325V27.873H15.235V8.06299H13.715V30.913H15.235Z"/>
+                      <path d="M13.715 30.913H9.13501V32.443H13.715V30.913Z"/>
+                      <path d="M12.185 17.203H10.665V20.253H12.185V17.203Z"/>
+                      <path d="M13.715 6.53299H10.665V8.06299H13.715V6.53299Z"/>
+                      <path d="M9.13497 29.393H6.09497V30.913H9.13497V29.393Z"/>
+                      <path d="M10.665 5.013H7.61499V6.533H10.665V5.013Z"/>
+                      <path d="M6.09504 27.873H3.04504V29.393H6.09504V27.873Z"/>
+                      <path d="M7.61506 3.49298H4.56506V5.01298H7.61506V3.49298Z"/>
+                      <path d="M3.04502 0.442993V1.96299H1.52502V27.873H3.04502V3.49299H4.56502V1.96299H21.325V0.442993H3.04502Z"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip-sair">
+                        <rect width="32" height="32"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <span>RECEPÇÃO</span>
+              </a>
+
+              <div class="nav-grupo-secoes">
+                <div class="nav-bloco-link cur-help" data-secao="diario">
+                  <div class="icon-vhs">
+                    <svg
+                      class="svg-injetado"
+                      viewBox="0 0 29 25"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M28.96 4.57001H27.43V22.86H28.96V4.57001Z"/>
+                      <path d="M27.43 22.86H24.39V24.38H27.43V22.86Z"/>
+                      <path d="M24.39 21.33H21.34V22.86H24.39V21.33Z"/>
+                      <path d="M21.34 19.81H16.77V21.33H21.34V19.81Z"/>
+                      <path d="M22.86 12.19H18.29V13.71H22.86V12.19Z"/>
+                      <path d="M22.86 7.62H18.29V9.13999H22.86V7.62Z"/>
+                      <path d="M22.86 3.04999H18.29V4.56999H22.86V3.04999Z"/>
+                      <path d="M24.39 0H16.77V1.52H24.39V0Z"/>
+                      <path d="M18.29 9.14001H16.77V10.67H18.29V9.14001Z"/>
+                      <path d="M18.29 4.57001H16.77V6.10001H18.29V4.57001Z"/>
+                      <path d="M16.77 1.51999H15.24V3.04999H16.77V1.51999Z"/>
+                      <path d="M16.77 21.33H12.2V22.86H16.77V21.33Z"/>
+                      <path d="M13.72 1.51999H12.2V3.04999H13.72V1.51999Z"/>
+                      <path d="M12.2 19.81H7.62V21.33H12.2V19.81Z"/>
+                      <path d="M12.2 9.14001H10.67V10.67H12.2V9.14001Z"/>
+                      <path d="M12.2 4.57001H10.67V6.10001H12.2V4.57001Z"/>
+                      <path d="M10.67 12.19H6.09998V13.71H10.67V12.19Z"/>
+                      <path d="M10.67 7.62H6.09998V9.13999H10.67V7.62Z"/>
+                      <path d="M10.67 3.04999H6.09998V4.56999H10.67V3.04999Z"/>
+                      <path d="M12.2 0H4.58002V1.52H12.2V0Z"/>
+                      <path d="M7.62002 21.33H4.58002V22.86H7.62002V21.33Z"/>
+                      <path d="M12.2 16.76V15.24H7.62003V16.76H4.58003V1.51999H3.05003V3.04999H1.53003V4.56999H3.05003V19.81H7.62003V18.29H12.2V19.81H16.77V18.29H21.34V19.81H25.91V4.56999H27.43V3.04999H25.91V1.51999H24.39V16.76H21.34V15.24H16.77V16.76H15.24V3.04999H13.72V16.76H12.2Z"/>
+                      <path d="M4.58003 22.86H1.53003V24.38H4.58003V22.86Z"/>
+                      <path d="M1.53 4.57001H0V22.86H1.53V4.57001Z"/>
+                    </svg>
+                  </div>
+                  <span>DIÁRIO</span>
+                </div>
+
+                <div class="nav-bloco-link cur-help" data-secao="notas">
+                  <div class="icon-vhs">
+                    <svg
+                      class="svg-injetado"
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M27.4351 3.05H28.9551V1.52H30.4751V0H21.3351V1.52H27.4351V3.05Z"/>
+                      <path d="M27.435 3.04999H25.905V4.56999H27.435V3.04999Z"/>
+                      <path d="M25.905 4.57001H24.385V6.10001H25.905V4.57001Z"/>
+                      <path d="M24.385 6.10001H22.865V7.62001H24.385V6.10001Z"/>
+                      <path d="M22.8651 7.62H21.3351V10.67H22.8651V7.62Z"/>
+                      <path d="M22.8651 3.04999H21.3351V4.56999H22.8651V3.04999Z"/>
+                      <path d="M21.3351 10.67H19.8151V12.19H21.3351V10.67Z"/>
+                      <path d="M21.3351 4.57001H19.8151V6.10001H21.3351V4.57001Z"/>
+                      <path d="M21.335 1.51999H18.285V3.04999H21.335V1.51999Z"/>
+                      <path d="M19.815 6.10001H18.285V7.62001H19.815V6.10001Z"/>
+                      <path d="M19.815 12.19H16.765V13.72H19.815V12.19Z"/>
+                      <path d="M18.285 7.62H16.765V9.14H18.285V7.62Z"/>
+                      <path d="M18.285 3.04999H16.765V4.56999H18.285V3.04999Z"/>
+                      <path d="M3.05502 32H16.765V30.48H18.285V24.38H16.765V25.91H9.14502V24.38H6.10002V22.86H3.05502V24.38H1.52502V30.48H3.05502V32ZM4.57502 25.91H6.10002V28.95H9.15002V30.48H6.10002V28.95H4.57502V25.91Z"/>
+                      <path d="M16.765 9.14001H15.245V10.67H16.765V9.14001Z"/>
+                      <path d="M16.765 4.57001H15.245V6.10001H16.765V4.57001Z"/>
+                      <path d="M16.765 22.86H13.715V24.38H16.765V22.86Z"/>
+                      <path d="M16.765 13.72H13.715V12.19H12.195V10.67H10.675V15.24H16.765V13.72Z"/>
+                      <path d="M15.245 10.67H13.715V12.19H15.245V10.67Z"/>
+                      <path d="M15.245 6.10001H13.715V7.62001H15.245V6.10001Z"/>
+                      <path d="M13.7151 7.62H12.1951V10.67H13.7151V7.62Z"/>
+                      <path d="M7.62507 19.81H12.1951V22.86H13.7151V19.81H15.2451V18.29H10.6751V15.24H9.14507V18.29H4.57507V19.81H6.09507V22.86H7.62507V19.81Z"/>
+                    </svg>
+                  </div>
+                  <span>MINHAS NOTAS</span>
+                </div>
+
+                <div class="nav-bloco-link cur-blocked-default">
+                  <div class="icon-vhs">
+                    <svg
+                      class="svg-injetado"
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip-entrar)">
+                        <path d="M25.145 9.14001V13.71H19.045V16.76H25.145V21.33H26.665V19.81H28.195V18.29H29.715V16.76H31.235V13.71H29.715V12.19H28.195V10.67H26.665V9.14001H25.145Z"/>
+                        <path d="M22.0951 21.33H20.5751V27.43H22.0951V21.33Z"/>
+                        <path d="M22.0951 1.51999H20.5751V9.13999H22.0951V1.51999Z"/>
+                        <path d="M14.475 30.48V28.95H20.575V27.43H14.475V7.62H12.955V30.48H14.475Z"/>
+                        <path d="M12.955 30.48H8.38501V32H12.955V30.48Z"/>
+                        <path d="M11.425 16.76H9.90503V19.81H11.425V16.76Z"/>
+                        <path d="M12.955 6.10001H9.90503V7.62001H12.955V6.10001Z"/>
+                        <path d="M8.38496 28.95H5.33496V30.48H8.38496V28.95Z"/>
+                        <path d="M9.90498 4.57001H6.85498V6.10001H9.90498V4.57001Z"/>
+                        <path d="M5.33503 27.43H2.28503V28.95H5.33503V27.43Z"/>
+                        <path d="M6.85506 3.04999H3.81506V4.56999H6.85506V3.04999Z"/>
+                        <path d="M2.28501 0V1.52H0.765015V27.43H2.28501V3.05H3.81501V1.52H20.575V0H2.28501Z"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip-entrar">
+                          <rect width="32" height="32"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                  <span>CAMINHO DA SERPENTE</span>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="indice-transmissoes" set:html={JSON.stringify(indice)} is:inline></script>
+
+  <script>
+    import { iniciarCRT } from "../../../scripts/crt-effects.js";
+    import { iniciarBoot } from "../../../scripts/transmissoes-boot.js";
+    document.addEventListener("astro:page-load", () => {
+      iniciarCRT();
+      iniciarBoot();
+    });
+  </script>
+</Base>

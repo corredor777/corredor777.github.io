@@ -365,7 +365,13 @@ function parar() {
  */
 export function iniciarCRT() {
   const t = document.getElementById("tela-tubo");
-  if (!t) return; // checagem de página
+  if (!t) {
+    // Saiu da seção CRT (navegou para uma página sem monitor). No spike as duas
+    // páginas tinham CRT, então isto nunca acontecia; no site real, sair para a
+    // Recepção deixaria RAF/interval rodando sobre nós mortos — desliga.
+    if (running) parar();
+    return; // checagem de página
+  }
 
   // `canvas` (nó da montagem anterior) ainda dentro da tela atual ⇒ persistiu:
   // laços vivos sobre nós vivos, não remontar. Mas o #tela-tubo em si NÃO é

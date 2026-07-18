@@ -41,6 +41,10 @@ const {
     />
 
     <ClientRouter />
+
+    <!-- Páginas injetam <link>/<meta> extras aqui (ex.: CSS do KaTeX condicional
+         em Transmissões): <elemento slot="head" ... /> -->
+    <slot name="head" />
   </head>
   <body class={classeBody}>
     <slot />
