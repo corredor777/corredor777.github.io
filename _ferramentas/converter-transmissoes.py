@@ -262,11 +262,12 @@ def converter_diario():
         blocos: list[str] = []
         for idx, (cls, inner) in enumerate(corpos):
             _iso, resto = data_do_corpo(datas[idx]) if idx < len(datas) else ("", "")
-            if resto:
+            hora = resto.lstrip("~ ").strip()  # "~ 03:00" → "03:00" (spec do Bruno)
+            if hora:
                 # cada sub-entrada abre com a hora como heading fechado
-                # (### … ###); o dia sai do corpo — vem do frontmatter/layout.
+                # (### HH:MM ###); o dia sai do corpo — vem do frontmatter/layout.
                 # Nota F2d: avaliar exibir os ### via CSS (pendência estética).
-                blocos.append(f"### {resto} ###")
+                blocos.append(f"### {hora} ###")
             if "bloco-webgl" in cls:
                 nome, cam = WEBGL_COMPONENTE[slug]
                 imports.append(f'import {nome} from "{cam}";')
