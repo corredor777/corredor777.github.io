@@ -175,6 +175,26 @@
   opacity: 0.33;
 }
 
+/* Sub-heading de horário da entrada de diário (### HH:MM ### → <h3>).
+   REGRA NOVA — não vem do transplante do vanilla: o horário standalone é
+   elemento da convenção criada na F2c (o dia saiu do corpo e virou frontmatter;
+   a hora da sub-entrada virou heading fechado). Estilizado IGUAL ao
+   .entrada-data acima — centralizado, vermelho, mesma fonte —, sem hashes
+   visíveis (os ### de fechamento do markdown já são consumidos no render). */
+.entrada-corpo h3 {
+  color: var(--fosforo-vermelho);
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 9pt;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin: 0 30px 18px auto;
+}
+
 /* Conva para WebGL */
 .bloco-webgl {
   text-align: center;
