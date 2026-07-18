@@ -1,0 +1,37 @@
+---
+// Duto interno de FRAGMENTOS (F2d/d1): renderiza SÓ o corpo de cada entrada,
+// sem casca. Uma URL por entrada: /fragmentos/transmissoes/sinais/{colecao}/
+// {slug}.html. O controle (d3) busca esses fragmentos e injeta no #monitor-target.
+//
+// getStaticPaths: numa saída estática, o Astro precisa saber em BUILD todas as
+// URLs de uma rota dinâmica ([colecao]/[slug]). Esta função devolve a lista —
+// um objeto por página, com `params` (preenchem [colecao]/[slug] na URL) e
+// `props` (dados passados à página). Aqui varremos as quatro collections e
+// geramos uma entrada por documento .mdx (pulando rascunhos).
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+const COLECOES = ["diario", "definicoes", "ensaios", "arquivos"] as const;
+type Colecao = (typeof COLECOES)[number];
+
+export async function getStaticPaths() {
+  const colecoes = ["diario", "definicoes", "ensaios", "arquivos"] as const;
+  const paths = [];
+  for (const colecao of colecoes) {
+    const entradas = await getCollection(colecao, ({ data }) => !data.rascunho);
+    for (const entrada of entradas) {
+      // params → URL; props → dados da página (a própria entry, para render)
+      paths.push({ params: { colecao, slug: entrada.id }, props: { entrada } });
+    }
+  }
+  return paths;
+}
+
+// render(entry) compila o corpo MDX e devolve o componente <Content/>, que
+// emite o HTML final da entrada (com a matemática já renderizada pelo KaTeX e
+// os <script is:inline> das inserções WebGL preservados para o d3 reexecutar).
+const { entrada } = Astro.props as { entrada: CollectionEntry<Colecao> };
+const { Content } = await render(entrada);
+---
+
+<Content />
