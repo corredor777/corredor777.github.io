@@ -16,7 +16,7 @@
   /* text-transform: uppercase; */
   margin-bottom: -35px;
   filter: blur(2px);
-  opacity: 0.12;
+  opacity: 0.2;
 }
 
 #notas-grid,
@@ -145,7 +145,7 @@
   text-align: center;
   text-transform: uppercase;
   opacity: 0.5;
-  margin: 0 30px 18px auto;
+  margin: 0 18px 18px auto;
 }
 .entrada-corpo {
   font-family: "Fraunces", serif;
@@ -192,7 +192,7 @@
   text-align: center;
   text-transform: uppercase;
   opacity: 0.5;
-  margin: 0 30px 18px auto;
+  margin: 0 auto 18px auto;
 }
 
 /* Conva para WebGL */
