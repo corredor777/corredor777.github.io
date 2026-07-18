@@ -1,0 +1,990 @@
+---
+// Colapso — "Algumas paredes precisam cair!". Transplante da página vanilla
+// (simulacros/colapso.html), aberta em janela popup própria pelo botão da
+// Recepção (window.open 520x620, no BotaoGrandeStrobo). Auto-contida: <style
+// is:global> + <script is:inline> (verbatim; o jogo cria/manipula o DOM —
+// escopar mataria o estilo/JS, lição [011]). global.css importado para a
+// fonte JetBrains Mono (o <link> do vanilla vinha sem rel e não carregava).
+import "../../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Corredor 777 — Colapso</title>
+    <style is:global>
+      :root {
+        --fundo: #0a0a0a;
+        --texto: #cdcdcd;
+        --acento: #ff0037;
+        --dim: #333;
+        --borda: #222;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: var(--fundo);
+        color: var(--texto);
+        font-family: "JetBrains Mono", monospace;
+        overflow: hidden;
+        cursor: none;
+        user-select: none;
+      }
+
+      /* ─── CURSOR CUSTOM ──────────────────────────────────────────── */
+      #cursor {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        background: var(--acento);
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        transition: opacity 0.1s;
+      }
+
+      /* ─── LAYOUT ─────────────────────────────────────────────────── */
+      #wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100vh;
+        padding: 1rem 1.5rem 1rem;
+        gap: 0.6rem;
+      }
+
+      /* ─── HEADER ─────────────────────────────────────────────────── */
+      #header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--borda);
+      }
+
+      #titulo {
+        font-size: 0.6rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--acento);
+      }
+
+      #hud {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        color: var(--dim);
+      }
+
+      #hud span {
+        color: var(--texto);
+      }
+
+      /* ─── CANVAS ─────────────────────────────────────────────────── */
+      #canvas {
+        display: block;
+        border: 1px solid var(--borda);
+        background: var(--fundo);
+      }
+
+      /* ─── OVERLAY DE ESTADO ──────────────────────────────────────── */
+      #overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.92);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        z-index: 10;
+      }
+
+      #overlay.oculto {
+        display: none;
+      }
+
+      #overlay-titulo {
+        font-size: 0.55rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--acento);
+      }
+
+      #overlay-msg {
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        text-align: center;
+        line-height: 1.4;
+        max-width: 280px;
+      }
+
+      #overlay-sub {
+        font-size: 0.58rem;
+        letter-spacing: 0.1em;
+        color: var(--dim);
+        text-align: center;
+      }
+
+      #overlay-sub em {
+        color: var(--texto);
+        font-style: normal;
+      }
+
+      /* pulsação no texto de ação */
+      @keyframes pulsar {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      #overlay-acao {
+        font-size: 0.58rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--acento);
+        animation: pulsar 1.6s ease-in-out infinite;
+        margin-top: 0.4rem;
+      }
+
+      /* ─── PLACAR ─────────────────────────────────────────────────── */
+      #placar {
+        width: 100%;
+        margin-top: 0.5rem;
+        border-top: 1px solid var(--borda);
+        padding-top: 0.8rem;
+      }
+
+      #placar-titulo {
+        font-size: 0.55rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 0.5rem;
+      }
+
+      #placar-lista {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+
+      #placar-lista li {
+        display: grid;
+        grid-template-columns: 1rem 1fr auto auto;
+        gap: 0.6rem;
+        align-items: baseline;
+        font-size: 0.6rem;
+        letter-spacing: 0.04em;
+        padding: 0.15rem 0;
+        border-bottom: 1px solid var(--borda);
+      }
+
+      #placar-lista li:last-child {
+        border-bottom: none;
+      }
+
+      #placar-lista li.novo {
+        color: var(--acento);
+      }
+
+      .pl-pos {
+        color: var(--dim);
+      }
+      .pl-pts {
+        color: var(--texto);
+        font-variant-numeric: tabular-nums;
+      }
+      .pl-nvl {
+        color: var(--dim);
+        font-size: 0.5rem;
+      }
+      .pl-data {
+        color: var(--dim);
+        font-size: 0.5rem;
+      }
+
+      /* ─── VIDAS ──────────────────────────────────────────────────── */
+      #vidas-display {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+      }
+
+      .vida-pip {
+        width: 6px;
+        height: 6px;
+        background: var(--acento);
+        border-radius: 50%;
+      }
+
+      .vida-pip.morta {
+        background: transparent;
+        border: 1px solid var(--dim);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cursor"></div>
+
+    <!-- overlay inicial / game over / vitória -->
+    <div id="overlay">
+      <div id="overlay-titulo">Corredor 777</div>
+      <div id="overlay-msg">Colapso</div>
+      <div id="overlay-sub">
+        Pontuação anterior: <em id="overlay-recorde">—</em>
+      </div>
+      <div id="overlay-acao">espaço ou clique para iniciar</div>
+    </div>
+
+    <div id="wrapper">
+      <div id="header">
+        <div id="titulo">colapso</div>
+        <div id="hud">
+          <div>nível <span id="hud-nivel">01</span></div>
+          <div>pts <span id="hud-pts">0000</span></div>
+          <div id="vidas-display"></div>
+        </div>
+      </div>
+      <canvas id="canvas"></canvas>
+
+      <div id="placar">
+        <div id="placar-titulo">registro de colapsos</div>
+        <ul id="placar-lista"></ul>
+      </div>
+    </div>
+
+    <script is:inline>
+      // ─── CONFIGURAÇÃO ─────────────────────────────────────────────
+      const COR = {
+        fundo: "#0a0a0a",
+        texto: "#cdcdcd",
+        acento: "#ff0037",
+        dim: "#2a2a2a",
+        borda: "#333",
+        paddle: "#cdcdcd",
+        bola: "#ff0037",
+      };
+
+      const CFG = {
+        colunas: 9,
+        linhas: 6,
+        blocoH: 14,
+        blocoGap: 4,
+        paddleH: 6,
+        paddleW: 120, // largura inicial — diminui a cada 2 níveis
+        paddleWMin: 40,
+        paddleReducao: 12, // pixels removidos a cada 2 níveis
+        bolaR: 5,
+        velocidadeBase: 4.2,
+        velocidadeIncremento: 0.3, // aceleração leve por nível
+        vidas: 3,
+      };
+
+      // ─── ESTADO ───────────────────────────────────────────────────
+      let canvas, ctx, W, H;
+      let estado = "aguardando"; // aguardando | rodando | morto | venceu
+      let pontos = 0;
+      let nivel = 1;
+      let vidas = CFG.vidas;
+      let paddle, bola, blocos;
+      let animId;
+      let paddleX = 0; // controlado por mouse
+      let teclando = { esq: false, dir: false };
+
+      // ─── FUNDO (gif animado, engolido pelo glitch) ────────────────
+      // PLACEHOLDER — troque o nome abaixo pelo arquivo do projeto.
+      //
+      // drawImage() em canvas só captura o primeiro frame de um gif
+      // animado — limitação da API, em todos os browsers. Por isso o
+      // gif é decodificado manualmente (gifuct-js) e cada frame é
+      // desenhado como um bitmap normal, no tempo certo. Assim o gif
+      // roda DENTRO do canvas e o glitch (datamosh, inversão, ruído)
+      // atua sobre ele também.
+      const NOME_GIF_FUNDO = "../../assets/images/backgrounds/illusion2_3.gif"; // <- ajuste o nome do arquivo aqui
+
+      let gifFrames = null; // [{ canvas, delay }]
+      let gifIndice = 0;
+      let gifTempoFrame = 0; // ms acumulados no frame atual
+      let gifPronto = false;
+
+      carregarGifFundo(NOME_GIF_FUNDO);
+
+      async function carregarGifFundo(url) {
+        try {
+          // import dinâmico via ESM — não depende de variável global da CDN
+          const { parseGIF, decompressFrames } =
+            await import("https://esm.run/gifuct-js");
+
+          const resp = await fetch(url);
+          const buf = await resp.arrayBuffer();
+          const gif = parseGIF(buf);
+          const frames = decompressFrames(gif, true);
+
+          const lw = gif.lsd.width;
+          const lh = gif.lsd.height;
+
+          // canvas de composição (acumula os frames respeitando disposal)
+          const comp = document.createElement("canvas");
+          comp.width = lw;
+          comp.height = lh;
+          const cctx = comp.getContext("2d");
+
+          gifFrames = [];
+
+          for (let i = 0; i < frames.length; i++) {
+            const frame = frames[i];
+
+            // desenha o patch deste frame numa canvas auxiliar
+            const patch = document.createElement("canvas");
+            patch.width = frame.dims.width;
+            patch.height = frame.dims.height;
+            const pctx = patch.getContext("2d");
+            const imgData = pctx.createImageData(
+              frame.dims.width,
+              frame.dims.height,
+            );
+            imgData.data.set(frame.patch);
+            pctx.putImageData(imgData, 0, 0);
+
+            cctx.drawImage(patch, frame.dims.left, frame.dims.top);
+
+            // snapshot do estado atual = este frame, pronto p/ desenhar
+            const snap = document.createElement("canvas");
+            snap.width = lw;
+            snap.height = lh;
+            snap.getContext("2d").drawImage(comp, 0, 0);
+
+            gifFrames.push({
+              canvas: snap,
+              delay: Math.max(frame.delay || 100, 20),
+            });
+
+            // disposal: limpa a área antes do próximo frame ser composto
+            if (frame.disposalType === 2) {
+              cctx.clearRect(
+                frame.dims.left,
+                frame.dims.top,
+                frame.dims.width,
+                frame.dims.height,
+              );
+            }
+          }
+
+          gifPronto = gifFrames.length > 0;
+        } catch (e) {
+          console.warn("Fundo gif não carregado:", e);
+          gifPronto = false;
+        }
+      }
+
+      // avança o frame do gif conforme o tempo (ms desde o último frame do jogo)
+      function atualizarGif(dt) {
+        if (!gifPronto) return;
+        gifTempoFrame += dt;
+        const atual = gifFrames[gifIndice];
+        while (gifTempoFrame >= atual.delay) {
+          gifTempoFrame -= atual.delay;
+          gifIndice = (gifIndice + 1) % gifFrames.length;
+        }
+      }
+
+      // ─── GLITCH ────────────────────────────────────────────────────
+      let glitchPulso = 0; // pico instantâneo, decai a cada frame
+      let glitchBase = 0; // intensidade de fundo, cresce com a progressão
+      let totalBlocos = CFG.colunas * CFG.linhas;
+      let destruidos = 0;
+
+      // ─── PLACAR (localStorage) ────────────────────────────────────
+      const CHAVE_PLACAR = "corredor777-colapso-placar";
+      const MAX_ENTRADAS = 8;
+
+      function lerPlacar() {
+        try {
+          return JSON.parse(localStorage.getItem(CHAVE_PLACAR)) || [];
+        } catch {
+          return [];
+        }
+      }
+
+      function salvarPlacar(placar) {
+        localStorage.setItem(CHAVE_PLACAR, JSON.stringify(placar));
+      }
+
+      function registrarPontuacao(pts, nv) {
+        const placar = lerPlacar();
+        const entrada = {
+          pts,
+          nivel: nv,
+          data: new Date().toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+          }),
+        };
+        placar.push(entrada);
+        placar.sort((a, b) => b.pts - a.pts);
+        placar.splice(MAX_ENTRADAS); // mantém só os top MAX_ENTRADAS
+        salvarPlacar(placar);
+        return placar.findIndex((e) => e === entrada); // retorna posição (pode ser -1 se cortado)
+      }
+
+      function renderizarPlacar(novaPos = -1) {
+        const lista = document.getElementById("placar-lista");
+        const placar = lerPlacar();
+        lista.innerHTML = "";
+
+        if (placar.length === 0) {
+          const li = document.createElement("li");
+          li.style.color = "var(--dim)";
+          li.style.gridColumn = "1 / -1";
+          li.textContent = "nenhum registro ainda";
+          lista.appendChild(li);
+          return;
+        }
+
+        placar.forEach((e, i) => {
+          const li = document.createElement("li");
+          if (i === novaPos) li.classList.add("novo");
+
+          li.innerHTML = `
+      <span class="pl-pos">${String(i + 1).padStart(2, "0")}</span>
+      <span class="pl-pts">${String(e.pts).padStart(4, "0")} pts</span>
+      <span class="pl-nvl">nv ${e.nivel}</span>
+      <span class="pl-data">${e.data}</span>
+    `;
+          lista.appendChild(li);
+        });
+      }
+
+      function melhorPontuacao() {
+        const placar = lerPlacar();
+        return placar.length > 0 ? placar[0].pts : 0;
+      }
+
+      // ─── INICIALIZAÇÃO ────────────────────────────────────────────
+      window.addEventListener("DOMContentLoaded", () => {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+        ajustarCanvas();
+        criarJogo();
+        renderizarPlacar();
+        loop();
+
+        // eventos
+        canvas.addEventListener("mousemove", (e) => {
+          const rect = canvas.getBoundingClientRect();
+          paddleX = e.clientX - rect.left - paddle.w / 2;
+        });
+
+        window.addEventListener("keydown", (e) => {
+          if (e.code === "Space") acaoInicio();
+          if (e.code === "ArrowLeft") teclando.esq = true;
+          if (e.code === "ArrowRight") teclando.dir = true;
+        });
+
+        window.addEventListener("keyup", (e) => {
+          if (e.code === "ArrowLeft") teclando.esq = false;
+          if (e.code === "ArrowRight") teclando.dir = false;
+        });
+
+        document
+          .getElementById("overlay")
+          .addEventListener("click", acaoInicio);
+        window.addEventListener("resize", () => {
+          ajustarCanvas();
+          criarJogo();
+        });
+
+        // cursor customizado
+        const cur = document.getElementById("cursor");
+        window.addEventListener("mousemove", (e) => {
+          cur.style.left = e.clientX + "px";
+          cur.style.top = e.clientY + "px";
+        });
+      });
+
+      function ajustarCanvas() {
+        const wrapper = document.getElementById("wrapper");
+        const header = document.getElementById("header");
+        const placar = document.getElementById("placar");
+        const gap = 10;
+        W = wrapper.clientWidth - 48;
+        // reserva espaço para o placar (altura dinâmica depois de renderizado)
+        const placarH = placar.offsetHeight || 120;
+        H = window.innerHeight - header.offsetHeight - placarH - 64 - gap;
+        H = Math.max(H, 200); // mínimo razoável
+        canvas.width = W;
+        canvas.height = H;
+      }
+
+      // ─── CRIAÇÃO DOS OBJETOS ──────────────────────────────────────
+      function criarJogo() {
+        // paddle: começa larga, encolhe a cada 2 níveis
+        const reducoes = Math.floor((nivel - 1) / 2);
+        let larguraPaddle = CFG.paddleW - reducoes * CFG.paddleReducao;
+        larguraPaddle = Math.max(CFG.paddleWMin, larguraPaddle);
+
+        paddle = {
+          w: larguraPaddle,
+          h: CFG.paddleH,
+          x: W / 2 - larguraPaddle / 2,
+          y: H - 28,
+        };
+
+        paddleX = paddle.x;
+
+        // bola — acelera levemente a cada nível
+        const vel = velocidadeNivel();
+        bola = {
+          x: W / 2,
+          y: H - 60,
+          r: CFG.bolaR,
+          vx: (Math.random() > 0.5 ? 1 : -1) * vel * 0.7,
+          vy: -vel,
+          presa: true, // aguarda início
+        };
+
+        // blocos
+        criarBlocos();
+        atualizarHUD();
+      }
+
+      function velocidadeNivel() {
+        return CFG.velocidadeBase + (nivel - 1) * CFG.velocidadeIncremento;
+      }
+
+      function criarBlocos() {
+        blocos = [];
+        destruidos = 0;
+        const margemX = 12;
+        const totalW = W - margemX * 2;
+        const bW = (totalW - (CFG.colunas - 1) * CFG.blocoGap) / CFG.colunas;
+        const topoY = 36;
+
+        for (let l = 0; l < CFG.linhas; l++) {
+          for (let c = 0; c < CFG.colunas; c++) {
+            blocos.push({
+              x: margemX + c * (bW + CFG.blocoGap),
+              y: topoY + l * (CFG.blocoH + CFG.blocoGap),
+              w: bW,
+              h: CFG.blocoH,
+              andar: l,
+              ativo: true,
+            });
+          }
+        }
+      }
+
+      // ─── LOOP PRINCIPAL ───────────────────────────────────────────
+      let ultimoTimestamp = 0;
+
+      function loop(timestamp) {
+        const dt = ultimoTimestamp ? timestamp - ultimoTimestamp : 16;
+        ultimoTimestamp = timestamp;
+
+        atualizar();
+        atualizarGif(dt);
+        desenhar();
+        aplicarGlitch();
+        glitchPulso *= 0.82; // decaimento do pulso instantâneo
+        if (glitchPulso < 0.02) glitchPulso = 0;
+        animId = requestAnimationFrame(loop);
+      }
+
+      function atualizar() {
+        if (estado !== "rodando") return;
+
+        // mover paddle por teclado
+        const spd = 8;
+        if (teclando.esq) paddleX -= spd;
+        if (teclando.dir) paddleX += spd;
+        paddle.x = Math.max(0, Math.min(W - paddle.w, paddleX));
+
+        if (bola.presa) {
+          bola.x = paddle.x + paddle.w / 2;
+          return;
+        }
+
+        // mover bola
+        bola.x += bola.vx;
+        bola.y += bola.vy;
+
+        // paredes laterais
+        if (bola.x - bola.r <= 0) {
+          bola.x = bola.r;
+          bola.vx *= -1;
+        }
+        if (bola.x + bola.r >= W) {
+          bola.x = W - bola.r;
+          bola.vx *= -1;
+        }
+        // teto
+        if (bola.y - bola.r <= 0) {
+          bola.y = bola.r;
+          bola.vy *= -1;
+        }
+
+        // caiu
+        if (bola.y - bola.r > H) {
+          perdeuVida();
+          return;
+        }
+
+        // colisão paddle
+        if (
+          bola.y + bola.r >= paddle.y &&
+          bola.y - bola.r <= paddle.y + paddle.h &&
+          bola.x >= paddle.x &&
+          bola.x <= paddle.x + paddle.w &&
+          bola.vy > 0
+        ) {
+          // ângulo baseado em onde bateu no paddle
+          const rel = (bola.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
+          const angulo = rel * (Math.PI / 3); // máx 60°
+          const vel = Math.sqrt(bola.vx ** 2 + bola.vy ** 2);
+          bola.vx = vel * Math.sin(angulo);
+          bola.vy = -Math.abs(vel * Math.cos(angulo));
+          bola.y = paddle.y - bola.r - 1;
+        }
+
+        // colisão blocos
+        for (const b of blocos) {
+          if (!b.ativo) continue;
+
+          if (
+            bola.x + bola.r > b.x &&
+            bola.x - bola.r < b.x + b.w &&
+            bola.y + bola.r > b.y &&
+            bola.y - bola.r < b.y + b.h
+          ) {
+            b.ativo = false;
+            destruidos++;
+            pontos += 10 + b.andar * 5; // subsolos valem mais
+            atualizarHUD();
+
+            // glitch: pulso instantâneo + aumento da intensidade de fundo
+            glitchPulso = 1;
+            const progressoNivel = destruidos / totalBlocos;
+            const progressoGeral = (nivel - 1 + progressoNivel) / 5; // 0–1 ao longo do jogo
+            glitchBase = Math.min(progressoGeral, 1);
+
+            // de qual lado bateu
+            const overlapX = Math.min(
+              bola.x + bola.r - b.x,
+              b.x + b.w - (bola.x - bola.r),
+            );
+            const overlapY = Math.min(
+              bola.y + bola.r - b.y,
+              b.y + b.h - (bola.y - bola.r),
+            );
+            if (overlapX < overlapY) bola.vx *= -1;
+            else bola.vy *= -1;
+            break;
+          }
+        }
+
+        // nível só termina quando TODOS os blocos foram destruídos
+        const restantes = blocos.filter((b) => b.ativo).length;
+        if (restantes === 0) {
+          nivel++;
+          if (nivel > 5) {
+            venceu();
+          } else {
+            criarJogo();
+            bola.presa = true;
+          }
+          return;
+        }
+
+        // ─── colapso estrutural — blocos restantes mudam de lugar ────
+        // quanto maior glitchBase, maior a chance e a frequência de
+        // blocos ativos serem teleportados para posições aleatórias.
+        // não altera a velocidade/direção da bola.
+        if (glitchBase > 0.25) {
+          const chance = (glitchBase - 0.25) * 0.06;
+          if (Math.random() < chance) {
+            const ativos = blocos.filter((b) => b.ativo);
+            const alvo = ativos[Math.floor(Math.random() * ativos.length)];
+            alvo.x = Math.random() * (W - alvo.w);
+            alvo.y = Math.random() * Math.max(0, paddle.y - alvo.h - 10);
+          }
+        }
+      }
+
+      // ─── DESENHO ──────────────────────────────────────────────────
+      function desenhar() {
+        if (gifPronto) {
+          const frame = gifFrames[gifIndice].canvas;
+          const tw = frame.width;
+          const th = frame.height;
+          for (let y = 0; y < H; y += th) {
+            for (let x = 0; x < W; x += tw) {
+              ctx.drawImage(frame, x, y, tw, th);
+            }
+          }
+        } else {
+          ctx.fillStyle = COR.fundo;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // blocos
+        for (const b of blocos) {
+          if (!b.ativo) continue;
+
+          // cor por andar
+          const t = b.andar / (CFG.linhas - 1); // 0 = topo, 1 = base
+          const alpha = 0.25 + t * 0.5;
+
+          ctx.fillStyle =
+            b.andar === CFG.linhas - 1
+              ? COR.acento // última fileira: vermelho
+              : `rgba(205, 205, 205, ${alpha})`; // demais: cinza com gradação
+          ctx.fillRect(b.x, b.y, b.w, b.h);
+        }
+
+        // paddle
+        ctx.fillStyle = COR.paddle;
+        ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+
+        // reflexo no paddle
+        ctx.fillStyle = "rgba(255,255,255,0.08)";
+        ctx.fillRect(paddle.x, paddle.y, paddle.w, 2);
+
+        // bola
+        ctx.beginPath();
+        ctx.arc(bola.x, bola.y, bola.r, 0, Math.PI * 2);
+        ctx.fillStyle = COR.bola;
+        ctx.fill();
+
+        // glow da bola
+        const g = ctx.createRadialGradient(
+          bola.x,
+          bola.y,
+          0,
+          bola.x,
+          bola.y,
+          bola.r * 4,
+        );
+        g.addColorStop(0, "rgba(255, 0, 55, 0.25)");
+        g.addColorStop(1, "rgba(255, 0, 55, 0)");
+        ctx.beginPath();
+        ctx.arc(bola.x, bola.y, bola.r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+
+        // instrução quando presa
+        if (bola.presa && estado === "rodando") {
+          ctx.fillStyle = "rgba(205,205,205,0.3)";
+          ctx.font = "8px DM Mono";
+          ctx.textAlign = "center";
+          ctx.fillText("espaço para lançar", W / 2, H - 12);
+        }
+      }
+
+      // ─── GLITCH ─────────────────────────────────────────────────
+      // Intensidade combina o pulso instantâneo (a cada bloco destruído)
+      // com a base progressiva (cresce conforme o jogo avança).
+      // Efeito é puramente estético — não afeta colisão nem física.
+      // Atua sobre o frame inteiro, incluindo qualquer fundo (ex.: gif).
+      function aplicarGlitch() {
+        const intensidade = Math.min(glitchBase + glitchPulso, 1.4);
+        if (intensidade <= 0.001) return;
+
+        // 1. separação de canais RGB (chromatic aberration) via composição
+        // — cópias deslocadas em vermelho/azul somadas com 'lighter',
+        // bem mais barato que manipular pixel a pixel.
+        const desloc = Math.round(intensidade * 6);
+        if (desloc > 0) {
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.globalAlpha = 0.5;
+
+          ctx.fillStyle = "#ff0037";
+          ctx.globalCompositeOperation = "multiply";
+          ctx.drawImage(canvas, desloc, 0);
+
+          ctx.fillStyle = "#0037ff";
+          ctx.drawImage(canvas, -desloc, 0);
+
+          ctx.restore();
+        }
+
+        // 2. fatias horizontais deslocadas (datamosh)
+        const numFatias = Math.floor(intensidade * 8);
+        for (let i = 0; i < numFatias; i++) {
+          const altura = 2 + Math.random() * 14;
+          const y = Math.random() * H;
+          const deslocX = (Math.random() - 0.5) * intensidade * 60;
+          ctx.drawImage(canvas, 0, y, W, altura, deslocX, y, W, altura);
+        }
+
+        // 3. inversão — flicker total + blocos invertidos localizados
+        if (Math.random() < intensidade * 0.35) {
+          ctx.save();
+          ctx.globalCompositeOperation = "difference";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, W, H);
+          ctx.restore();
+        }
+
+        const numBlocosInv = Math.floor(intensidade * 4);
+        for (let i = 0; i < numBlocosInv; i++) {
+          const rw = 10 + Math.random() * 60 * intensidade;
+          const rh = 4 + Math.random() * 20 * intensidade;
+          const rx = Math.random() * W;
+          const ry = Math.random() * H;
+          ctx.save();
+          ctx.globalCompositeOperation = "difference";
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(rx, ry, rw, rh);
+          ctx.restore();
+        }
+
+        // 4. scanlines
+        if (intensidade > 0.15) {
+          ctx.fillStyle = `rgba(0,0,0,${0.08 * intensidade})`;
+          for (let y = 0; y < H; y += 3) {
+            ctx.fillRect(0, y, W, 1);
+          }
+        }
+
+        // 5. ruído — poucos blocos sólidos esparsos (cap baixo p/ não pesar)
+        const numRuido = Math.min(Math.floor(intensidade * 10), 12);
+        ctx.save();
+        for (let i = 0; i < numRuido; i++) {
+          const rw = 2 + Math.random() * 30 * intensidade;
+          const rh = 1 + Math.random() * 4;
+          const rx = Math.random() * W;
+          const ry = Math.random() * H;
+          ctx.fillStyle = Math.random() > 0.5 ? COR.acento : "#ffffff";
+          ctx.globalAlpha = 0.04 + Math.random() * 0.3 * intensidade;
+          ctx.fillRect(rx, ry, rw, rh);
+        }
+        ctx.restore();
+
+        // 6. tremor — desloca o frame inteiro verticalmente
+        if (intensidade > 0.5 && Math.random() < intensidade * 0.3) {
+          const jitter = Math.round((Math.random() - 0.5) * 10 * intensidade);
+          ctx.drawImage(canvas, 0, jitter);
+        }
+      }
+
+      // ─── LÓGICA DE ESTADO ─────────────────────────────────────────
+      function acaoInicio() {
+        if (
+          estado === "aguardando" ||
+          estado === "morto" ||
+          estado === "venceu"
+        ) {
+          pontos = 0;
+          nivel = 1;
+          vidas = CFG.vidas;
+          glitchBase = 0;
+          glitchPulso = 0;
+          criarJogo();
+          estado = "rodando";
+          ocultarOverlay();
+          return;
+        }
+        if (estado === "rodando" && bola.presa) {
+          bola.presa = false;
+        }
+      }
+
+      function perdeuVida() {
+        vidas--;
+        atualizarHUD();
+
+        if (vidas <= 0) {
+          estado = "morto";
+          const pos = registrarPontuacao(pontos, nivel);
+          renderizarPlacar(pos);
+          const rec = melhorPontuacao();
+          mostrarOverlay(
+            "Colapso.",
+            `${pontos} pts`,
+            rec,
+            "espaço ou clique para tentar novamente",
+          );
+        } else {
+          // reposiciona bola sem reiniciar nível
+          const vel = velocidadeNivel();
+          bola = {
+            x: paddle.x + paddle.w / 2,
+            y: paddle.y - 20,
+            r: CFG.bolaR,
+            vx: (Math.random() > 0.5 ? 1 : -1) * vel * 0.7,
+            vy: -vel,
+            presa: true,
+          };
+        }
+      }
+
+      function venceu() {
+        estado = "venceu";
+        const pos = registrarPontuacao(pontos, nivel);
+        renderizarPlacar(pos);
+        const rec = melhorPontuacao();
+        mostrarOverlay(
+          "Estrutura colapsada.",
+          `${pontos} pts`,
+          rec,
+          "espaço ou clique para reiniciar",
+        );
+      }
+
+      // ─── HUD ──────────────────────────────────────────────────────
+      function atualizarHUD() {
+        document.getElementById("hud-pts").textContent = String(
+          pontos,
+        ).padStart(4, "0");
+        document.getElementById("hud-nivel").textContent = String(
+          nivel,
+        ).padStart(2, "0");
+
+        const display = document.getElementById("vidas-display");
+        display.innerHTML = "";
+        for (let i = 0; i < CFG.vidas; i++) {
+          const pip = document.createElement("div");
+          pip.className = "vida-pip" + (i >= vidas ? " morta" : "");
+          display.appendChild(pip);
+        }
+      }
+
+      // ─── OVERLAY ──────────────────────────────────────────────────
+      function mostrarOverlay(titulo, msg, recorde, acao) {
+        const el = document.getElementById("overlay");
+        document.getElementById("overlay-titulo").textContent = titulo;
+        document.getElementById("overlay-msg").textContent = msg;
+        document.getElementById("overlay-acao").textContent = acao;
+        document.getElementById("overlay-recorde").textContent =
+          recorde > 0 ? recorde + " pts" : "—";
+        el.classList.remove("oculto");
+      }
+
+      function ocultarOverlay() {
+        document.getElementById("overlay").classList.add("oculto");
+      }
+    </script>
+  </body>
+</html>
