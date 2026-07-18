@@ -39,10 +39,14 @@ const definicoes = defineCollection({
 });
 
 // Ensaios e Arquivos: textos com título próprio.
+// `chamada` (opcional): rótulo curto para índice/menu; ausente, usa o `titulo`
+// pleno (ex.: ensaio "A resistência do corpo subjetivado" com chamada "Sex and
+// truth").
 const ensaios = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/notas/ensaios" }),
   schema: z.object({
     titulo: z.string(),
+    chamada: z.string().optional(),
     ...camposBase,
   }),
 });
