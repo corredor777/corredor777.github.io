@@ -3,10 +3,20 @@ import { ClientRouter } from "astro:transitions";
 import identidade from "../data/identidade.json";
 import "../styles/global.css";
 
+// Favicon POR PÁGINA: cada página passa `favicon` no <Base>; o default é o da
+// Recepção (censor.gif), em identidade.json. Mapa por seção (vanilla):
+//   Entrada  → /assets/images/favicon/index.gif   (index.astro)
+//   Recepção → /assets/images/favicon/censor.gif  (default — main.astro)
+//   Transmissões → .../signal.gif                 (Transmissoes.astro)
+//   Juramento → .../censor.gif                     (juramento/index.astro)
+// Para trocar: mude a prop `favicon` na página, ou o faviconPadrao no JSON.
+// Nota: o favicon é um GIF; Firefox o anima nativamente, Chrome/Safari mostram
+// só o 1º frame (decisão do Bruno: não forçar animação — o favicon-animator.js
+// foi aposentado).
 const {
   titulo = identidade.site.nome,
   descricao = identidade.site.descricaoPadrao,
-  favicon = "/assets/images/favicon/censor.gif",
+  favicon = identidade.site.faviconPadrao,
   mensagensConsole = [],
   class: classeBody,
 } = Astro.props;
@@ -51,10 +61,8 @@ const {
 
     <script>
       import { iniciarCursores } from "../scripts/cursor-manager.js";
-      import { iniciarFaviconAnimado } from "../scripts/favicon-animator.js";
       document.addEventListener("astro:page-load", () => {
         iniciarCursores();
-        iniciarFaviconAnimado();
       });
     </script>
 
