@@ -166,10 +166,8 @@ function montarDiario(target) {
     btn.addEventListener("click", () => abrirEntradaDiario(nav, btn, entrada));
     nav.appendChild(btn);
   });
-
-  // "entrada aberta": abre a mais recente (o índice já vem desc por data)
-  const primeiro = nav.querySelector(".diario-data");
-  if (primeiro) abrirEntradaDiario(nav, primeiro, entrada);
+  // Sem abrir automático: fica o placeholder "Selecione uma entrada." do
+  // shell (decisão do Bruno) até o primeiro clique.
 }
 
 async function abrirEntradaDiario(nav, btn, entrada) {
@@ -277,7 +275,7 @@ function montarEnsaios(lista) {
     btn.className = "ensaio-link";
     btn.textContent = item.chamada || item.titulo;
     btn.addEventListener("click", () =>
-      abrirFullscreen(urlEntrada("ensaios", item.slug), item.titulo),
+      abrirFullscreen(urlEntrada("ensaios", item.slug)),
     );
     lista.appendChild(btn);
   });
@@ -351,18 +349,16 @@ function fecharModal() {
 }
 
 // ── fullscreen (ensaios) — override total do target + botão voltar ──────────
-async function abrirFullscreen(url, titulo) {
+async function abrirFullscreen(url) {
   const target = document.getElementById("monitor-target");
   historico.push({ html: target.innerHTML, secao: secaoAtiva });
 
   await transicaoTarget(target, async () => {
     try {
       const corpo = await fetchFragmento(url);
-      // o titulo pleno vem do índice (o fragmento não o carrega — saiu na F2c)
-      const cabecalho = titulo
-        ? `<div class="section-title">Título: <span>${titulo}</span></div>`
-        : "";
-      target.innerHTML = `<div class="fullscreen-wrapper">${cabecalho}${corpo}</div>`;
+      // a estrutura #ensaio-full-* (título, tese, corpo, referências) já vem no
+      // próprio fragmento (MDX); aqui só o wrapper de fullscreen + o voltar
+      target.innerHTML = `<div class="fullscreen-wrapper">${corpo}</div>`;
       reexecutarScripts(target);
       const btn = document.createElement("button");
       btn.className = "fullscreen-voltar";

@@ -30,8 +30,42 @@ export async function getStaticPaths() {
 // render(entry) compila o corpo MDX e devolve o componente <Content/>, que
 // emite o HTML final da entrada (com a matemática já renderizada pelo KaTeX e
 // os <script is:inline> das inserções WebGL preservados para o d3 reexecutar).
+//
+// WRAPPERS CANÔNICOS (correção da checagem — o CSS de componentes.css é
+// contextual): cada fragmento nasce com os invólucros que o CSS espera, como
+// no vanilla — em vez de o controle recriá-los em runtime. O diário prosa vem
+// em .entrada-data + .entrada-corpo (o vórtice WebGL já traz .entrada-corpo do
+// componente); a definição vem com o <h3> do termo (o #transmissoes-modal-box
+// h3 do modal). O ensaio traz a estrutura #ensaio-full-* no próprio MDX; o
+// arquivo é injetado dentro de .nota-item pelo controle.
 const { entrada } = Astro.props as { entrada: CollectionEntry<Colecao> };
+const colecao = Astro.params.colecao as Colecao;
+const dados = entrada.data as Record<string, any>;
 const { Content } = await render(entrada);
+
+const dataPontos =
+  colecao === "diario"
+    ? new Date(dados.data).toISOString().slice(0, 10).replace(/-/g, ".")
+    : "";
 ---
 
-<Content />
+{colecao === "diario" && dados.webgl && <Content />}
+{
+  colecao === "diario" && !dados.webgl && (
+    <>
+      <div class="entrada-data">{dataPontos}</div>
+      <div class="entrada-corpo">
+        <Content />
+      </div>
+    </>
+  )
+}
+{
+  colecao === "definicoes" && (
+    <>
+      <h3>{dados.termo}</h3>
+      <Content />
+    </>
+  )
+}
+{(colecao === "ensaios" || colecao === "arquivos") && <Content />}
