@@ -250,6 +250,163 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
         </footer>
       </main>
     </div>
+
+    <!-- [DUAT OVERLAY] Camada oculta que sobrepõe a Recepção — travessia com
+         canvas de partículas, texto que borra/some no scroll e o #duat-777
+         crescendo/sumindo. Transplante do vanilla (main.html); comportamento em
+         src/scripts/duat.js. Ativado por qualquer .link-duat. -->
+    <div id="duat-overlay" class="cur-eye">
+      <canvas id="duat-canvas"></canvas>
+
+      <div id="duat-content">
+        <div class="line" id="duat-line-top">
+          <div class="line-container line-140">
+            <img src="/assets/images/lines/ornament1-top.png" />
+          </div>
+        </div>
+
+        <div class="line-container center-line">
+          <p style="text-align: center">𓇽&nbsp;𓇽&nbsp;𓇽</p>
+        </div>
+
+        <p id="duat-intro">Saudações a quem vier.</p>
+
+        <p>
+          Encontraste o caminho correto,<br />mas chegaste pelas motivações
+          erradas.
+        </p>
+
+        <p>
+          Não te preocupes com a volta;<br />
+          nunca mais estarás sozinho.
+        </p>
+
+        <p class="duat-focus">
+          <span>Quer dizer, então, que entraste na noite cobiçando o dia?</span>
+        </p>
+
+        <div class="line-container line-110 center-line">
+          <img src="/assets/images/lines/egyptbar.png" />
+        </div>
+
+        <p>
+          Os egípcios acreditavam que, entre o ser e o não-ser, havia um lugar
+          onde as almas perambulavam: Duat, o interstício. Lugar nenhum, senão a
+          própria travessia; espaço que existe apenas enquanto a passagem
+          ocorre. A sefirá invisível. O grande limiar e o profundo abismo: o
+          conhecimento etéreo. É o estado intermediário onde a mente projeta
+          tudo o que carrega. Ali não há território externo.
+        </p>
+
+        <div class="line-container line-110 center-line">
+          <img src="/assets/images/lines/egyptbar.png" />
+        </div>
+
+        <p>
+          O corredor é feito da substância do viajante.<br />
+          O caminho se manifesta como um reflexo da vontade no universo.
+        </p>
+
+        <p class="duat-center">
+          <span class="duat-italic"
+            >O universo é mental.<br />A vontade é o todo. E o todo é a
+            mente.</span
+          >
+        </p>
+
+        <p>
+          Para tudo o que existe, as lacunas preenchem as distâncias: o que está
+          lá e o que está aqui; o espaço entre o que és tu e o que sou eu.
+        </p>
+
+        <div class="image-container center-line insert insert-gate">
+          <img class="cur-none" src="/assets/images/arts/gate1-w.png" />
+        </div>
+
+        <p>
+          No reino dos símbolos, a alma encontra as manifestações de sua própria
+          natureza e reflete aquilo que encontra.
+        </p>
+
+        <p>
+          O corredor não antecede o passo.<br />
+          Ele se manifesta quando a vontade encontra o vazio.<br />
+          Não há mapas, apenas espelhos.
+        </p>
+
+        <div class="image-container center-line inverted">
+          <img src="/assets/images/imgs/judgement-of-the-dead-invert.jpg" />
+        </div>
+
+        <p>
+          E o véu parece ser formado por vários outros véus, mais finos,
+          interpenetrando-se. E a voz diz:
+          <span class="duat-italic duat-quote"
+            >Não existe luz, conhecimento, beleza ou estabilidade nos corredores
+            para onde vais.</span
+          >
+        </p>
+
+        <div class="image-container center-line insert">
+          <img
+            src="/assets/images/arts/ankh.png"
+            style="height: 150px; width: auto"
+          />
+        </div>
+
+        <p>
+          Fica à vontade para olhar todos os cantos e caminhar por todos os meus
+          caminhos. Disseca-me por completo; sejamos testemunhas desta autópsia.
+        </p>
+
+        <p class="duat-center duat-focus">
+          <span
+            >Eu sou a serpente que devora o espírito do homem.<br />
+            Eu sou a tormenta invisível, abraçando o mundo com desolação.</span
+          >
+        </p>
+
+        <p class="duat-center duat-italic">
+          <a
+            class="cur-none"
+            id="easter-tiamat"
+            href="/fragmentos/juramento/index.html"
+            target="_self">Tiamat</a
+          >
+          é o meu nome.
+        </p>
+
+        <div class="image-container center-line favicon-insert">
+          <img src="/assets/images/favicon/snake.gif" height="100%" />
+        </div>
+
+        <p>
+          Que tua passagem seja intensa, mas perene. E que, quando partires, não
+          leves nada contigo. Deixa que tudo caia de volta no abismo.
+        </p>
+
+        <div class="image-container center-line">
+          <img src="/assets/images/lines/barbedwire-w.png" />
+        </div>
+
+        <p id="duat-line-end" class="duat-center">
+          Tu és o caminho se desdobrando sobre si mesmo.<br /><span class="777"
+            >777</span
+          >
+        </p>
+
+        <div class="line" id="duat-line-bottom">
+          <div class="line-container line-140">
+            <img src="/assets/images/lines/ornament1-bottom.png" />
+          </div>
+        </div>
+
+        <!-- Espaço extra para manter o scroll ativo após o texto sumir -->
+        <div id="duat-fim"></div>
+      </div>
+
+      <p id="duat-777">777</p>
+    </div>
   </div>
 </Base>
 
@@ -257,10 +414,14 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
   import { iniciarBarraDeRolagem } from "../scripts/barra-de-rolagem.js";
   import { stroboVelocidade, stroboFlash } from "../scripts/strobo.js";
   import { iniciarContadores } from "../scripts/contadores.js";
+  import { iniciarDuat } from "../scripts/duat.js";
   import ocorrencias from "../data/ocorrencias.json";
 
   document.addEventListener("astro:page-load", () => {
     iniciarBarraDeRolagem(".content");
+
+    // Overlay do Duat (canvas de partículas, 777 no scroll, easter egg Tiamat)
+    iniciarDuat();
 
     // Contadores das Ocorrências (a checagem de página vive no módulo)
     iniciarContadores(ocorrencias);

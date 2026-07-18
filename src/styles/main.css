@@ -264,6 +264,17 @@ hr.divisor {
 
   text-align: center;
 }
+
+/* Strobo global (vanilla main.css:259). Precisa ser GLOBAL/não escopado: o JS
+   do Duat alterna .strobo-painel no #duat-777 e no #easter-tiamat, que vivem na
+   main.astro (não num componente) — a versão escopada do Painel.astro não os
+   alcança (lição [011]). */
+.strobo-painel {
+  position: relative;
+  z-index: 10;
+
+  filter: invert(100%) contrast(300%) brightness(1.5) !important;
+}
 #ocor-visita {
   font-family: "Fraunces", serif;
   font-optical-sizing: auto;
