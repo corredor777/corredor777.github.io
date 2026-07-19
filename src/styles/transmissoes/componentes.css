@@ -519,6 +519,12 @@
 #ensaio-full-body #referencias p:hover {
   opacity: 1;
 }
+/* Link (URL) das referências: mesma cor do texto ao redor, mantendo o
+   sublinhado — sem o azul padrão do navegador. */
+#ensaio-full-body #referencias a {
+  color: inherit;
+  text-decoration: underline;
+}
 
 #ensaios-lista {
   flex: 1;
