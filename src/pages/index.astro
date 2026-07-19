@@ -41,10 +41,9 @@ import "../styles/intro.css";
     stroboGlobal();
     selecionarFrase();
 
-    // Redirecionamento automático:
-    // o dev server do Astro só roteia /main (build.format: "file" vale
-    // apenas para o build) — em produção segue main.html, URL preservada
-    const destino = import.meta.env.DEV ? "/main" : "main.html";
+    // Redirecionamento automático para a Recepção (URL limpa de diretório —
+    // funciona igual em dev, preview e build sob build.format:"directory")
+    const destino = "/main/";
 
     // 1. Redirecionamento automático após 6 segundos
     const timer = setTimeout(() => {

@@ -45,8 +45,10 @@ async function fetchFragmento(url) {
   return html;
 }
 
+// Forma de diretório (build.format:"directory"): o fragmento vira
+// .../{slug}/index.html; fetch da URL de pasta serve esse index.
 const urlEntrada = (colecao, slug) =>
-  `${SINAIS}/${colecao}/${encodeURIComponent(slug)}.html`;
+  `${SINAIS}/${colecao}/${encodeURIComponent(slug)}/`;
 
 // ── utilitários de casca ────────────────────────────────────────────────────
 async function transicaoTarget(el, fn) {

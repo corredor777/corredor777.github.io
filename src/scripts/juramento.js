@@ -231,7 +231,7 @@ function prepararImpressao() {
   const finalizarEIrEmbora = () => {
     // Timeout de 500ms para garantir que o Firefox processe o fechamento do print
     setTimeout(() => {
-      window.location.replace("/main.html");
+      window.location.replace("/main/");
     }, 500);
   };
 

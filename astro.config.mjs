@@ -25,11 +25,12 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
   },
   build: {
-    // "preserve" espelha a estrutura de src/pages no dist: `main.astro` →
-    // `main.html` (permalink de arquivo preservado, princípio 4) E
-    // `transmissoes/index.astro` → `transmissoes/index.html` (URL de diretório
-    // /fragmentos/transmissoes/). O "file" cru transformava index aninhado em
-    // `transmissoes.html` (sem a barra final que a rota do hub pede).
-    format: "preserve",
+    // URLs limpas (decisão autoral definitiva): toda página vira forma de
+    // diretório — `main.astro` → `main/index.html` (URL /main/),
+    // `colapso.astro` → `colapso/index.html` (/fragmentos/simulacros/colapso/).
+    // Os permalinks `.html` antigos respondem por stubs de redirect ESTÁTICOS
+    // em public/ (arquivos copiados verbatim, únicos que preservam o path .html
+    // exato sob "directory"). Link interno: sempre forma de pasta.
+    format: "directory",
   },
 });
