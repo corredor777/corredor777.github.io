@@ -2,6 +2,19 @@
   color: var(--fosforo-verde-glow);
 }
 
+/* Indicador de carregamento "777" — injetado pelo controle durante um fetch de
+   fragmento lento (>150ms, não-cacheado). Fonte/cor do monitor. */
+.carregando-777 {
+  text-align: center;
+  margin-top: 20vh;
+  font-family: "JetBrains Mono Variable", monospace;
+  font-size: 2.2rem;
+  letter-spacing: 0.3em;
+  color: var(--fosforo-verde);
+  text-shadow: 0 0 12px var(--fosforo-verde-glow);
+  opacity: 0.85;
+}
+
 .section-header {
   pointer-events: none;
   position: relative;

@@ -59,6 +59,32 @@ async function transicaoTarget(el, fn) {
   el.style.opacity = "1";
 }
 
+// Indicador de carregamento "777": durante um fetch de fragmento ainda NÃO
+// cacheado que passe de ~150ms, pisca 7 → 77 → 777 em ciclo no alvo, no estilo
+// do monitor. Nunca em cache hit nem em carga rápida — o fetch resolve antes dos
+// 150ms e o timer é cancelado. Devolve uma função para encerrar; chame-a logo
+// após o fetch (antes de injetar o conteúdo) para não haver corrida com o ciclo.
+function indicador777(alvo) {
+  let ciclo = null;
+  const timer = setTimeout(() => {
+    let n = 1;
+    const pintar = () => {
+      alvo.innerHTML = `<p class="carregando-777">${"7".repeat(n)}</p>`;
+    };
+    pintar();
+    alvo.style.opacity = "1"; // o alvo pode estar em fade-out; torna o 777 visível
+    ciclo = setInterval(() => {
+      n = (n % 3) + 1;
+      pintar();
+    }, 280);
+  }, 150);
+
+  return () => {
+    clearTimeout(timer);
+    if (ciclo) clearInterval(ciclo);
+  };
+}
+
 // Re-executa os <script> de um fragmento injetado: innerHTML não roda scripts,
 // então recriamos cada um (mecanismo do vanilla). É o que faz as inserções
 // WebGL (vesica no modal, vórtice no diário) voltarem a rodar após a injeção.
@@ -179,11 +205,16 @@ async function abrirEntradaDiario(nav, btn, entrada) {
   entrada.style.opacity = "0";
   entrada.style.transition = "opacity 0.12s";
   await new Promise((r) => setTimeout(r, 120));
+
+  const parar777 = indicador777(entrada);
   try {
-    entrada.innerHTML = await fetchFragmento(urlEntrada("diario", btn.dataset.slug));
+    const html = await fetchFragmento(urlEntrada("diario", btn.dataset.slug));
+    parar777(); // encerra o 777 antes de injetar (sem corrida)
+    entrada.innerHTML = html;
     reexecutarScripts(entrada); // vórtice WebGL da 2026-05-15
     entrada.scrollTop = 0;
   } catch {
+    parar777();
     entrada.innerHTML = erro("ERRO: entrada não encontrada.");
   }
   entrada.style.opacity = "1";
@@ -338,6 +369,9 @@ async function abrirModal(url) {
   } catch {
     content.innerHTML = erro("ERRO: definição não encontrada.");
   }
+  // Reseta o scroll: o #transmissoes-modal-box é o elemento rolável (max-height
+  // + overflow-y:auto); sem isso, o scroll da definição anterior vaza para a nova.
+  overlay.querySelector("#transmissoes-modal-box").scrollTop = 0;
   overlay.classList.add("modal-visivel");
   overlay.setAttribute("aria-hidden", "false");
 }
@@ -356,8 +390,10 @@ async function abrirFullscreen(url) {
   historico.push({ html: target.innerHTML, secao: secaoAtiva });
 
   await transicaoTarget(target, async () => {
+    const parar777 = indicador777(target);
     try {
       const corpo = await fetchFragmento(url);
+      parar777(); // encerra o 777 antes de injetar (sem corrida)
       // a estrutura #ensaio-full-* (título, tese, corpo, referências) já vem no
       // próprio fragmento (MDX); aqui só o wrapper de fullscreen + o voltar
       target.innerHTML = `<div class="fullscreen-wrapper">${corpo}</div>`;
@@ -368,6 +404,7 @@ async function abrirFullscreen(url) {
       btn.addEventListener("click", voltarHistorico);
       target.querySelector(".fullscreen-wrapper").prepend(btn);
     } catch {
+      parar777();
       target.innerHTML = erro("ERRO: análise não encontrada.");
     }
   });
