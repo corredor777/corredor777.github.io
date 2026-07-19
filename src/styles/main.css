@@ -27,7 +27,7 @@ body {
   background-image: url("/assets/images/backgrounds/illusion4.gif");
   background-repeat: round;
 
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -88,7 +88,7 @@ body {
 
   border-right: 1px dotted #444;
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -156,8 +156,7 @@ body {
 .section-header {
   padding: 0 30px;
 
-  font-family:
-    "Manufacturing Consent", "UnifrakturCook", "Times New Roman", Times, serif;
+  font-family: var(--fonte-titulo);
   font-style: normal;
 }
 .section-header:first-child h1 {
@@ -174,7 +173,7 @@ body {
 .minigame header {
   text-align: center;
   margin-bottom: 50px;
-  font-family: "DotGothic16", sans-serif;
+  font-family: var(--fonte-pixel);
   font-weight: 400;
   font-style: normal;
   font-size: 18px;
@@ -214,7 +213,7 @@ body {
   text-decoration: underline;
 }
 .contador-label {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -276,7 +275,7 @@ hr.divisor {
   filter: invert(100%) contrast(300%) brightness(1.5) !important;
 }
 #ocor-visita {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -624,7 +623,7 @@ hr.divisor {
   padding: 15vh 40px 0 40px;
   box-sizing: border-box;
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -752,7 +751,7 @@ hr.divisor {
 
   transform: translateY(-50%);
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;

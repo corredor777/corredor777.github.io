@@ -5,6 +5,7 @@
 // is:global> + <script is:inline> (verbatim; o jogo cria/manipula o DOM —
 // escopar mataria o estilo/JS, lição [011]). global.css importado para a
 // fonte JetBrains Mono (o <link> do vanilla vinha sem rel e não carregava).
+import "../../../styles/fontes.css";
 import "../../../styles/global.css";
 ---
 
@@ -36,7 +37,7 @@ import "../../../styles/global.css";
         height: 100%;
         background: var(--fundo);
         color: var(--texto);
-        font-family: "JetBrains Mono", monospace;
+        font-family: var(--fonte-terminal);
         overflow: hidden;
         cursor: none;
         user-select: none;

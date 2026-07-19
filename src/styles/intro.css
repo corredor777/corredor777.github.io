@@ -48,7 +48,7 @@ body {
   background-color: #a40000; /* New highlight background color */
   color: #cdcdcd;
 
-  font-family: "Manufacturing Consent", "UnifrakturCook", serif;
+  font-family: var(--fonte-titulo);
   font-style: normal;
   font-weight: 300;
   font-size: 36pt;
@@ -57,7 +57,7 @@ body {
 #arcano {
   margin-top: 10px !important;
 
-  font-family: "DotGothic16", "JetBrains Mono", monospace;
+  font-family: var(--fonte-pixel);
   font-optical-sizing: auto;
   font-style: normal;
   font-size: 0.6em;
@@ -81,7 +81,7 @@ body {
   padding: 0;
 }
 .credits p {
-  font-family: "Fraunces", serif !important;
+  font-family: var(--fonte-leitura) !important;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;

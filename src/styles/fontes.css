@@ -1,0 +1,46 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SISTEMA DE FONTES POR PAPÉIS
+   ══════════════════════════════════════════════════════════════════════════
+   Fluxo (ver CLAUDE.md):
+   - ADICIONAR fonte do Google: acrescente o family= no @import abaixo e defina/
+     use uma --fonte-* no :root.
+   - ADICIONAR fonte LOCAL: coloque o arquivo em public/assets/fonts/, declare no
+     bloco @font-face abaixo e aponte uma --fonte-* para ela.
+   - TROCAR o papel de um contexto: mude a --fonte-* — nunca o font-family solto.
+   - REMOVER fonte: tire do @import/@font-face e confira que nenhuma --fonte-* a usa.
+   Regra: nenhum font-family "hardcoded" na stack — tudo resolve por --fonte-*.
+
+   Importado do Google (só as EM USO — a auditoria [040] achou 14 famílias
+   mortas no import antigo, removidas). */
+@import url("https://fonts.googleapis.com/css2?family=DotGothic16&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Jacquard+24&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Manufacturing+Consent&family=Special+Gothic+Expanded+One&family=Squada+One&family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap");
+
+/* ── Fontes LOCAIS ─────────────────────────────────────────────────────────
+   Arquivos em public/assets/fonts/ (servidos em /assets/fonts/).
+   PENDENTE: o Juramento pede "Aktura-Regular" (título do termo) — não está no
+   Google nem há arquivo local, então hoje cai em UnifrakturCook (ver
+   --fonte-aktura). Quando o .woff2 existir, descomente o @font-face abaixo:
+   @font-face {
+     font-family: "Aktura-Regular";
+     src: url("/assets/fonts/aktura-regular.woff2") format("woff2");
+     font-display: swap;
+   } */
+
+/* ── Papéis (troque aqui, não no uso) ──────────────────────────────────────
+   Nota: as ~20 ocorrências de "JetBrains Mono Variable" caíam em monospace
+   genérico (não havia @font-face local); --fonte-terminal as normaliza para a
+   "JetBrains Mono" do Google (correção fina, confirmada de olho). */
+:root {
+  --fonte-corpo: Georgia, "Times New Roman", Times, serif;
+  --fonte-leitura: "Fraunces", serif;
+  --fonte-terminal: "JetBrains Mono", monospace;
+  --fonte-pixel: "DotGothic16", sans-serif;
+  --fonte-titulo: "Manufacturing Consent", "UnifrakturCook", serif;
+  --fonte-gotica: "Jacquard 24", system-ui;
+  --fonte-blackletter: "UnifrakturMaguntia", "Times New Roman", Times, serif;
+  --fonte-display: "Squada One", sans-serif;
+  --fonte-expandida: "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
+  /* título do Juramento — Aktura-Regular ainda não carregada (local pendente);
+     por ora resolve para UnifrakturCook, o render atual (ver bloco @font-face). */
+  --fonte-aktura: "Aktura-Regular", "UnifrakturCook", "Times New Roman", Times,
+    serif;
+}

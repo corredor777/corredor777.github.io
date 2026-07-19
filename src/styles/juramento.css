@@ -80,7 +80,7 @@ body {
   background-size: 90px;
   background-repeat: round;
 
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -197,8 +197,7 @@ body {
 .titulo-curvo {
   margin-bottom: 0px;
 
-  font-family:
-    "Aktura-Regular", "UnifrakturCook", "Times New Roman", Times, serif;
+  font-family: var(--fonte-aktura);
   font-size: 85pt;
 }
 
@@ -206,14 +205,14 @@ body {
 .content header h3 {
   margin: 0 auto 10px auto;
 
-  font-family: "Squada One", sans-serif;
+  font-family: var(--fonte-display);
   font-weight: 400;
   font-size: 14pt;
   text-decoration: underline !important;
 }
 /* Data do documento */
 .content #data {
-  font-family: "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
+  font-family: var(--fonte-expandida);
   font-weight: 400;
   font-style: normal;
   font-size: 7pt;
@@ -247,7 +246,7 @@ body {
 #reg-texto {
   flex: 1; /* O texto ocupa todo o espaço restante no meio */
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 700;
   font-variation-settings:
@@ -294,7 +293,7 @@ body {
 
   margin: 2px 7px 0 -17px;
 
-  font-family: "UnifrakturMaguntia", "Times New Roman", Times, serif;
+  font-family: var(--fonte-blackletter);
   font-size: 39pt;
   font-weight: bold;
   line-height: 1;
@@ -419,7 +418,7 @@ body {
   margin: 0;
   line-height: 1;
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
@@ -435,7 +434,7 @@ body {
 
   margin-top: 10px;
 
-  font-family: "DotGothic16", sans-serif;
+  font-family: var(--fonte-pixel);
   font-weight: 400;
   font-style: normal;
   font-size: 6pt;
@@ -447,7 +446,7 @@ body {
 #nota-final {
   margin-top: 20px;
 
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: italic;

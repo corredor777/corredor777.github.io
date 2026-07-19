@@ -1,5 +1,4 @@
-/* Importação de fontes */
-@import url("https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400;1,700&family=Amarante&family=Astloch:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Cousine:ital,wght@0,400;0,700;1,400;1,700&family=DotGothic16&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Jacquard+12&family=Jacquard+24&family=Jacquard+24+Charted&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libertinus+Keyboard&family=Manufacturing+Consent&family=Ovo&family=Rakkas&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Special+Elite&family=Special+Gothic+Expanded+One&family=Squada+One&family=Staatliches&family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&family=Xanh+Mono:ital@0;1&display=swap");
+/* Fontes: ver src/styles/fontes.css (importado pelo Base). */
 
 /* Cor de seleção */
 ::selection {
@@ -15,7 +14,7 @@ body {
 
   background-color: #cdcdcd;
 
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: var(--fonte-corpo);
   font-size: 12pt;
   font-weight: 400;
   color: #000;
@@ -109,7 +108,7 @@ p {
 .player-ticker-text {
   display: inline-flex;
   animation: ticker-player 20s linear infinite;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 9px;
   color: var(--player-cor);
   opacity: 0.6;
@@ -183,7 +182,7 @@ p {
 .lista-item {
   padding: 6px 10px;
   font-size: 9px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   color: var(--player-texto-popup);
   cursor: pointer;
   border-bottom: 1px solid var(--player-borda);

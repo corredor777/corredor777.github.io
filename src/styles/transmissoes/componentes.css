@@ -7,7 +7,7 @@
 .carregando-777 {
   text-align: center;
   margin-top: 20vh;
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 2.2rem;
   letter-spacing: 0.3em;
   color: var(--fosforo-verde);
@@ -21,7 +21,7 @@
   left: 5px;
   bottom: -10px;
   z-index: -1;
-  font-family: "Manufacturing Consent", system-ui;
+  font-family: var(--fonte-titulo);
   font-weight: 400;
   font-style: normal;
   font-size: 48pt;
@@ -34,7 +34,7 @@
 
 #notas-grid,
 #diario-entrada {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -66,7 +66,7 @@
 }
 
 .diario-titulo {
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 0.7rem;
   letter-spacing: 0.25em;
   color: var(--fosforo-verde);
@@ -98,7 +98,7 @@
   border: none;
   border-bottom: 1px solid var(--fosforo-verde-glow-light);
   text-align: left;
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 8pt;
   letter-spacing: 2px;
   color: var(--fosforo-verde);
@@ -131,7 +131,7 @@
 
 .diario-placeholder {
   opacity: 0.7;
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 10pt;
 
   animation: blink 1.6s steps(1) infinite;
@@ -149,7 +149,7 @@
 /* Componentes das entradas do diário */
 .entrada-data {
   color: var(--fosforo-vermelho);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
@@ -161,7 +161,7 @@
   margin: 0 18px 18px auto;
 }
 .entrada-corpo {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
@@ -179,7 +179,7 @@
   overflow: hidden;
 }
 .entrada-corpo p.codex {
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 9pt;
   font-variant-numeric: tabular-nums;
   text-align: justify;
@@ -196,7 +196,7 @@
    visíveis (os ### de fechamento do markdown já são consumidos no render). */
 .entrada-corpo h3 {
   color: var(--fosforo-vermelho);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--fonte-terminal);
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
@@ -308,7 +308,7 @@
   text-align: left;
   color: var(--fosforo-verde);
   opacity: 0.5;
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 0.78rem;
   cursor: none;
   transition: opacity 0.1s steps(1);
@@ -373,14 +373,14 @@
 }
 
 .def-termo-label {
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 7pt;
   letter-spacing: 3px;
   color: var(--fosforo-verde);
   opacity: 0.3;
 }
 .def-termo-texto {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 100;
   font-style: normal;
@@ -404,7 +404,7 @@
   border: none;
   color: var(--fosforo-verde);
   opacity: 0.4;
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 13pt;
   cursor: none;
   transition: opacity 0.1s steps(1);
@@ -421,7 +421,7 @@
 }
 
 .def-contador {
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-size: 7pt;
   color: var(--fosforo-verde);
   opacity: 0.25;
@@ -456,7 +456,7 @@
   margin: 60px 0;
 }
 #ensaio-full-body #cabecalho-citacao p {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 300;
   font-variation-settings:
@@ -480,7 +480,7 @@
 }
 
 #ensaio-full-body .conteudo {
-  font-family: "Fraunces", serif;
+  font-family: var(--fonte-leitura);
   font-optical-sizing: auto;
   font-weight: 300;
   font-variation-settings:
@@ -498,7 +498,7 @@
   margin: 30px 0;
 }
 #ensaio-full-body .conteudo h2 {
-  font-family: "Jacquard 24", system-ui;
+  font-family: var(--fonte-gotica);
   font-weight: 400;
   font-style: normal;
   font-size: 24pt;
@@ -564,7 +564,7 @@
   position: absolute;
   left: 0;
   color: var(--fosforo-verde); /* Aplica o vermelho #ff0037 */
-  font-family: "JetBrains Mono Variable", monospace;
+  font-family: var(--fonte-terminal);
   font-weight: bold;
 }
 
