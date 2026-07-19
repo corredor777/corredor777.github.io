@@ -14,21 +14,57 @@ let overlay, canvas, ctx, conteudo, s777;
 let particulas = [];
 let rafId = 0;
 let progressoAtual = 0;
+let fadeScroll = 1; // alpha das partículas acompanha o fundo preto no scroll
 let settecentoCongelado = false;
 let jaFechando = false;
 let stroboAbrir = null; // strobo do 777 enquanto aberto
 let globaisLigados = false; // resize + strobo contínuo: uma vez só
 
-/* ── partículas ─────────────────────────────────────────── */
-function criarParticulas() {
-  particulas = Array.from({ length: 120 }, () => ({
+/* ── partículas ─────────────────────────────────────────────────────────────
+   Resgate autoral (tentativa abandonada do vanilla): poeira cósmica esparsa que
+   nasce na borda inferior, sobe devagar com vagar aleatório e cicla de cor pela
+   VIDA de cada partícula — branca → vermelha (#ff0037) → invertida do vermelho
+   (#00ffc8, o ciano do glitch dos links da main). A camada some junto com o
+   fundo preto na rolagem (fadeScroll). Densidade baixa e math simples: um só RAF
+   (o do iniciarDuat), sem jank. */
+const NUM_PARTICULAS = 70; // esparsas — "soltas no universo"
+
+// interpola a cor pela vida (0→1): branco → vermelho → ciano invertido
+function corPorVida(v) {
+  const branco = [255, 255, 255];
+  const vermelho = [255, 0, 55]; // #ff0037
+  const ciano = [0, 255, 200]; // inverso de #ff0037
+  const [a, b, t] =
+    v < 0.5 ? [branco, vermelho, v / 0.5] : [vermelho, ciano, (v - 0.5) / 0.5];
+  return [
+    Math.round(a[0] + (b[0] - a[0]) * t),
+    Math.round(a[1] + (b[1] - a[1]) * t),
+    Math.round(a[2] + (b[2] - a[2]) * t),
+  ];
+}
+
+function novaParticula() {
+  return {
     x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 1.2 + 0.3,
-    vx: (Math.random() - 0.5) * 0.2,
-    vy: (Math.random() - 0.5) * 0.2,
-    opacidade: Math.random() * 0.2 + 0.05,
-  }));
+    y: canvas.height + Math.random() * 40, // nasce logo abaixo da borda inferior
+    r: Math.random() * 1.3 + 0.4,
+    vx: (Math.random() - 0.5) * 0.15, // vagar horizontal leve
+    vy: -(Math.random() * 0.25 + 0.12), // deriva lenta para cima
+    vida: 0,
+    velVida: Math.random() * 0.0016 + 0.0008, // ritmo de envelhecimento (cor)
+    opacidade: Math.random() * 0.25 + 0.1,
+  };
+}
+
+function criarParticulas() {
+  particulas = Array.from({ length: NUM_PARTICULAS }, () => {
+    // na primeira carga, espalha na tela e sorteia a fase para não nascerem
+    // todas juntas na mesma cor/altura
+    const p = novaParticula();
+    p.y = Math.random() * canvas.height;
+    p.vida = Math.random();
+    return p;
+  });
 }
 
 function desenharParticulas() {
@@ -36,19 +72,20 @@ function desenharParticulas() {
   particulas.forEach((p) => {
     p.x += p.vx;
     p.y += p.vy;
+    p.vida += p.velVida;
+
+    // renasce na borda inferior ao sair pelo topo ou completar a vida
+    if (p.y < -4 || p.vida >= 1) Object.assign(p, novaParticula());
+    // vagar horizontal dá a volta
     if (p.x < 0) p.x = canvas.width;
     if (p.x > canvas.width) p.x = 0;
-    if (p.y < 0) p.y = canvas.height;
-    if (p.y > canvas.height) p.y = 0;
 
+    const [r, g, b] = corPorVida(p.vida);
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.shadowBlur = 4;
-    // Cor reage ao progresso do scroll — branco/azul no início, vermelho no fim
-    const r = Math.round(255 * progressoAtual);
-    const b = Math.round(255 * (1 - progressoAtual));
-    ctx.fillStyle = `rgba(${r}, 0, ${b}, ${p.opacidade})`;
-    ctx.shadowColor = `rgba(${r}, 0, ${b}, 0.8)`;
+    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.opacidade * fadeScroll})`;
     ctx.fill();
     ctx.shadowBlur = 0;
   });
@@ -77,6 +114,7 @@ function abrirDuat() {
   s777.classList.remove("congelado");
   settecentoCongelado = false;
   jaFechando = false;
+  fadeScroll = 1; // partículas cheias na abertura
 
   overlay.classList.remove("fechando");
   overlay.classList.add("ativo");
@@ -125,6 +163,9 @@ function aoScroll() {
   const curvaOpacidade = Math.pow(progresso, 2);
   const fundoOpacidade = Math.max(0, 0.95 - curvaOpacidade * 0.95);
   overlay.style.backgroundColor = `rgba(10, 10, 10, ${fundoOpacidade})`;
+  // partículas somem junto com o fundo preto (mesma curva) — via alpha de
+  // desenho, não opacity do elemento, para não pegar a transição CSS de 0.3s
+  fadeScroll = fundoOpacidade / 0.95;
 
   // 777: some (<30%) → aparece e cresce (30–70%) → sai com blur crescendo (>70%)
   if (progresso < 0.3) {
