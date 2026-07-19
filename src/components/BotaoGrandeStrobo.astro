@@ -1,11 +1,19 @@
 ---
 const { nome, cursor, destino, texto } = Astro.props;
+
+// Dimensões do popup do Colapso. A altura subiu de 620 (herdada do vanilla) para
+// 720: a lista de scores (#placar, MAX_ENTRADAS=8, ~200px) não cabia junto com o
+// jogo em 620 — a reserva de espaço do jogo usa a altura do placar VAZIO, então
+// o placar cheio estourava (overflow:hidden cortava os últimos). 720 acomoda o
+// conteúdo de nascença, sem resize manual (o jogo é resizable=no).
+const largura = 520;
+const altura = 720;
 ---
 
 <button
   id="botao-grande"
   class:list={["botao-grande-strobo", cursor]}
-  onclick={`window.open('${destino}', '${nome}', 'width=520,height=620,resizable=no')`}
+  onclick={`window.open('${destino}', '${nome}', 'width=${largura},height=${altura},resizable=no')`}
 >
   {texto}
 </button>
