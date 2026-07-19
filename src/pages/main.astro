@@ -246,6 +246,7 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
             destino="/fragmentos/juramento/"
             cursor="cur-skeleton-hand"
             imagem="assets/images/buttons/3void.png"
+            recarrega
           />
         </footer>
       </main>
@@ -371,7 +372,8 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
             class="cur-none"
             id="easter-tiamat"
             href="/fragmentos/juramento/"
-            target="_self">Tiamat</a
+            target="_self"
+            data-astro-reload>Tiamat</a
           >{" "}é o meu nome.
         </p>
 

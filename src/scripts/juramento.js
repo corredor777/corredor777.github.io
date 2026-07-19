@@ -1,96 +1,51 @@
-const cursorMap = {
-  ".cur-draw": "/assets/images/cursor/caneta.cur", // Mais específico primeiro
-  ".cur-default": "/assets/images/cursor/skeleton-hand.cur", // Mais genérico depois
-};
+// juramento.js — interatividade do Juramento do Abismo: preenche a data, sorteia
+// o número de registro (com chances de "especiais": repetidos/palíndromos) e o
+// canvas de assinatura (rastro colorido → fixa em preto → dispara impressão e
+// redireciona). Adaptado do script vanilla ao padrão de efeitos ([006]): export
+// iniciarJuramento(), checagem de página (#canva canvas), guarda por nó,
+// religação via astro:page-load.
+//
+// O sistema de cursor PRÓPRIO do vanilla (.cur-draw/.cur-default) foi REMOVIDO:
+// agora vem do cursor-manager global — .cur-draw (caneta) e .cur-default
+// (skeleton-hand, fallback por página via classe na raiz) estão no globalCursorMap.
 
-function aplicarSistemaCursor(mapa) {
-  const tratarMouse = (e) => {
-    let arquivoSelecionado = null;
+"use strict";
 
-    // Checa a hierarquia (Canvas primeiro)
-    for (const seletor in mapa) {
-      if (e.target.closest(seletor)) {
-        arquivoSelecionado = mapa[seletor];
-        break;
-      }
-    }
+// Estado do módulo — reatribuído a cada entrada (View Transitions recriam o DOM).
+let canvas, ctx, bCanvas, bCtx;
+let desenhando = false;
+let rastro = []; // "cauda" temporária do traço
+const tamanhoCauda = 20;
+let windowLigado = false; // mousemove/mouseup/resize em window: uma vez só
 
-    if (arquivoSelecionado) {
-      // No Firefox, o caminho DEVE ser exato e ter o fallback ', auto'
-      // Aplicamos diretamente no e.target para evitar que filhos mostrem o cursor padrão
-      e.target.style.setProperty(
-        "cursor",
-        `url('${arquivoSelecionado}'), auto`,
-        "important",
-      );
-    } else {
-      // Se não está nas áreas, força o none no elemento exato
-      e.target.style.setProperty("cursor", "none", "important");
-    }
-  };
-
-  // Escuta o movimento em todo o documento
-  document.addEventListener("mousemove", tratarMouse);
-}
-
-aplicarSistemaCursor(cursorMap);
-
-const spanData = document.getElementById("data-atual");
-const dataHoje = new Date();
-
-// Formata para: 24 de abril de 2026
-const dataFormatada = dataHoje.toLocaleDateString("pt-BR", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-spanData.textContent = dataFormatada;
-
+/* ── número de registro (com chance de especial) ────────── */
 function gerarNumeroEspecial() {
   const spans = document.querySelectorAll("#regnum, #protocolo-fim");
-  const chanceEspecial = 0.3; // 30% de chance de ser um número especial
+  const chanceEspecial = 0.3;
   let resultado = "";
 
   if (Math.random() < chanceEspecial) {
-    // Sorteia qual tipo de especial: 0 = repetido (77777), 1 = espelhado (12321)
     const tipo = Math.floor(Math.random() * 2);
-
     if (tipo === 0) {
-      // Gera repetidos (ex: 55555)
-      const digito = Math.floor(Math.random() * 10);
-      resultado = digito.toString().repeat(5);
+      // repetidos (ex.: 55555)
+      resultado = Math.floor(Math.random() * 10)
+        .toString()
+        .repeat(5);
     } else {
-      // Gera espelhados/palíndromos (ex: 12521)
+      // espelhados/palíndromos (ex.: 12521)
       const d1 = Math.floor(Math.random() * 10);
       const d2 = Math.floor(Math.random() * 10);
       const d3 = Math.floor(Math.random() * 10);
       resultado = `${d1}${d2}${d3}${d2}${d1}`;
     }
   } else {
-    // Gera um número aleatório comum de 5 dígitos
     resultado = Math.floor(10000 + Math.random() * 90000).toString();
   }
 
-  // Aplica o resultado em todos os elementos encontrados na NodeList
-  spans.forEach((span) => {
-    span.textContent = resultado;
-  });
+  spans.forEach((span) => (span.textContent = resultado));
 }
 
-// Executa ao carregar a página
-window.addEventListener("load", gerarNumeroEspecial);
-
-// Canva para a assinatura
-const canvas = document.querySelector("#canva canvas");
-const ctx = canvas.getContext("2d");
-
-const bCanvas = document.createElement("canvas");
-const bCtx = bCanvas.getContext("2d");
-
-let desenhando = false;
-let rastro = []; // Armazena a "cauda" temporária
-const tamanhoCauda = 20; // Aumente este número para uma cauda ainda mais longa
-
+/* ── canvas de assinatura ───────────────────────────────── */
 function configurarCanvas() {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
@@ -103,80 +58,65 @@ function configurarCanvas() {
   bCtx.lineJoin = "round";
 }
 
-window.addEventListener("resize", configurarCanvas);
-configurarCanvas();
-
 function adicionarPonto(x, y) {
   rastro.push({ x, y });
-
-  // Quando a cauda excede o tamanho, o ponto mais antigo vira preto fixo
+  // quando a cauda excede o tamanho, o ponto mais antigo vira preto fixo
   if (rastro.length > tamanhoCauda) {
     const p1 = rastro[0];
     const p2 = rastro[1];
-
     bCtx.beginPath();
     bCtx.moveTo(p1.x, p1.y);
     bCtx.lineTo(p2.x, p2.y);
     bCtx.stroke();
-
-    rastro.shift(); // Remove o ponto antigo que já foi fixado
+    rastro.shift();
   }
 }
 
 function desenhar(e) {
   if (!desenhando) return;
-
-  // Previne qualquer comportamento padrão do navegador IMEDIATAMENTE
   if (e.cancelable) e.preventDefault();
 
   const rect = canvas.getBoundingClientRect();
   const clienteX = e.touches ? e.touches[0].clientX : e.clientX;
   const clienteY = e.touches ? e.touches[0].clientY : e.clientY;
+  adicionarPonto(clienteX - rect.left, clienteY - rect.top);
 
-  const x = clienteX - rect.left;
-  const y = clienteY - rect.top;
-
-  adicionarPonto(x, y);
-
-  // Uso de requestAnimationFrame para sincronizar com a taxa de atualização do monitor
   requestAnimationFrame(renderizarFrame);
 }
 
 function renderizarFrame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 1. Desenha o rastro preto permanente
+  // rastro preto permanente
   ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(bCanvas, 0, 0);
 
-  // 2. Desenha a cauda colorida
+  // cauda colorida (escurece do cursor para trás: branco → amarelo → vermelho)
   if (rastro.length < 2) return;
-
   for (let i = 1; i < rastro.length; i++) {
     const p1 = rastro[i - 1];
     const p2 = rastro[i];
-    const progresso = i / rastro.length; // 0 (antigo) a 1 (cursor)
+    const progresso = i / rastro.length; // 0 (antigo) → 1 (cursor)
 
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
 
-    // Transição de cor: Preto -> Vermelho Escuro -> Vermelho Sangue -> Amarelo
     let cor;
     if (progresso > 0.98) {
-      cor = `rgb(255, 255, 255)`; // Ponta amarela (fogo)
+      cor = "rgb(255, 255, 255)";
       ctx.lineWidth = 4;
     } else if (progresso > 0.93) {
-      cor = `rgb(255, 228, 54)`; // Ponta amarela (fogo)
+      cor = "rgb(255, 228, 54)";
       ctx.lineWidth = 3.5;
     } else if (progresso > 0.8) {
-      cor = `rgb(202, 1, 1)`; // Vermelho vivo
+      cor = "rgb(202, 1, 1)";
       ctx.lineWidth = 3.5;
     } else if (progresso > 0.6) {
-      cor = `rgb(171, 0, 0)`; // Vermelho vivo
+      cor = "rgb(171, 0, 0)";
       ctx.lineWidth = 3.5;
     } else {
-      cor = `rgb(128, 0, 0)`; // Escurecendo até sumir
+      cor = "rgb(128, 0, 0)";
       ctx.lineWidth = 3;
     }
 
@@ -189,55 +129,45 @@ function iniciar(e) {
   desenhando = true;
   rastro = [];
   const rect = canvas.getBoundingClientRect();
-
-  // Captura imediata da posição
   const clienteX = e.touches ? e.touches[0].clientX : e.clientX;
   const clienteY = e.touches ? e.touches[0].clientY : e.clientY;
-
-  const x = clienteX - rect.left;
-  const y = clienteY - rect.top;
-
-  rastro.push({ x, y });
+  rastro.push({ x: clienteX - rect.left, y: clienteY - rect.top });
 }
 
-// (Removida uma primeira versão de parar(), duplicada — como no
-// prepararImpressao acima: a segunda, que também dispara a impressão, é a que
-// vale. Redeclaração é inócua no <script> clássico, mas quebra o módulo ES.)
+function parar() {
+  if (!desenhando) return;
+  desenhando = false;
 
-canvas.addEventListener("mousedown", iniciar);
-window.addEventListener("mousemove", desenhar, { passive: false });
-window.addEventListener("mouseup", parar);
+  // fixa o rastro no buffer preto
+  for (let i = 1; i < rastro.length; i++) {
+    bCtx.beginPath();
+    bCtx.moveTo(rastro[i - 1].x, rastro[i - 1].y);
+    bCtx.lineTo(rastro[i].x, rastro[i].y);
+    bCtx.stroke();
+  }
+  rastro = [];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bCanvas, 0, 0);
 
-canvas.addEventListener("touchstart", iniciar, { passive: false });
-canvas.addEventListener("touchmove", desenhar, { passive: false });
-canvas.addEventListener("touchend", parar);
+  prepararImpressao();
+}
 
-// O redirecionamento ocorre após fechar o diálogo de impressão.
-// (Removida uma primeira versão-stub de prepararImpressao, duplicada — inócua
-// no <script> clássico do vanilla, mas erro de sintaxe ao empacotar como módulo
-// ES no Astro; a segunda, real, é a que vale.)
+/* ── impressão + saída do ritual ────────────────────────── */
 function prepararImpressao() {
   const agora = new Date();
   const dataFormatada =
-    agora.toLocaleDateString("pt-BR") +
-    " - " +
-    agora.toLocaleTimeString("pt-BR");
+    agora.toLocaleDateString("pt-BR") + " - " + agora.toLocaleTimeString("pt-BR");
   const campoData = document.getElementById("data-hora-fim");
   if (campoData) campoData.innerText = dataFormatada;
 
   document.body.classList.add("modo-impressao");
 
-  // Função única de redirecionamento
   const finalizarEIrEmbora = () => {
-    // Timeout de 500ms para garantir que o Firefox processe o fechamento do print
-    setTimeout(() => {
-      window.location.replace("/main/");
-    }, 500);
+    // 500ms para o Firefox processar o fechamento do print
+    setTimeout(() => window.location.replace("/main/"), 500);
   };
 
-  // Redundância para navegadores que não pausam o JS no print
-  // No Firefox, remover o listener antigo e usar uma atribuição limpa
-  window.onafterprint = null; // Limpa instâncias anteriores
+  window.onafterprint = null;
   window.onafterprint = finalizarEIrEmbora;
 
   const monitorarVolta = () => {
@@ -246,36 +176,48 @@ function prepararImpressao() {
       document.removeEventListener("visibilitychange", monitorarVolta);
     }
   };
-
-  // Adiciona o monitor antes de imprimir
   document.addEventListener("visibilitychange", monitorarVolta);
 
-  // redundância para navegadores que não pausam o JS no print
-  window.onafterprint = finalizarEIrEmbora;
-
-  // Dispara a impressão
-  setTimeout(() => {
-    window.print();
-  }, 100);
+  setTimeout(() => window.print(), 100);
 }
 
-// Esta função deve ser chamada dentro do seu evento de 'mouseup' ou 'touchend'
-function parar() {
-  if (!desenhando) return;
-  desenhando = false;
+/**
+ * Ponto de entrada, religado a cada astro:page-load. Sem o canvas de assinatura
+ * não é o Juramento: sai. Guarda por nó evita religar; numa entrada nova (via
+ * corte seco / reload) o canvas é novo e religa. Os listeners de window ligam
+ * uma vez (usam sempre o canvas/rastro atuais do módulo); os do canvas religam
+ * a cada entrada (nó novo).
+ */
+export function iniciarJuramento() {
+  canvas = document.querySelector("#canva canvas");
+  if (!canvas) return; // checagem de página
+  if (canvas.dataset.juramentoLigado) return; // idempotência por nó
+  canvas.dataset.juramentoLigado = "1";
 
-  // Fixa o rastro no buffer (conforme códigos anteriores)
-  for (let i = 1; i < rastro.length; i++) {
-    bCtx.beginPath();
-    bCtx.moveTo(rastro[i - 1].x, rastro[i - 1].y);
-    bCtx.lineTo(rastro[i].x, rastro[i].y);
-    bCtx.stroke();
+  const spanData = document.getElementById("data-atual");
+  if (spanData) {
+    spanData.textContent = new Date().toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
+  gerarNumeroEspecial();
 
-  rastro = [];
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(bCanvas, 0, 0);
+  ctx = canvas.getContext("2d");
+  bCanvas = document.createElement("canvas");
+  bCtx = bCanvas.getContext("2d");
+  configurarCanvas();
 
-  // Dispara o processo
-  prepararImpressao();
+  canvas.addEventListener("mousedown", iniciar);
+  canvas.addEventListener("touchstart", iniciar, { passive: false });
+  canvas.addEventListener("touchmove", desenhar, { passive: false });
+  canvas.addEventListener("touchend", parar);
+
+  if (!windowLigado) {
+    windowLigado = true;
+    window.addEventListener("mousemove", desenhar, { passive: false });
+    window.addEventListener("mouseup", parar);
+    window.addEventListener("resize", configurarCanvas);
+  }
 }

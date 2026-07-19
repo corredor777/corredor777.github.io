@@ -1,213 +1,191 @@
 ---
-// Juramento do Abismo (easter egg do Duat / Tiamat) — TRANSPLANTE da página
-// vanilla (HTML/CSS/JS próprios). Standalone, SEM Base.astro: o juramento.js
-// tem seu próprio sistema de cursor (.cur-default → skeleton-hand, .cur-draw →
-// caneta), que conflitaria com o cursor-manager global. Assets em /assets/...
-// (imagens próprias em /assets/images/juramento/). URL preservada:
-// /fragmentos/juramento/index.html (build format:"preserve").
-import "../../../styles/global.css";
+// Juramento do Abismo (easter egg do Duat / Tiamat) — transplante do vanilla,
+// agora sob Base.astro: aproveita cursor-manager (o sistema de cursor próprio
+// foi removido — .cur-draw/.cur-default vêm do globalCursorMap), favicon,
+// console e meta centralizados. HTML/CSS/JS próprios preservados; assets em
+// /assets/images/juramento/; URL /fragmentos/juramento/.
+//
+// CORTE SECO (decisão autoral): a ENTRADA no ritual não usa View Transitions —
+// é arrancada, como no vanilla. Quem linka para cá (o Tiamat do Duat, o botão
+// da Recepção) marca data-astro-reload para forçar carga cheia; aqui não há o
+// que fazer além de existir no Base.
+import Base from "../../../layouts/Base.astro";
+import falas from "../../../data/console.json";
 import "../../../styles/juramento.css";
 ---
 
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=1200" />
-
-    <title>Juramento do Abismo ∴ Corredor 777</title>
-
-    <meta
-      name="description"
-      content="Instalação mental navegável. Transmissões de Tiamat, o Zelador, através dos corredores do Abismo."
-    />
-    <meta name="author" content="Tiamat, O Zelador" />
-    <meta name="designer" content="Bruno Oliveira Marrega" />
-    <meta name="copyright" content="Copyright Corredor 777. All rights reserved." />
-    <meta name="access-protocol" content="Desktop-Only Architecture" />
-    <meta name="keywords" content="corredor777" />
-    <meta name="robots" content="noindex, nofollow, nosnippet, noarchive" />
-    <meta name="googlebot" content="nosnippet" />
-    <meta name="thumbnail" content="none" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="HandheldFriendly" content="false" />
-
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="/assets/images/favicon/censor.gif"
-    />
-  </head>
-  <body>
-    <div class="container cur-default">
-      <div class="content cur-default">
-        <header>
-          <div id="cabecalho">
-            <div id="center-image">
-              <img src="/assets/images/juramento/plaqueguy.gif" />
+<Base
+  titulo="Juramento do Abismo ∴ Corredor 777"
+  favicon="/assets/images/favicon/censor.gif"
+  mensagensConsole={falas.juramento}
+>
+  <div class="container cur-default">
+        <div class="content cur-default">
+          <header>
+            <div id="cabecalho">
+              <div id="center-image">
+                <img src="/assets/images/juramento/plaqueguy.gif" />
+              </div>
             </div>
-          </div>
 
-          <svg viewBox="0 0 1000 200" preserveAspectRatio="xMidYMid meet">
-            <path
-              id="curva-interna"
-              d="M20,180 Q500,20 980,180"
-              fill="transparent"
-            />
-            <text class="titulo-curvo">
-              <textPath
-                xlink:href="#curva-interna"
-                startOffset="50%"
-                text-anchor="middle"
-              >
-                Juramento do Abismo
-              </textPath>
-            </text>
-          </svg>
+            <svg viewBox="0 0 1000 200" preserveAspectRatio="xMidYMid meet">
+              <path
+                id="curva-interna"
+                d="M20,180 Q500,20 980,180"
+                fill="transparent"
+              />
+              <text class="titulo-curvo">
+                <textPath
+                  xlink:href="#curva-interna"
+                  startOffset="50%"
+                  text-anchor="middle"
+                >
+                  Juramento do Abismo
+                </textPath>
+              </text>
+            </svg>
 
-          <h3>TERMO DE ASSUNÇÃO DE CONDUTA IRREVOGÁVEL</h3>
-          <p id="data"><span id="data-atual"></span></p>
-        </header>
+            <h3>TERMO DE ASSUNÇÃO DE CONDUTA IRREVOGÁVEL</h3>
+            <p id="data"><span id="data-atual"></span></p>
+          </header>
 
-        <article id="registro">
-          <div class="reg-image">
-            <img src="/assets/images/juramento/reg-left.png" />
-          </div>
+          <article id="registro">
+            <div class="reg-image">
+              <img src="/assets/images/juramento/reg-left.png" />
+            </div>
 
-          <div id="reg-texto">
-            <p id="reg-frase">
-              Não existe vida no mais distante abismo, apenas a forma e sua
-              dissolução.
+            <div id="reg-texto">
+              <p id="reg-frase">
+                Não existe vida no mais distante abismo, apenas a forma e sua
+                dissolução.
+              </p>
+
+              <div id="reg-numero">
+                <p><span id="regnum">-----</span></p>
+              </div>
+            </div>
+
+            <div class="reg-image">
+              <img src="/assets/images/juramento/reg-right.png" />
+            </div>
+          </article>
+
+          <main>
+            <p>
+              Pelo presente instrumento, o indivíduo que ao final assina, agindo
+              por sua própria conta e risco, manifesta sua adesão aos preceitos
+              que regem a travessia, sujeitando-se às seguintes condições de
+              existência:
             </p>
 
-            <div id="reg-numero">
-              <p><span id="regnum">-----</span></p>
-            </div>
-          </div>
+            <p class="termos">
+              <span class="t-bold">I.</span> Fica estabelecido o dever de
+              transmutar a percepção comum em uma leitura própria do real. A
+              partir deste ato, todo fenômeno manifesto — seja ele de ordem física
+              ou imaterial — será recebido e processado como comunicação direta do
+              fluxo infinito com a alma do signatário, constituindo um sinal
+              inequívoco e inquestionável com sua essência.
+            </p>
 
-          <div class="reg-image">
-            <img src="/assets/images/juramento/reg-right.png" />
-          </div>
-        </article>
+            <p class="termos">
+              <span class="t-bold">II.</span> O signatário assume o compromisso de
+              ofertar, sem qualquer ressalva, a totalidade de seus recursos
+              existenciais, incluindo a substância de si mesmo e a herança de sua
+              personalidade, no Cálice de Babalon. Entende-se que tal gesto não é
+              mera cessão, mas a aniquilação definitiva da identidade anterior em
+              favor da passagem.
+            </p>
 
-        <main>
-          <p>
-            Pelo presente instrumento, o indivíduo que ao final assina, agindo
-            por sua própria conta e risco, manifesta sua adesão aos preceitos
-            que regem a travessia, sujeitando-se às seguintes condições de
-            existência:
-          </p>
+            <p class="termos">
+              <span class="t-bold">III.</span> No que tange à realização
+              alcançada, impõe-se o dever de absoluto silêncio. Reconhece o
+              aderente que, nas instâncias do Abismo, a palavra perde sua função
+              de eco e sua capacidade de registro, sendo o silêncio a única prova
+              de integridade do compromisso ora assumido.
+            </p>
 
-          <p class="termos">
-            <span class="t-bold">I.</span> Fica estabelecido o dever de
-            transmutar a percepção comum em uma leitura própria do real. A
-            partir deste ato, todo fenômeno manifesto — seja ele de ordem física
-            ou imaterial — será recebido e processado como comunicação direta do
-            fluxo infinito com a alma do signatário, constituindo um sinal
-            inequívoco e inquestionável com sua essência.
-          </p>
+            <p class="termos">
+              <span class="t-bold">IV.</span> O signatário se obriga a trabalhar
+              sem apego, a caminhar segundo a verdadeira vontade, e a se apoiar
+              apenas sobre si mesmo.
+            </p>
 
-          <p class="termos">
-            <span class="t-bold">II.</span> O signatário assume o compromisso de
-            ofertar, sem qualquer ressalva, a totalidade de seus recursos
-            existenciais, incluindo a substância de si mesmo e a herança de sua
-            personalidade, no Cálice de Babalon. Entende-se que tal gesto não é
-            mera cessão, mas a aniquilação definitiva da identidade anterior em
-            favor da passagem.
-          </p>
+            <p class="termos">
+              <span class="t-bold">V.</span> Este pacto permanece vigente em
+              caráter permanente, projetando seus efeitos até o encontro
+              definitivo na Cidade das Pirâmides. A assinatura abaixo representa a
+              ratificação final de que tudo aquilo que o indivíduo é e carrega
+              encontra-se agora depositado e selado.
+            </p>
 
-          <p class="termos">
-            <span class="t-bold">III.</span> No que tange à realização
-            alcançada, impõe-se o dever de absoluto silêncio. Reconhece o
-            aderente que, nas instâncias do Abismo, a palavra perde sua função
-            de eco e sua capacidade de registro, sendo o silêncio a única prova
-            de integridade do compromisso ora assumido.
-          </p>
+            <p>
+              Declarado que, para os devidos fins de expressão simbólica, em
+              testemunho da verdade e para que produza os efeitos de fé, o presente
+              termo é ratificado mediante a marca abaixo.
+            </p>
+          </main>
 
-          <p class="termos">
-            <span class="t-bold">IV.</span> O signatário se obriga a trabalhar
-            sem apego, a caminhar segundo a verdadeira vontade, e a se apoiar
-            apenas sobre si mesmo.
-          </p>
+          <footer>
+            <div id="carimbo">
+              <div id="carimbo-content">
+                <div id="carimbo-1">
+                  <img src="/assets/images/juramento/sword 35.gif" />
+                </div>
 
-          <p class="termos">
-            <span class="t-bold">V.</span> Este pacto permanece vigente em
-            caráter permanente, projetando seus efeitos até o encontro
-            definitivo na Cidade das Pirâmides. A assinatura abaixo representa a
-            ratificação final de que tudo aquilo que o indivíduo é e carrega
-            encontra-se agora depositado e selado.
-          </p>
+                <div id="carimbo-2">
+                  <img src="/assets/images/juramento/Misc (76).gif" />
+                </div>
 
-          <p>
-            Declarado que, para os devidos fins de expressão simbólica, em
-            testemunho da verdade e para que produza os efeitos de fé, o presente
-            termo é ratificado mediante a marca abaixo.
-          </p>
-        </main>
-
-        <footer>
-          <div id="carimbo">
-            <div id="carimbo-content">
-              <div id="carimbo-1">
-                <img src="/assets/images/juramento/sword 35.gif" />
-              </div>
-
-              <div id="carimbo-2">
-                <img src="/assets/images/juramento/Misc (76).gif" />
-              </div>
-
-              <div id="carimbo-3">
-                <img src="/assets/images/juramento/pentagram2.png" />
+                <div id="carimbo-3">
+                  <img src="/assets/images/juramento/pentagram2.png" />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div id="assinatura">
-            <div id="assinatura-content">
-              <div id="canva">
-                <canvas
-                  class="cur-draw"
-                  id="assinatura-canvas"
-                  width="330"
-                  height="150"></canvas>
+            <div id="assinatura">
+              <div id="assinatura-content">
+                <div id="canva">
+                  <canvas
+                    class="cur-draw"
+                    id="assinatura-canvas"
+                    width="330"
+                    height="150"></canvas>
+                </div>
+
+                <div id="assinatura-linha">
+                  <hr />
+                  <p>𓇽&nbsp;𓇽&nbsp;𓇽</p>
+                </div>
+                <div id="registro-impressao">
+                  <p>
+                    Registrado em: <span id="data-hora-fim"></span> | Protocolo
+                    nº<span id="protocolo-fim"></span>
+                  </p>
+                </div>
               </div>
 
-              <div id="assinatura-linha">
-                <hr />
-                <p>𓇽&nbsp;𓇽&nbsp;𓇽</p>
-              </div>
-              <div id="registro-impressao">
+              <div id="nota-final">
+                <p>Esse é aquele que desistiu de seu nome.</p>
+                <p>Esse é aquele que depositou tudo de si no abismo.</p>
                 <p>
-                  Registrado em: <span id="data-hora-fim"></span> | Protocolo
-                  nº<span id="protocolo-fim"></span>
+                  Esse é aquele que repousa, sem forma,<br />na Cidade das
+                  Pirâmides.
                 </p>
               </div>
             </div>
-
-            <div id="nota-final">
-              <p>Esse é aquele que desistiu de seu nome.</p>
-              <p>Esse é aquele que depositou tudo de si no abismo.</p>
-              <p>
-                Esse é aquele que repousa, sem forma,<br />na Cidade das
-                Pirâmides.
-              </p>
-            </div>
-          </div>
-        </footer>
+          </footer>
+        </div>
+        <div id="credits">
+          <p><span>Corredor 777 © 2026</span></p>
+        </div>
       </div>
-      <div id="credits">
-        <p><span>Corredor 777 © 2026</span></p>
-      </div>
-    </div>
 
-    <div id="bottom"></div>
+      <div id="bottom"></div>
 
-    <script is:inline>
-      console.log("%c JURAMENTO ABERTO", "color: #ff0037; font-weight: bold;");
-      console.log(" Para restaurar a saída, conclua o termo.");
-      console.log(" Também tive que assinar para poder sair daqui.");
-    </script>
-    <script>
-      import "../../../scripts/juramento.js";
-    </script>
-  </body>
-</html>
+  <script>
+    import { iniciarJuramento } from "../../../scripts/juramento.js";
+    document.addEventListener("astro:page-load", () => {
+      iniciarJuramento();
+    });
+  </script>
+</Base>
