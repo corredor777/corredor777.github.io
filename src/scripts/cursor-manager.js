@@ -1,4 +1,11 @@
-// Objeto de cursores (adicione todos aqui)
+// Objeto de cursores (adicione todos aqui).
+// A ORDEM importa: gerenciarCursoresGeral itera as chaves e para no PRIMEIRO
+// `closest()` que casar. Cursores específicos vêm primeiro; `.cur-default` é o
+// último de propósito — é o mecanismo de "cursor default por página": uma página
+// põe .cur-default na raiz (ex.: o Juramento) e todo elemento sob ela cai nesse
+// fallback, a menos que um cursor mais específico (ex.: .cur-draw no canvas)
+// esteja mais perto. NÃO reordenar `.cur-default` para cima — quebraria o
+// default silenciosamente (os específicos deixariam de vencer).
 const globalCursorMap = {
   ".cur-skeleton-hand": "/assets/images/cursor/skeleton-hand.cur",
   ".cur-draw": "/assets/images/cursor/caneta.cur",
@@ -12,6 +19,8 @@ const globalCursorMap = {
   ".cur-vscroll": "row-resize",
   ".cur-doubt": "/assets/images/cursor/doubt.gif",
   ".cur-angel": "/assets/images/cursor/angel-wings.gif",
+  // fallback por página — mantenha SEMPRE por último (ver nota acima)
+  ".cur-default": "/assets/images/cursor/skeleton-hand.cur",
 };
 
 // Referência viva ao <img> do cursor falso. Vive fora da função para que os
