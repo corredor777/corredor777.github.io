@@ -416,10 +416,15 @@ const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
   import { stroboVelocidade, stroboFlash } from "../scripts/strobo.js";
   import { iniciarContadores } from "../scripts/contadores.js";
   import { iniciarDuat } from "../scripts/duat.js";
+  import { iniciarPlayer } from "../scripts/player-engine.js";
   import ocorrencias from "../data/ocorrencias.json";
+  import playlist from "../data/main-playlist.json";
 
   document.addEventListener("astro:page-load", () => {
     iniciarBarraDeRolagem(".content");
+
+    // Player de música (motor vanilla; shuffle como no publicado)
+    iniciarPlayer({ shuffle: true, playlist });
 
     // Overlay do Duat (canvas de partículas, 777 no scroll, easter egg Tiamat)
     iniciarDuat();
