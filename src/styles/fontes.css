@@ -101,26 +101,7 @@
   font-display: swap;
 }
 
-/* ── Papéis (troque aqui, não no uso) ──────────────────────────────────────
-   Nota: as ~20 ocorrências de "JetBrains Mono Variable" caíam em monospace
-   genérico (não havia @font-face local); --fonte-terminal as normaliza para a
-   "JetBrains Mono" do Google (correção fina, confirmada de olho). */
-/* :root {
-  --fonte-corpo: Georgia, "Times New Roman", Times, serif;
-  --fonte-leitura: "Fraunces", serif;
-  --fonte-terminal: "JetBrains Mono", monospace;
-  --fonte-pixel: "DotGothic16", sans-serif;
-  --fonte-titulo: "Manufacturing Consent", "UnifrakturCook", serif;
-  --fonte-gotica: "Jacquard 24", system-ui;
-  --fonte-blackletter: "UnifrakturMaguntia", "Times New Roman", Times, serif;
-  --fonte-display: "Squada One", sans-serif;
-  --fonte-expandida:
-    "Special Gothic Expanded One", Arial, Helvetica, sans-serif;
-
-  --fonte-aktura:
-    "Aktura-Regular", "UnifrakturCook", "Times New Roman", Times, serif;
-} */
-
+/* ── Papéis (troque aqui, não no uso) ────────────────────────────────────── */
 :root {
   --fonte-base-sans: "Clash Grotesk";
   --fonte-base-mono: "Space Mono";
