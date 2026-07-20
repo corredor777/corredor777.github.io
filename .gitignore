@@ -7,6 +7,8 @@ HANDOFF.md
 player-ui-brief.md
 # candidatas de compressão do fundo (comparação local, não versionar)
 _candidatas-fundo/
+# pacotes brutos das fontes (matéria-prima; só as woff2 vão para public/assets/fonts/)
+_fonts/
 .claude/
 
 # Configuração local da IDE
