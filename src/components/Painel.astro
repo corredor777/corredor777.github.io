@@ -40,10 +40,10 @@ import painel from "../data/painel.json";
 
     border-collapse: collapse;
 
-    font-family: var(--fonte-pixel);
-    font-weight: 500;
+    font-family: var(--fonte-pixel-sans);
+    font-weight: normal;
     font-style: normal;
-    font-size: 8.5pt;
+    font-size: 10pt;
     text-transform: uppercase;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
@@ -84,7 +84,7 @@ import painel from "../data/painel.json";
     text-align: right;
   }
   #ultima-leitura p {
-    font-family: var(--fonte-leitura);
+    font-family: var(--fonte-base-serif);
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: italic;
@@ -92,6 +92,7 @@ import painel from "../data/painel.json";
       "SOFT" 0,
       "WONK" 0;
     line-height: 1.5;
+    font-size: 8pt;
   }
   #ultima-leitura p .leitura-resultado {
     border-bottom: 1px solid rgba(32, 32, 32, 1);

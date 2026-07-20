@@ -149,6 +149,7 @@ body {
 .monitoramento {
   margin-bottom: 25px !important;
 }
+
 .content article:hover .section-header h1 {
   text-decoration: underline;
 }
@@ -176,7 +177,7 @@ body {
   font-family: var(--fonte-pixel-sans);
   font-weight: 400;
   font-style: normal;
-  font-size: 18px;
+  font-size: 24px;
   text-transform: uppercase;
 }
 
@@ -206,6 +207,9 @@ body {
 
   border: 1px solid #444;
 }
+.contador-numero {
+  font-family: var(--fonte-base-mono);
+}
 .ocorrencias:hover .contador-box {
   background-color: rgba(0, 0, 0, 0.7);
 
@@ -233,6 +237,7 @@ hr.divisor {
   margin: 0 35px;
 }
 #ocor-slogan {
+  font-family: var(--fonte-base-mono) !important;
   font-size: 8.5pt;
   font-weight: 500;
   text-transform: uppercase;
@@ -391,17 +396,18 @@ hr.divisor {
   padding-left: 2.5ch;
   text-indent: -2ch;
 
+  font-family: var(--fonte-pixel-mono);
   font-variant-numeric: tabular-nums;
   font-kerning: none;
   text-align: justify;
 
   letter-spacing: 0ch;
 
-  font-size: 7pt;
-  font-weight: 300 !important;
+  font-size: 10pt;
+  font-weight: lighter;
   text-transform: uppercase;
   text-align: start;
-  line-height: 1.8;
+  line-height: 1.4;
 }
 .log-entry p:last-child {
   overflow-anchor: auto;
@@ -454,6 +460,7 @@ hr.divisor {
   padding: 0;
   margin: 0;
 
+  font-family: var(--fonte-base-mono);
   list-style-type: none;
 }
 .todo-list li {

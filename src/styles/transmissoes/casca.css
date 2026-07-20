@@ -209,8 +209,8 @@ body.transmissoes {
   padding-bottom: 10px;
   border-bottom: 1px solid var(--fosforo-verde-glow);
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
-  font-size: 8pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   letter-spacing: 1px;
 }
 #topo-status {
@@ -251,7 +251,7 @@ body.transmissoes {
   align-items: center;
   padding: 8px;
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
+  font-family: var(--fonte-pixel-mono);
   transition: all 0.1s steps(1);
 }
 
@@ -280,7 +280,7 @@ body.transmissoes {
 }
 
 .nav-bloco-link span {
-  font-size: 7pt;
+  font-size: 9pt;
   margin-top: 8px;
   letter-spacing: 1px;
 }
@@ -321,8 +321,8 @@ body.transmissoes {
 /* Estilo do Boot Inicial */
 #boot-loader {
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
-  font-size: 0.9rem;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   line-height: 1.4;
   text-shadow: 0 0 8px var(--fosforo-verde-glow);
 }
@@ -370,8 +370,8 @@ body.transmissoes {
 /* ── Boot sequence ───────────────────────────────────────── */
 .boot-linha {
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
-  font-size: 0.85rem;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   line-height: 1.5;
   text-shadow: 0 0 8px var(--fosforo-verde-glow);
 }
@@ -385,9 +385,9 @@ body.transmissoes {
 
 .boot-pronto {
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
-  font-size: 0.8rem;
-  line-height: 2;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 12pt;
+  line-height: 1.5;
   opacity: 0.6;
 }
 .boot-pronto .dim {
@@ -407,8 +407,8 @@ body.transmissoes {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease;
-  font-family: var(--fonte-terminal);
-  font-size: 9.5pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 11pt;
   color: var(--fosforo-verde);
   opacity: 0.75;
   padding: 0 12px;
@@ -417,6 +417,10 @@ body.transmissoes {
 .nota-conteudo.collapse-aberto {
   padding-top: 8px;
   padding-bottom: 12px;
+}
+
+.mat {
+  font-size: 10pt;
 }
 
 /* ── Modal (definições) ──────────────────────────────────── */
@@ -454,11 +458,11 @@ body.transmissoes {
     inset 0 0 20px rgba(0, 0, 0, 0.5);
   padding: 32px;
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
+  font-family: var(--fonte-pixel-sans);
   font-optical-sizing: auto;
   font-style: normal;
-  font-size: 9pt;
-  font-weight: lighter;
+  font-size: 12pt;
+  font-weight: 500;
   line-height: 1.7;
   text-shadow: 0 0 6px var(--fosforo-verde-glow);
   /* Scanlines dentro do modal também */
@@ -486,21 +490,21 @@ body.transmissoes {
   color: var(--fosforo-verde-glow);
   font-size: 14px;
   transition: color 0.1s;
-  font-family: var(--fonte-terminal);
+  font-family: var(--fonte-pixel-mono);
 }
 #transmissoes-modal-fechar:hover {
   color: var(--fosforo-vermelho);
 }
 
 #transmissoes-modal-box h3 {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-35);
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
   font-variation-settings:
     "SOFT" 0,
     "WONK" 0;
-  font-size: 12pt;
+  font-size: 11pt;
   line-height: 2;
   border-bottom: 1px dotted var(--fosforo-verde-glow);
   padding-bottom: 10px;
@@ -514,8 +518,8 @@ body.transmissoes {
   width: 100%;
   height: 100%;
   color: var(--fosforo-verde);
-  font-family: var(--fonte-terminal);
-  font-size: 10pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 11pt;
   line-height: 1.9;
   text-shadow: 0 0 6px var(--fosforo-verde-glow);
   padding-bottom: 80px;
@@ -527,8 +531,8 @@ body.transmissoes {
   background: none;
   border: none;
   color: rgba(20, 253, 206, 0.5);
-  font-family: var(--fonte-terminal);
-  font-size: 0.75rem;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   letter-spacing: 1px;
   transition: color 0.1s steps(1);
   padding: 0;

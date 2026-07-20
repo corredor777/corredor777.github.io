@@ -82,7 +82,7 @@ body {
 
   font-family: var(--fonte-base-mono);
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: normal;
   font-style: normal;
   font-size: 10pt;
 }
@@ -127,7 +127,7 @@ body {
 
   filter: saturate(100%) invert(13%) sepia(95%) saturate(7483%)
     hue-rotate(345deg) brightness(101%) contrast(30%);
-  opacity: 0.3;
+  opacity: 0.2;
 
   z-index: 0;
   pointer-events: none;
@@ -213,7 +213,7 @@ body {
 /* Data do documento */
 .content #data {
   font-family: var(--fonte-expandida);
-  font-weight: 400;
+  font-weight: 800;
   font-style: normal;
   font-size: 7pt;
   text-transform: uppercase;
@@ -339,7 +339,6 @@ body {
   width: 135px; /* Largura fixa para os carimbos */
 }
 #carimbo-1 img,
-#carimbo-2 img,
 #carimbo-3 img {
   display: block;
 
@@ -355,21 +354,13 @@ body {
   width: 75%;
   margin: 0 auto;
 }
-#carimbo-2 {
-  z-index: 2;
-  margin-top: -20px !important;
-}
-#carimbo-2 img {
-  margin-top: -30px;
-  transform: rotate(1.5deg);
-}
 #carimbo-3 {
   z-index: 0;
-  margin-top: -15px !important;
+  margin-top: -55px !important;
 }
 #carimbo-3 img {
   filter: invert(100%) contrast(210%);
-  opacity: 0.7;
+  opacity: 0.65;
 }
 
 /* Bloco da Assinatura */
@@ -437,7 +428,7 @@ body {
   font-family: var(--fonte-pixel-sans);
   font-weight: 400;
   font-style: normal;
-  font-size: 6pt;
+  font-size: 8pt;
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 1px;

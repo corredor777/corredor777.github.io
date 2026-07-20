@@ -7,8 +7,8 @@
 .carregando-777 {
   text-align: center;
   margin-top: 20vh;
-  font-family: var(--fonte-terminal);
-  font-size: 2.2rem;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 24pt;
   letter-spacing: 0.3em;
   color: var(--fosforo-verde);
   text-shadow: 0 0 12px var(--fosforo-verde-glow);
@@ -21,7 +21,7 @@
   left: 5px;
   bottom: -10px;
   z-index: -1;
-  font-family: var(--fonte-titulo);
+  font-family: var(--fonte-pixel-blackletter-24);
   font-weight: 400;
   font-style: normal;
   font-size: 48pt;
@@ -34,14 +34,10 @@
 
 #notas-grid,
 #diario-entrada {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-35);
   font-optical-sizing: auto;
-  font-weight: 400;
   font-style: normal;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0;
-  font-size: 12pt;
+  font-size: 13pt;
   line-height: 2;
   z-index: 1;
   overflow-x: hidden;
@@ -65,20 +61,6 @@
   overflow: hidden;
 }
 
-.diario-titulo {
-  font-family: var(--fonte-terminal);
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  color: var(--fosforo-verde);
-  opacity: 0.25;
-  filter: blur(0.6px);
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-.diario-titulo span {
-  opacity: 0.6;
-}
-
 #diario-nav {
   display: flex;
   flex-direction: column;
@@ -98,8 +80,8 @@
   border: none;
   border-bottom: 1px solid var(--fosforo-verde-glow-light);
   text-align: left;
-  font-family: var(--fonte-terminal);
-  font-size: 8pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   letter-spacing: 2px;
   color: var(--fosforo-verde);
   opacity: 0.3;
@@ -131,8 +113,8 @@
 
 .diario-placeholder {
   opacity: 0.7;
-  font-family: var(--fonte-terminal);
-  font-size: 10pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 12pt;
 
   animation: blink 1.6s steps(1) infinite;
 }
@@ -149,11 +131,11 @@
 /* Componentes das entradas do diário */
 .entrada-data {
   color: var(--fosforo-vermelho);
-  font-family: var(--fonte-terminal);
+  font-family: var(--fonte-pixel-mono);
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
-  font-size: 9pt;
+  font-size: 13pt;
   letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
@@ -161,7 +143,7 @@
   margin: 0 18px 18px auto;
 }
 .entrada-corpo {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-50);
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
@@ -179,8 +161,9 @@
   overflow: hidden;
 }
 .entrada-corpo p.codex {
-  font-family: var(--fonte-terminal);
-  font-size: 9pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 12pt;
+  line-height: 1.6;
   font-variant-numeric: tabular-nums;
   text-align: justify;
   font-weight: 300;
@@ -196,11 +179,11 @@
    visíveis (os ### de fechamento do markdown já são consumidos no render). */
 .entrada-corpo h3 {
   color: var(--fosforo-vermelho);
-  font-family: var(--fonte-terminal);
+  font-family: var(--fonte-pixel-mono);
   font-optical-sizing: auto;
   font-weight: 800;
   font-style: normal;
-  font-size: 9pt;
+  font-size: 11pt;
   letter-spacing: 2px;
   text-align: center;
   text-transform: uppercase;
@@ -250,6 +233,7 @@
   text-align: center !important;
 }
 #monitor-target code {
+  font-family: var(--fonte-pixel-mono);
   background-color: var(--fosforo-verde-glow) !important;
   color: var(--vidro-preto);
   border-radius: 2px;
@@ -308,8 +292,8 @@
   text-align: left;
   color: var(--fosforo-verde);
   opacity: 0.5;
-  font-family: var(--fonte-terminal);
-  font-size: 0.78rem;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 14pt;
   cursor: none;
   transition: opacity 0.1s steps(1);
   gap: 8px;
@@ -330,6 +314,12 @@
 }
 .nota-titulo.aberta .nota-indicador {
   transform: rotate(90deg);
+}
+.nota-conteudo {
+  padding-left: 0px;
+}
+.nota-conteudo {
+  font-size: 12pt !important;
 }
 
 /* ── Coluna direita ──────────────────────────────────────── */
@@ -373,20 +363,16 @@
 }
 
 .def-termo-label {
-  font-family: var(--fonte-terminal);
-  font-size: 7pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 9pt;
   letter-spacing: 3px;
   color: var(--fosforo-verde);
   opacity: 0.3;
 }
 .def-termo-texto {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-50);
   font-optical-sizing: auto;
-  font-weight: 100;
   font-style: normal;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0;
   font-size: 11pt;
   letter-spacing: 0.5px;
   color: var(--fosforo-verde);
@@ -404,8 +390,8 @@
   border: none;
   color: var(--fosforo-verde);
   opacity: 0.4;
-  font-family: var(--fonte-terminal);
-  font-size: 13pt;
+  font-family: var(--fonte-pixel-mono);
+  font-size: 15pt;
   cursor: none;
   transition: opacity 0.1s steps(1);
   padding: 4px 0;
@@ -418,14 +404,6 @@
 .def-next:disabled {
   opacity: 0.1;
   pointer-events: none;
-}
-
-.def-contador {
-  font-family: var(--fonte-terminal);
-  font-size: 7pt;
-  color: var(--fosforo-verde);
-  opacity: 0.25;
-  letter-spacing: 0.1em;
 }
 
 /* Análises — ocupa o espaço restante */
@@ -456,19 +434,15 @@
   margin: 60px 0;
 }
 #ensaio-full-body #cabecalho-citacao p {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-50);
   font-optical-sizing: auto;
-  font-weight: 300;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0;
   font-size: 13pt;
   line-height: 1.5;
 }
 #ensaio-full-body #cabecalho-citacao .autor {
   display: block;
   margin-top: 15px;
-  font-size: 9px;
+  font-size: 9pt;
   font-style: normal !important;
   opacity: 0.45;
 }
@@ -480,12 +454,8 @@
 }
 
 #ensaio-full-body .conteudo {
-  font-family: var(--fonte-leitura);
+  font-family: var(--fonte-pixel-serif-35);
   font-optical-sizing: auto;
-  font-weight: 300;
-  font-variation-settings:
-    "SOFT" 0,
-    "WONK" 0;
   font-size: 11pt;
   line-height: 1.8;
   text-align: justify;
@@ -498,7 +468,7 @@
   margin: 30px 0;
 }
 #ensaio-full-body .conteudo h2 {
-  font-family: var(--fonte-gotica);
+  font-family: var(--fonte-pixel-blackletter-12);
   font-weight: 400;
   font-style: normal;
   font-size: 24pt;
@@ -508,6 +478,10 @@
 #ensaio-full-body #referencias {
   padding: 40px 0 100px 0;
   border-top: 1px solid var(--fosforo-verde-glow);
+}
+#ensaio-full-body #referencias h3 {
+  font-size: 15pt;
+  font-weight: 400;
 }
 #ensaio-full-body #referencias p {
   margin-bottom: 15px;
@@ -569,8 +543,8 @@
   content: "→"; /* Ou use "»", "•", "::" */
   position: absolute;
   left: 0;
-  color: var(--fosforo-verde); /* Aplica o vermelho #ff0037 */
-  font-family: var(--fonte-terminal);
+  color: var(--fosforo-verde);
+  font-family: var(--fonte-pixel-mono);
   font-weight: bold;
 }
 
