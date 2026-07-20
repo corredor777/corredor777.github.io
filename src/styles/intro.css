@@ -48,7 +48,7 @@ body {
   background-color: #a40000; /* New highlight background color */
   color: #cdcdcd;
 
-  font-family: var(--fonte-titulo);
+  font-family: var(--fonte-base-blackletter);
   font-style: normal;
   font-weight: 300;
   font-size: 36pt;
@@ -57,13 +57,13 @@ body {
 #arcano {
   margin-top: 10px !important;
 
-  font-family: var(--fonte-pixel);
+  font-family: var(--fonte-pixel-mono);
   font-optical-sizing: auto;
   font-style: normal;
   font-size: 0.6em;
   font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 3px;
 
   opacity: 0;
 
@@ -81,7 +81,7 @@ body {
   padding: 0;
 }
 .credits p {
-  font-family: var(--fonte-leitura) !important;
+  font-family: var(--fonte-base-serif) !important;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
