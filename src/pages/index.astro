@@ -37,6 +37,11 @@ import "../styles/intro.css";
   const bancoDeDados = arcanos;
 
   document.addEventListener("astro:page-load", () => {
+    // Checagem de página: este handler vive no document (sobrevive à navegação
+    // do ClientRouter); sem isto, os efeitos e — pior — o redirect de 6s para
+    // /main/ vazariam para outras páginas se a Entrada fosse alcançada por VT.
+    if (!document.querySelector(".intro")) return;
+
     iniciarChuva();
     stroboGlobal();
     selecionarFrase();
