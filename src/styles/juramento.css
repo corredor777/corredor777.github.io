@@ -282,6 +282,7 @@ body {
 
   text-align: justify;
   line-height: 1.48;
+  font-family: var(--fonte-base-mono);
   font-size: 9.5pt !important;
 }
 .content main p {
