@@ -82,16 +82,16 @@ Overlay do Duat (canvas de partículas, scroll, glitch, 777 sticky, easter egg T
 **Saída:** travessia do Duat pixel a pixel como hoje; Tiamat leva ao Juramento; Colapso abre em popup.
 
 ### F5 — Paridade e switch *(par)*
-Checklist lado a lado, site antigo vs. novo:
-- [ ] `localStorage`: `frasesExibidas` (anti-repetição), contador de visitas
-- [ ] contador de dias desde `dataIncidente`
-- [ ] popup Colapso em janela própria
-- [ ] Cbox carregando; fake cursor some sobre iframes
-- [ ] player: shuffle, cores por página, comportamento no erro 150
-- [ ] Duat completo + Tiamat → Juramento
-- [ ] todas as URLs antigas respondendo
-- [ ] KaTeX e WebGL (`vesica-piscis`) nas notas
-- [ ] viewport 1200 / experiência desktop intacta
+Checklist lado a lado, site antigo vs. novo (✅ verificado; 👁 falta veredito de olho do Bruno):
+- [x] `localStorage`: `frasesExibidas` (anti-repetição incrementa), contador de visitas — mesmas chaves do vanilla ✅
+- [x] contador de dias desde `dataIncidente` (2026-05-13) ✅
+- [x] popup Colapso em janela própria (520×720, `resizable=no`, URL limpa) ✅ · 👁 sensação
+- [x] Cbox presente em `/main/` ✅ · 👁 carregamento + fake cursor sumindo sobre iframe
+- [x] player: shuffle + erro 150 + 11 regras `--player-*` no build ✅ · 👁 áudio tocando no clique
+- [x] Duat: corte seco (`data-astro-reload`) + Tiamat → Juramento ✅ · 👁 travessia/fechar-ao-scroll
+- [x] todas as URLs antigas respondendo: 12/12 → 200 (páginas diretas + 3 stubs meta-refresh) ✅
+- [x] KaTeX renderizado + WebGL vivo (`vesica-piscis` modal, `vortex` diário) ✅
+- [x] viewport 1200 ✅ · 👁 experiência desktop
 
 **Mudança de plano ([041]):** com o player antigo já portado ([040]), o checklist fecha SEM a F3 — o switch acontece agora (F5) e a F3 (UI do Figma + `transition:persist`) vira **upgrade pós-switch**, não pré-requisito.
 
@@ -163,5 +163,6 @@ Grimório (quatro núcleos como collections com layouts próprios), Trabalhos (g
 [039] **F4 CONCLUÍDA (2026-07-19)** — veredito de olho do Bruno: Juramento (cursores unificados, corte seco), Colapso e Duat aprovados. PARTÍCULAS DO DUAT DESCARTADAS: a cláusula de descarte do resgate autoral foi exercida (julgadas de olho, não somaram). Código das partículas removido do duat.js (NUM_PARTICULAS, corPorVida, novaParticula, criar/desenhar/pararParticulas, fadeScroll, refs canvas/ctx e o RAF); o overlay, o glitch de entrada, o 777 no scroll, o fechar-ao-scroll e o easter egg Tiamat seguem intactos. O #duat-canvas fica no HTML mas inerte (a camada existe se algo futuro a usar). Segue nesta sessão o polimento (Colapso resize, scroll do modal, indicador 777 de carregamento) e duas estruturas novas (player antigo de volta, sistema de fontes por papéis).
 [040] Sessão de polimento + duas estruturas novas (2026-07-19). POLIMENTO: (1) Colapso — popup 620→720 para caber a lista de scores (a reserva do jogo usava a altura do placar vazio; o cheio, ~200px, estourava no overflow:hidden). (2) Modal de definições reseta o scroll (#transmissoes-modal-box) ao abrir (o scroll da anterior vazava). (3) Indicador "777": durante fetch de fragmento não-cacheado >150ms, pisca 7→77→777 no alvo (diário + fullscreen), estilo do monitor; nunca em cache hit/carga rápida; encerrado antes de injetar (sem corrida). ESTRUTURAS NOVAS: (4) PLAYER ANTIGO DE VOLTA (decisão do Bruno, em vez de esperar a F3): portados player-engine.js (motor intacto: YouTube IFrame API, controles em window.* via onclick) + casca/CSS (#corredor-player, --player-*) + main-playlist.json (51 faixas, shuffle). Só o ciclo de vida adaptado (window.inicializarPlayer → export iniciarPlayer, checagem de página, guarda por nó, teardown do player órfão). SEM persistência entre páginas por ora (é F3); casca adiada [019] encerrada por substituição. (5) SISTEMA DE FONTES POR PAPÉIS: auditoria (23 importadas no vanilla → 9 em uso, 14 mortas removidas; "JetBrains Mono Variable"×20 caía em monospace, normalizada); src/styles/fontes.css único (import só das usadas + slot @font-face local vazio com a Aktura-Regular pendente + :root com --fonte-corpo/leitura/terminal/pixel/titulo/gotica/blackletter/display/expandida/aktura); 55+2 font-family hardcoded trocados por var(--fonte-*) em toda a stack; @import removido do global.css; Base e o colapso (standalone) importam fontes.css; fluxo documentado no CLAUDE.md. astro check 0/0, build 23 páginas.
 [041] Mudança de plano F5 (2026-07-19): o player antigo portado na sessão de polimento ([040]) cobre o item "player" do checklist da F5 — então a paridade fecha SEM a F3. O switch (merge na main + deploy por Actions) acontece agora (F5), e a F3 (UI nova do Figma + transition:persist para música ininterrupta) passa a ser upgrade PÓS-switch, não pré-requisito. Ordem revista [023] (F2→F4→F3→F5→F6) ajustada: F5 antes da F3. Esta é a sessão 1 de 2 da F5 — PARIDADE (validação lado a lado); o merge/deploy é a sessão 2, só depois da paridade fechada.
-[042] _
+[042] PARIDADE F5 fechada mecanicamente (sessão 1 de 2, 2026-07-19). Checklist rodado lado a lado (preview 4340 × build). VERIFICADO: localStorage (frasesExibidas incrementa, mesmas chaves do vanilla, visitante antigo não zera); contador de dias desde dataIncidente 2026-05-13; Colapso popup 520×720 resizable=no em janela própria; Cbox presente em /main/; player com shuffle + tratamento do erro 150 + 11 regras --player-*; corte seco Tiamat→Juramento via data-astro-reload; KaTeX renderizado no build + WebGL vivo (vesica no modal, vortex no diário); 12/12 URLs antigas → 200 (páginas diretas sob "directory" + 3 stubs meta-refresh main.html/transmissoes/main.html/colapso.html); zero refs relativas de asset no dist. BUGS ACHADOS E CORRIGIDOS: (1) refs de asset relativas ("assets/...") em main.astro/Linha/TickerHeader — 404 sob URL de diretório /main/; agora absolutas (commit 1d198eb). (2) handler astro:page-load da Entrada sem checagem de página — efeitos + redirect de 6s vazariam por VT; page-check adicionado (commit 2c49ae0). Varredura de console: zero erros de JS em main/notas/diário/vesica/vortex/juramento. FALTA SÓ VEREDITO DE OLHO (itens 👁 do checklist): sensação do Colapso, fake cursor sumindo sobre o iframe do Cbox, áudio do player tocando no clique, travessia/fechar do Duat, experiência desktop 1200. Sessão 2 (switch: merge na main + deploy por Actions + reescrever CLAUDE.md) só depois desse veredito.
+[043] _
 ```
