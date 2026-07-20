@@ -27,10 +27,12 @@
    Aktura: o nome de família aqui é "Aktura" (não "Aktura-Regular") porque é o
    que --fonte-base-blackletter espera no :root. Resolve o antigo bloco pendente.
 
-   REDACTION (35 e 50) NÃO instalada: o único arquivo de licença do pacote é a
-   EULA DESKTOP da MCKL, que proíbe explicitamente webfont e conversão para
-   woff2 (cláusulas 2b/2g). As roles --fonte-pixel-serif-35/-50 seguem no :root
-   mas ficam SEM backing (caem no fallback serif) até haver licença web. */
+   Redaction (35 e 50) foi convertida de otf → woff2 (o pacote não traz woff2)
+   por decisão autoral do Bruno. ATENÇÃO LEGAL: a única licença que veio no
+   pacote é a EULA DESKTOP da MCKL, que restringe uso webfont; o embarque aqui
+   é escolha/risco do dono do site, pendente de licença web própria (ver
+   redaction-NOTICE.txt em licenses/). Cada grade tem Regular/Bold/Italic
+   preparadas para uso futuro noutras áreas do site. */
 @font-face {
   font-family: "Clash Grotesk";
   src: url("/assets/fonts/clash-grotesk-variable.woff2") format("woff2");
@@ -50,6 +52,52 @@
   src: url("/assets/fonts/aktura-regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Redaction 35 — grade de tinta 35 (--fonte-pixel-serif-35) */
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Redaction 50 — grade de tinta 50 (--fonte-pixel-serif-50) */
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 
