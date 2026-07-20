@@ -1,8 +1,9 @@
 # Documentação interna de trabalho com IA — não publicar
-# (REFUNDACAO.md fica versionado de propósito: é o log vivo da migração e
-#  precisa de backup no remoto)
+# (REFUNDACAO.md saiu do versionamento na F5, 2026-07-20: a migração encerrou
+#  e ele virou arquivo-memória local; a verdade técnica ativa é o CLAUDE.md)
 CLAUDE.md
 HANDOFF.md
+REFUNDACAO.md
 # gabarito de design do player (Figma), não publicar
 player-ui-brief.md
 # candidatas de compressão do fundo (comparação local, não versionar)
