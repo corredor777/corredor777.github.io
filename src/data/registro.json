@@ -1,0 +1,18 @@
+[
+  { "indice": 0, "label": "FIAT LUX", "texto": "Corredor em estado de vigília." },
+  { "indice": 1, "label": "ACESSO LIBERADO", "texto": "Recepção operacional. O corredor agradece sua visita"},
+  { "indice": 2, "label": "Manutenção", "texto": "Correções visuais implementadas"},
+  { "indice": 3, "label": null, "texto": "<a href='#' class='link-duat cur-help'><span class='foco-vermelho'>DUAT</span></a> Protocolo de boas-vindas disponível" },
+  { "indice": 4, "label": "ARTEFATO ENCONTRADO", "texto": "<a href='/fragmentos/juramento/index.html' class='cur-none'>TERMO DE CONDUTA - JURAMENTO DO ABISMO</a>" },
+  { "indice": 5, "label": "Manutenção", "texto": "Superfície recalibrada"},
+  { "indice": 6, "label": "Manutenção", "texto": "Comportamento do corredor normalizado"},
+  { "indice": 7, "label": "Manutenção", "texto": "Som ambiente instalado na recepção"},
+  { "indice": 8, "label": "REVISÃO DAS ESPECIFICAÇÕES TÉCNICAS", "texto": "Registros de design e execução atualizados nos metadados"},
+  { "indice": 9, "label": "IMPLEMENTAÇÃO", "texto": "Sala de transmissões construída. Acesso restrito até a finalização dos testes operacionais"},
+  { "indice": 10, "label": "IMPLEMENTAÇÃO", "texto": "Testes operacionais concluídos. Procure pela porta da sala de transmissões."},
+  { "indice": 11, "label": "REGISTRO", "texto": "Entradas adicionadas ao diário na <a href='/fragmentos/transmissoes/main.html' class='cur-help'>Sala de Transmissões</a>."},
+  { "indice": 12, "label": "REGISTRO", "texto": "Caderno de notas do Zelador encontrado."},
+  { "indice": 13, "label": "IMPLEMENTAÇÃO", "texto": "Mecanismo de tradução dos glifos e suporte para diagramas e visuais adicionados ao painel de transmissões."},
+  { "indice": 14, "label": "ARTEFATO ENCONTRADO", "texto": "Simulação do colapso das paredes do corredor. Me ajude a demolir."},
+  { "indice": 15, "label": "REFUNDAÇÃO", "texto": "Estruturas e materiais do corredor reformulados."}
+]

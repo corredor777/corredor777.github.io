@@ -1,0 +1,123 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SISTEMA DE FONTES POR PAPÉIS
+   ══════════════════════════════════════════════════════════════════════════
+   Fluxo (ver CLAUDE.md):
+   - ADICIONAR fonte do Google: acrescente o family= no @import abaixo e defina/
+     use uma --fonte-* no :root.
+   - ADICIONAR fonte LOCAL: coloque o arquivo em public/assets/fonts/, declare no
+     bloco @font-face abaixo e aponte uma --fonte-* para ela.
+   - TROCAR o papel de um contexto: mude a --fonte-* — nunca o font-family solto.
+   - REMOVER fonte: tire do @import/@font-face e confira que nenhuma --fonte-* a usa.
+   Regra: nenhum font-family "hardcoded" na stack — tudo resolve por --fonte-*.
+
+   Importado do Google (só as EM USO — a auditoria [040] achou 14 famílias
+   mortas no import antigo, removidas). */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Handjet:wght,ELSH@100..900,2&family=Jacquard+12&family=Jacquard+24&family=Jacquarda+Bastarda+9&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Squada+One&family=UnifrakturMaguntia&family=VT323&display=swap");
+
+/* ── Fontes LOCAIS ─────────────────────────────────────────────────────────
+   Arquivos em public/assets/fonts/ (servidos em /assets/fonts/). Baixadas do
+   Fontshare (pacotes *_Complete em _fonts/, matéria-prima local não versionada);
+   aqui só entram as woff2 da pasta WEB/ do pacote — nunca os otf/ttf de desktop.
+   Licenças embarcadas viajam junto em /assets/fonts/licenses/ (FFL do Fontshare,
+   que concede uso Web explicitamente).
+
+   Clash Grotesk e Clash Display são VARIÁVEIS: um arquivo cobre todos os pesos
+   (eixo wght 200..700), por isso o font-weight é declarado como range.
+
+   Aktura: o nome de família aqui é "Aktura" (não "Aktura-Regular") porque é o
+   que --fonte-base-blackletter espera no :root. Resolve o antigo bloco pendente.
+
+   Redaction (35 e 50) foi convertida de otf → woff2 (o pacote não traz woff2)
+   por decisão autoral do Bruno. ATENÇÃO LEGAL: a única licença que veio no
+   pacote é a EULA DESKTOP da MCKL, que restringe uso webfont; o embarque aqui
+   é escolha/risco do dono do site, pendente de licença web própria (ver
+   redaction-NOTICE.txt em licenses/). Cada grade tem Regular/Bold/Italic
+   preparadas para uso futuro noutras áreas do site. */
+@font-face {
+  font-family: "Clash Grotesk";
+  src: url("/assets/fonts/clash-grotesk-variable.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Clash Display";
+  src: url("/assets/fonts/clash-display-variable.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Aktura";
+  src: url("/assets/fonts/aktura-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Redaction 35 — grade de tinta 35 (--fonte-pixel-serif-35) */
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 35";
+  src: url("/assets/fonts/redaction-35-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Redaction 50 — grade de tinta 50 (--fonte-pixel-serif-50) */
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Redaction 50";
+  src: url("/assets/fonts/redaction-50-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── Papéis (troque aqui, não no uso) ────────────────────────────────────── */
+:root {
+  --fonte-base-sans: "Clash Grotesk";
+  --fonte-base-mono: "Space Mono";
+  --fonte-base-serif: "Fraunces", Georgia, "Times New Roman", Times, serif;
+  --fonte-base-blackletter:
+    "Aktura", "UnifrakturMaguntia", "Old English Text MT", Times, serif;
+
+  --fonte-pixel-sans: "Handjet";
+  --fonte-pixel-mono: "VT323";
+  --fonte-pixel-serif-35: "Redaction 35";
+  --fonte-pixel-serif-50: "Redaction 50";
+  --fonte-pixel-blackletter-24: "Jacquard 24";
+  --fonte-pixel-blackletter-12: "Jacquard 12";
+  --fonte-pixel-blackletter-9: "Jacquarda Bastarda 9";
+
+  --fonte-titulo: "UnifrakturMaguntia";
+  --fonte-expandida: "Clash Display";
+  --fonte-condensada: "Squada One";
+}

@@ -1,0 +1,78 @@
+---
+import { ClientRouter } from "astro:transitions";
+import identidade from "../data/identidade.json";
+import "../styles/fontes.css"; // imports do Google + @font-face + --fonte-* (papéis)
+import "../styles/global.css";
+
+// Favicon POR PÁGINA: cada página passa `favicon` no <Base>; o default é o da
+// Recepção (censor.gif), em identidade.json. Mapa por seção (vanilla):
+//   Entrada  → /assets/images/favicon/index.gif   (index.astro)
+//   Recepção → /assets/images/favicon/censor.gif  (default — main.astro)
+//   Transmissões → .../signal.gif                 (Transmissoes.astro)
+//   Juramento → .../censor.gif                     (juramento/index.astro)
+// Para trocar: mude a prop `favicon` na página, ou o faviconPadrao no JSON.
+// Nota: o favicon é um GIF; Firefox o anima nativamente, Chrome/Safari mostram
+// só o 1º frame (decisão do Bruno: não forçar animação — o favicon-animator.js
+// foi aposentado).
+const {
+  titulo = identidade.site.nome,
+  descricao = identidade.site.descricaoPadrao,
+  favicon = identidade.site.faviconPadrao,
+  mensagensConsole = [],
+  class: classeBody,
+} = Astro.props;
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200" />
+
+    <title>{titulo}</title>
+
+    <meta name="description" content={descricao} />
+    <meta name="author" content={identidade.euLirico.nome} />
+    <meta name="designer" content={identidade.dev.nome} />
+    <meta name="copyright" content={identidade.site.copyright} />
+
+    <meta name="access-protocol" content="Desktop-Only Architecture" />
+    <meta name="keywords" content={identidade.site.keywords} />
+
+    <meta name="robots" content="noindex, nofollow, nosnippet, noarchive" />
+    <meta name="googlebot" content="nosnippet" />
+    <meta name="thumbnail" content="none" />
+
+    <meta name="MobileOptimized" content="width" />
+    <meta name="HandheldFriendly" content="false" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href={favicon}
+    />
+
+    <ClientRouter />
+
+    <!-- Páginas injetam <link>/<meta> extras aqui (ex.: CSS do KaTeX condicional
+         em Transmissões): <elemento slot="head" ... /> -->
+    <slot name="head" />
+  </head>
+  <body class={classeBody}>
+    <slot />
+
+    <script>
+      import { iniciarCursores } from "../scripts/cursor-manager.js";
+      document.addEventListener("astro:page-load", () => {
+        iniciarCursores();
+      });
+    </script>
+
+    {mensagensConsole.length > 0 && (
+      <script is:inline define:vars={{ mensagensConsole }} data-astro-rerun>
+        for (const linha of mensagensConsole) {
+          Array.isArray(linha) ? console.log(...linha) : console.log(linha);
+        }
+      </script>
+    )}
+  </body>
+</html>

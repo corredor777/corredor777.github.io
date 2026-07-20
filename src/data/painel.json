@@ -1,0 +1,48 @@
+{
+  "estadoGeral": "92%",
+  "ultimaLeitura": "10/06/2026 22:08",
+  "sistemas": [
+    { 
+        "index": "00",
+        "sistema": "Andares superiores", 
+        "leitura": "sem anomalias" 
+    },
+    { 
+        "index": "01", 
+        "sistema": "Temperatura dos corredores", 
+        "leitura": "dentro do esperado" 
+    },
+    { 
+        "index": "02", 
+        "sistema": "Ressonância das paredes", 
+        "leitura": "vibração estável", 
+        "fimDeGrupo": true 
+    },
+    { 
+        "index": "03", 
+        "sistema": "Trânsito interno", 
+        "leitura": "fluxo regular" 
+    },
+    { 
+        "index": "04", 
+        "sistema": "Atividade das galerias", 
+        "leitura": "obras em andamento" 
+    },
+    { 
+        "index": "05", 
+        "sistema": "Permeabilidade dos acessos", 
+        "leitura": "impermeável" 
+    },
+    { 
+        "index": "06", 
+        "sistema": "Integridade da fundação", 
+        "leitura": "reforma em curso" 
+    },
+    { 
+        "index": "07", 
+        "sistema": "Registro dos subsolos", 
+        "leitura": "registros fragmentados", 
+        "fimDeGrupo": true 
+    }
+  ]
+}

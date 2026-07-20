@@ -1,0 +1,20 @@
+REDACTION — nota de proveniência e licença
+===========================================
+
+Fonte: Redaction (grades 35 e 50, estilos Regular/Bold/Italic)
+Fundição: MCKL, Inc. — https://www.redaction.us / https://mckl.com
+Origem no projeto: pacote local _fonts/Redaction/ (apenas arquivos .otf de
+desktop; o pacote NÃO trazia woff2).
+
+As woff2 servidas em /assets/fonts/redaction-*.woff2 foram convertidas dos .otf
+de desktop por decisão do dono do site.
+
+ATENÇÃO — LICENÇA:
+O único documento de licença que acompanhava o pacote era a EULA DESKTOP da
+MCKL, cujas cláusulas 2(b) e 2(g) restringem/proíbem a conversão para formatos
+de webfont (WOFF/WOFF2) e o uso como webfont embarcada em páginas web. O uso
+destas woff2 no site é, portanto, escolha e responsabilidade do dono do site,
+PENDENTE de uma licença webfont própria junto à MCKL.
+
+Este arquivo é um aviso de proveniência; NÃO substitui nem concede licença.
+Para uso web em conformidade, adquira a licença webfont apropriada em mckl.com.

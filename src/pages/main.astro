@@ -1,0 +1,460 @@
+---
+import Base from "../layouts/Base.astro";
+import TickerHeader from "../components/TickerHeader.astro";
+import Painel from "../components/Painel.astro";
+import Porta from "../components/Porta.astro";
+import Linha from "../components/Linha.astro";
+import BotaoGrandeStrobo from "../components/BotaoGrandeStrobo.astro";
+import LogBox from "../components/LogBox.astro";
+import Chatbox from "../components/Chatbox.astro";
+import Pendencias from "../components/Pendencias.astro";
+import BotaoFooter from "../components/BotaoFooter.astro";
+import falas from "../data/console.json";
+import identidade from "../data/identidade.json";
+import "../styles/global.css";
+import "../styles/main.css";
+
+const { titulo = identidade.site.nome, mensagensConsole = [] } = Astro.props;
+---
+
+<Base mensagensConsole={falas.recepcao}>
+  <div class="container">
+    <TickerHeader />
+
+    <!-- =========================================================================
+            [LAYOUT: PRINCIPAL] 
+            Organização binária: Sidebar (fixa à esquerda) e Content (rolagem à direita).
+         ========================================================================= -->
+    <div class="main-layout cur-angel">
+      <!-- [COMPONENTE: SIDEBAR] -->
+      <aside class="sidebar">
+        <div id="sidebar-content">
+          <div class="logo">
+            <img
+              src="/assets/images/arts/777-logo.png"
+              class="link-duat cur-help"
+            />
+          </div>
+
+          <!-- PLAYER -->
+          <div id="corredor-player">
+            <div class="player-controls">
+              <div class="player-controls-container">
+                <button
+                  class="cur-none"
+                  onclick="faixaAnterior()"
+                  title="Anterior"
+                >
+                  ⏮
+                </button>
+                <button
+                  class="cur-none"
+                  id="player-btn-play"
+                  onclick="togglePlay()"
+                  title="Play/Pause"
+                  data-estado="pausado"
+                >
+                  ▶
+                </button>
+                <button
+                  class="cur-none"
+                  onclick="proximaFaixa()"
+                  title="Próxima"
+                >
+                  ⏭
+                </button>
+              </div>
+            </div>
+
+            <div class="player-ticker">
+              <div class="player-ticker-text-wrapper">
+                <div id="player-ticker-content" class="player-ticker-text">
+                </div>
+              </div>
+              <button
+                class="cur-help"
+                onclick="toggleLista()"
+                title="Playlist"
+                id="player-menu"
+              >
+                ≡
+              </button>
+            </div>
+
+            <div id="player-lista" class="player-popup cur-vscroll"></div>
+
+            <div
+              id="yt-player"
+              style="
+                  position: absolute;
+                  top: -9999px;
+                  left: -9999px;
+                  width: 1px;
+                  height: 1px;
+                "
+            >
+            </div>
+          </div>
+
+          <div class="bio">
+            <div class="bio-stamp">
+              <img src="/assets/images/stamps/hypno.gif" />
+            </div>
+
+            <p id="credits">&copy;{identidade.site.anoCriacao}</p>
+
+            <div class="blinkies"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- [COMPONENTE: CONTENT] -->
+      <main class="content">
+        <div id="main-content">
+          <!-- [PAINEL DE MONITORAMENTO] -->
+          <article class="monitoramento">
+            <header class="section-header">
+              <h1>Monitoramento das Instalações</h1>
+            </header>
+
+            <section class="section-container">
+              <Painel />
+            </section>
+          </article>
+
+          <Porta
+            destino="/fragmentos/transmissoes/"
+            imagem="/assets/images/gifs/Door (13).gif"
+            decoracao="/assets/images/arts/stars.png"
+          />
+        </div>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <!-- [OCORRÊNCIAS] -->
+        <article class="ocorrencias">
+          <header class="section-header">
+            <h1>Ocorrências</h1>
+          </header>
+
+          <section class="section-container">
+            <div class="contador-wrapper">
+              <div class="contador-grupo-info">
+                <div class="contador-box">
+                  <!-- Valor "--" substituído pela lógica de cronologia em main.js -->
+                  <span class="contador-numero">--</span>
+                </div>
+                <span class="contador-label">carregando...</span>
+              </div>
+
+              <img
+                src="/assets/images/gifs/eye (1).gif"
+                alt="animação"
+                class="gif-ocorrencia"
+              />
+            </div>
+
+            <hr class="divisor" />
+
+            <div class="ocorrencias-texto">
+              <p id="ocor-slogan">
+                <span>Referência em segurança, qualidade e excelência.</span>
+              </p>
+              <p id="ocor-777">
+                <!-- <span>777</span> -->
+                <img src="/assets/images/gifs/count.gif" />
+              </p>
+              <p id="ocor-visita">
+                <span>Carregando registros...</span>
+              </p>
+            </div>
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <!-- [MINIGAME] -->
+        <article class="minigame">
+          <header class="section-header">
+            <BotaoGrandeStrobo
+              nome="colapso"
+              cursor="cur-skeleton-hand"
+              destino="/fragmentos/simulacros/colapso/"
+              texto="Algumas paredes precisam cair!"
+            />
+          </header>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <!-- [LOGS] -->
+        <article class="logs">
+          <header class="section-header">
+            <h1>Registro de Eventos</h1>
+          </header>
+
+          <section class="section-container">
+            <LogBox />
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <!-- =================================
+                        [MÓDULO: CHATBOX]
+                        Integração de chat externo via iframe.
+                    ====================================== -->
+        <article class="chatbox">
+          <header class="section-header">
+            <h1>Ecos e Ruídos</h1>
+          </header>
+
+          <Chatbox
+            boxid="3554478"
+            boxtag="Vu6Gs1"
+            titulo="Ecos e Ruídos — chat ao vivo"
+          />
+
+          <div class="center-image img-insert">
+            <img src="/assets/images/blinkies/open24.gif" />
+          </div>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <!-- [TO-DO] -->
+        <article class="to-do">
+          <header class="section-header">
+            <h1>Pendências</h1>
+          </header>
+
+          <section class="section-container">
+            <Pendencias />
+          </section>
+        </article>
+
+        <!-- [DIVISOR] -->
+        <Linha />
+
+        <footer class="endnote">
+          <BotaoFooter
+            destino="/fragmentos/juramento/"
+            cursor="cur-skeleton-hand"
+            imagem="/assets/images/buttons/3void.png"
+            recarrega
+          />
+        </footer>
+      </main>
+    </div>
+
+    <!-- [DUAT OVERLAY] Camada oculta que sobrepõe a Recepção — travessia com
+         canvas de partículas, texto que borra/some no scroll e o #duat-777
+         crescendo/sumindo. Transplante do vanilla (main.html); comportamento em
+         src/scripts/duat.js. Ativado por qualquer .link-duat. -->
+    <div id="duat-overlay" class="cur-eye">
+      <canvas id="duat-canvas"></canvas>
+
+      <div id="duat-content">
+        <div class="line" id="duat-line-top">
+          <div class="line-container line-140">
+            <img src="/assets/images/lines/ornament1-top.png" />
+          </div>
+        </div>
+
+        <div class="line-container center-line">
+          <p style="text-align: center">𓇽&nbsp;𓇽&nbsp;𓇽</p>
+        </div>
+
+        <p id="duat-intro">Saudações a quem vier.</p>
+
+        <p>
+          Encontraste o caminho correto,<br />mas chegaste pelas motivações
+          erradas.
+        </p>
+
+        <p>
+          Não te preocupes com a volta;<br />
+          nunca mais estarás sozinho.
+        </p>
+
+        <p class="duat-focus">
+          <span>Quer dizer, então, que entraste na noite cobiçando o dia?</span>
+        </p>
+
+        <div class="line-container line-110 center-line">
+          <img src="/assets/images/lines/egyptbar.png" />
+        </div>
+
+        <p>
+          Os egípcios acreditavam que, entre o ser e o não-ser, havia um lugar
+          onde as almas perambulavam: Duat, o interstício. Lugar nenhum, senão a
+          própria travessia; espaço que existe apenas enquanto a passagem
+          ocorre. A sefirá invisível. O grande limiar e o profundo abismo: o
+          conhecimento etéreo. É o estado intermediário onde a mente projeta
+          tudo o que carrega. Ali não há território externo.
+        </p>
+
+        <div class="line-container line-110 center-line">
+          <img src="/assets/images/lines/egyptbar.png" />
+        </div>
+
+        <p>
+          O corredor é feito da substância do viajante.<br />
+          O caminho se manifesta como um reflexo da vontade no universo.
+        </p>
+
+        <p class="duat-center">
+          <span class="duat-italic"
+            >O universo é mental.<br />A vontade é o todo. E o todo é a
+            mente.</span
+          >
+        </p>
+
+        <p>
+          Para tudo o que existe, as lacunas preenchem as distâncias: o que está
+          lá e o que está aqui; o espaço entre o que és tu e o que sou eu.
+        </p>
+
+        <div class="image-container center-line insert insert-gate">
+          <img class="cur-none" src="/assets/images/arts/gate1-w.png" />
+        </div>
+
+        <p>
+          No reino dos símbolos, a alma encontra as manifestações de sua própria
+          natureza e reflete aquilo que encontra.
+        </p>
+
+        <p>
+          O corredor não antecede o passo.<br />
+          Ele se manifesta quando a vontade encontra o vazio.<br />
+          Não há mapas, apenas espelhos.
+        </p>
+
+        <div class="image-container center-line inverted">
+          <img src="/assets/images/imgs/judgement-of-the-dead-invert.jpg" />
+        </div>
+
+        <p>
+          E o véu parece ser formado por vários outros véus, mais finos,
+          interpenetrando-se. E a voz diz:
+          <span class="duat-italic duat-quote"
+            >Não existe luz, conhecimento, beleza ou estabilidade nos corredores
+            para onde vais.</span
+          >
+        </p>
+
+        <div class="image-container center-line insert">
+          <img
+            src="/assets/images/arts/ankh.png"
+            style="height: 150px; width: auto"
+          />
+        </div>
+
+        <p>
+          Fica à vontade para olhar todos os cantos e caminhar por todos os meus
+          caminhos. Disseca-me por completo; sejamos testemunhas desta autópsia.
+        </p>
+
+        <p class="duat-center duat-focus">
+          <span
+            >Eu sou a serpente que devora o espírito do homem.<br />
+            Eu sou a tormenta invisível, abraçando o mundo com desolação.</span
+          >
+        </p>
+
+        <p class="duat-center duat-italic">
+          <a
+            class="cur-none"
+            id="easter-tiamat"
+            href="/fragmentos/juramento/"
+            target="_self"
+            data-astro-reload>Tiamat</a
+          >{" "}é o meu nome.
+        </p>
+
+        <div class="image-container center-line favicon-insert">
+          <img src="/assets/images/favicon/snake.gif" height="100%" />
+        </div>
+
+        <p>
+          Que tua passagem seja intensa, mas perene. E que, quando partires, não
+          leves nada contigo. Deixa que tudo caia de volta no abismo.
+        </p>
+
+        <div class="image-container center-line">
+          <img src="/assets/images/lines/barbedwire-w.png" />
+        </div>
+
+        <p id="duat-line-end" class="duat-center">
+          Tu és o caminho se desdobrando sobre si mesmo.<br /><span class="777"
+            >777</span
+          >
+        </p>
+
+        <div class="line" id="duat-line-bottom">
+          <div class="line-container line-140">
+            <img src="/assets/images/lines/ornament1-bottom.png" />
+          </div>
+        </div>
+
+        <!-- Espaço extra para manter o scroll ativo após o texto sumir -->
+        <div id="duat-fim"></div>
+      </div>
+
+      <p id="duat-777">777</p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { iniciarBarraDeRolagem } from "../scripts/barra-de-rolagem.js";
+  import { stroboVelocidade, stroboFlash } from "../scripts/strobo.js";
+  import { iniciarContadores } from "../scripts/contadores.js";
+  import { iniciarDuat } from "../scripts/duat.js";
+  import { iniciarPlayer } from "../scripts/player-engine.js";
+  import ocorrencias from "../data/ocorrencias.json";
+  import playlist from "../data/main-playlist.json";
+
+  document.addEventListener("astro:page-load", () => {
+    iniciarBarraDeRolagem(".content");
+
+    // Player de música (motor vanilla; shuffle como no publicado)
+    iniciarPlayer({ shuffle: true, playlist });
+
+    // Overlay do Duat (canvas de partículas, 777 no scroll, easter egg Tiamat)
+    iniciarDuat();
+
+    // Contadores das Ocorrências (a checagem de página vive no módulo)
+    iniciarContadores(ocorrencias);
+
+    // Strobo do painel: linha a linha, guiado pela velocidade do mouse
+    document.querySelectorAll(".painel tr").forEach((linha) => {
+      stroboVelocidade(linha, { classe: "strobo-painel" });
+    });
+
+    // Strobo do botão grande: alterna com a velocidade do movimento
+    document.querySelectorAll(".botao-grande-strobo").forEach((botao) => {
+      stroboVelocidade(botao, { classe: "strobo-botao" });
+    });
+
+    // Strobo do log: flashes nos focos coloridos e na scrollbar
+    // (o if é a checagem de página — este handler também dispara nas
+    // navegações do ClientRouter para páginas sem log)
+    const logBox = document.querySelector(".log-box");
+    if (logBox) {
+      const logContent = logBox.querySelector(".log-content");
+      if (logContent) logContent.scrollTop = logContent.scrollHeight;
+      stroboFlash(logBox, {
+        classe: "strobo-texto",
+        seletorFilhos: ".foco-vermelho, .foco-amarelo, .foco-azul",
+        chance: 0.2,
+      });
+      stroboFlash(logBox, { classe: "strobo-scroll" });
+    }
+  });
+</script>

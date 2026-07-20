@@ -1,0 +1,117 @@
+---
+import Base from "../layouts/Base.astro";
+import falas from "../data/console.json";
+import identidade from "../data/identidade.json";
+import "../styles/intro.css";
+---
+
+<Base
+  favicon="/assets/images/favicon/index.gif"
+  mensagensConsole={falas.entrada}
+  class="cur-chama"
+>
+  <div class="container">
+    <header class="intro">
+      <div>
+        <p id="frase"><span id="frase-display"></span></p>
+        <p id="arcano"><span id="carta-display"></span></p>
+      </div>
+    </header>
+
+    <footer class="credits">
+      <div>
+        <p>
+          <span>{identidade.site.nome} © {identidade.site.anoCriacao}</span>
+        </p>
+      </div>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  import arcanos from "../data/arcanos.json";
+  import { iniciarChuva } from "../scripts/chuva-de-sangue.js";
+  import { stroboGlobal } from "../scripts/strobo.js";
+
+  // Banco de frases do sorteio da intro
+  const bancoDeDados = arcanos;
+
+  document.addEventListener("astro:page-load", () => {
+    // Checagem de página: este handler vive no document (sobrevive à navegação
+    // do ClientRouter); sem isto, os efeitos e — pior — o redirect de 6s para
+    // /main/ vazariam para outras páginas se a Entrada fosse alcançada por VT.
+    if (!document.querySelector(".intro")) return;
+
+    iniciarChuva();
+    stroboGlobal();
+    selecionarFrase();
+
+    // Redirecionamento automático para a Recepção (URL limpa de diretório —
+    // funciona igual em dev, preview e build sob build.format:"directory")
+    const destino = "/main/";
+
+    // 1. Redirecionamento automático após 6 segundos
+    const timer = setTimeout(() => {
+      window.location.href = destino;
+    }, 6000);
+
+    // 2. Redirecionamento instantâneo via clique (interação)
+    // once: o navegador descarta o listener após o primeiro clique —
+    // sem acúmulo no document, que sobrevive às navegações do ClientRouter
+    document.addEventListener(
+      "click",
+      () => {
+        clearTimeout(timer); // Cancela o timer de 6s para evitar conflito
+        window.location.href = destino;
+      },
+      { once: true },
+    );
+
+    // Sorteio de frases para a intro
+    function selecionarFrase() {
+      // 2. Busca no armazenamento do navegador a lista de frases já vistas e converte de texto (JSON) para Array
+      let exibidas = JSON.parse(localStorage.getItem("frasesExibidas") ?? "[]");
+
+      // 3. Cria uma lista temporária contendo apenas os itens cujo índice ainda não consta na lista de exibidas
+      let disponiveis = bancoDeDados.filter(
+        (_, index) => !exibidas.includes(index),
+      );
+
+      // 4. Verificação de ciclo: se não houver mais frases disponíveis, limpa a memória para reiniciar o sorteio
+      if (disponiveis.length === 0) {
+        exibidas = [];
+        disponiveis = bancoDeDados;
+        console.log(
+          "A serpente morde sua própria cauda. A roda gira mais uma vez.",
+        );
+      }
+
+      // 5. Realiza o sorteio matemático escolhendo um item aleatório dentro do conjunto de frases disponíveis
+      const itemSorteado =
+        disponiveis[Math.floor(Math.random() * disponiveis.length)];
+
+      // 6. Localiza a posição original (0-21) do item sorteado no banco de dados principal
+      const indexOriginal = bancoDeDados.indexOf(itemSorteado);
+
+      // 7. Adiciona o índice sorteado ao registro de frases já vistas para evitar repetição no próximo carregamento
+      exibidas.push(indexOriginal);
+
+      // 8. Salva a lista atualizada de frases vistas no LocalStorage do navegador em formato de texto
+      localStorage.setItem("frasesExibidas", JSON.stringify(exibidas));
+
+      // 9. Captura os elementos do HTML através de seus IDs para manipulação
+      const elementoFrase = document.getElementById("frase-display");
+      const elementoCarta = document.getElementById("carta-display");
+
+      // 10. Insere o texto da frase sorteada no parágrafo correspondente
+      if (elementoFrase) {
+        elementoFrase.innerText = itemSorteado.frase;
+      }
+
+      // 11. Insere o nome da carta sorteada no parágrafo correspondente
+      if (elementoCarta) {
+        elementoCarta.innerText = itemSorteado.carta;
+      }
+    }
+  });
+</script>

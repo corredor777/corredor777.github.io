@@ -1,0 +1,24 @@
+---
+const { imagem = "/assets/images/lines/barbedwire.png" } = Astro.props;
+---
+
+<article class="line">
+  <div class="line-container">
+    <img src={imagem} />
+  </div>
+</article>
+
+<style>
+  .line {
+    margin-bottom: 50px !important;
+  }
+  .line-container {
+    width: auto;
+    margin: 0 35px;
+  }
+  .line img,
+  .duat-line img {
+    width: 100%;
+    margin: 0 auto;
+  }
+</style>

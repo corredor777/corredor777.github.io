@@ -1,0 +1,48 @@
+---
+const { nome, cursor, destino, texto } = Astro.props;
+
+// Dimensões do popup do Colapso. A altura subiu de 620 (herdada do vanilla) para
+// 720: a lista de scores (#placar, MAX_ENTRADAS=8, ~200px) não cabia junto com o
+// jogo em 620 — a reserva de espaço do jogo usa a altura do placar VAZIO, então
+// o placar cheio estourava (overflow:hidden cortava os últimos). 720 acomoda o
+// conteúdo de nascença, sem resize manual (o jogo é resizable=no).
+const largura = 520;
+const altura = 720;
+---
+
+<button
+  id="botao-grande"
+  class:list={["botao-grande-strobo", cursor]}
+  onclick={`window.open('${destino}', '${nome}', 'width=${largura},height=${altura},resizable=no')`}
+>
+  {texto}
+</button>
+
+<style>
+  button {
+    all: unset;
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+    padding: 15px 20px;
+    background-color: rgba(32, 32, 32, 0.8);
+    background:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
+      rgba(32, 32, 32, 0.8);
+    background-size: 100% 3px;
+    color: var(--cor-acento);
+    text-shadow: 0 0 5px var(--cor-acento);
+    box-shadow: 0 0 20px #333;
+    transition: all 0.1s;
+  }
+  button:hover {
+    border-color: var(--cor-acento);
+    background-color: var(--cor-acento);
+    color: #202020;
+    text-shadow: 0 0 5px #202020;
+    box-shadow: 0 0 30px var(--cor-acento);
+  }
+  .botao-grande-strobo.strobo-botao {
+    filter: invert(100%) contrast(220%) brightness(1.4) !important;
+  }
+</style>

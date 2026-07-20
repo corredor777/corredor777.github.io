@@ -1,0 +1,11 @@
+---
+// `recarrega`: quando true, o link entra com data-astro-reload (corte seco, sem
+// View Transitions) — usado no acesso ao Juramento.
+const { destino, cursor, imagem, recarrega } = Astro.props;
+---
+
+<div class="note-button">
+  <a href={destino} data-astro-reload={recarrega || undefined}>
+    <img class={cursor} src={imagem} />
+  </a>
+</div>

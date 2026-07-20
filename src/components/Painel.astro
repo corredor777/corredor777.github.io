@@ -1,0 +1,103 @@
+---
+import painel from "../data/painel.json";
+---
+
+<table class="painel">
+  <tbody>
+    {
+      painel.sistemas.map((s) => (
+        <tr class:list={[s.fimDeGrupo && "ultimo-do-grupo"]}>
+          <td class="index">{s.index}</td>
+          <td class="sistema">{s.sistema}</td>
+          <td class="leitura">{s.leitura}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<div id="ultima-leitura">
+  <p>
+    <span
+      >Estado geral das instalações: <span class="leitura-resultado"
+        >{painel.estadoGeral}</span
+      ></span
+    >
+  </p>
+  <p>
+    <span
+      >Última leitura: <span class="leitura-resultado"
+        >{painel.ultimaLeitura}</span
+      ></span
+    >
+  </p>
+</div>
+
+<style>
+  /* Painel de Monitoramento */
+  .painel {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-family: var(--fonte-pixel-sans);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 10pt;
+    text-transform: uppercase;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased; /* macOS/Chrome/Safari */
+    -moz-osx-font-smoothing: grayscale; /* Firefox no macOS */
+    letter-spacing: 1px;
+  }
+  .painel tr {
+    background-color: transparent;
+    transition: background-color 0.05s;
+  }
+  .painel tr:hover {
+    background-color: #a40000;
+    color: #fdfdfd;
+  }
+  .strobo-painel {
+    position: relative;
+    z-index: 10;
+
+    filter: invert(100%) contrast(300%) brightness(1.5) !important;
+  }
+  .painel td {
+    padding: 6px;
+  }
+  .index {
+    padding-left: 35px !important;
+  }
+  .ultimo-do-grupo {
+    border-bottom: 1px dotted #444;
+  }
+  .leitura {
+    padding-right: 30px !important;
+    text-align: end;
+  }
+  #ultima-leitura {
+    margin: 20px 35px 20px 35px;
+
+    color: rgba(32, 32, 32, 0.4);
+    text-align: right;
+  }
+  #ultima-leitura p {
+    font-family: var(--fonte-base-serif);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: italic;
+    font-variation-settings:
+      "SOFT" 0,
+      "WONK" 0;
+    line-height: 1.5;
+    font-size: 8pt;
+  }
+  #ultima-leitura p .leitura-resultado {
+    border-bottom: 1px solid rgba(32, 32, 32, 1);
+
+    color: rgba(32, 32, 32, 1);
+    font-style: normal !important;
+  }
+</style>

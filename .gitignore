@@ -1,5 +1,20 @@
 # Documentação interna de trabalho com IA — não publicar
+# (REFUNDACAO.md fica versionado de propósito: é o log vivo da migração e
+#  precisa de backup no remoto)
 CLAUDE.md
+HANDOFF.md
+# gabarito de design do player (Figma), não publicar
+player-ui-brief.md
+# candidatas de compressão do fundo (comparação local, não versionar)
+_candidatas-fundo/
+# pacotes brutos das fontes (matéria-prima; só as woff2 vão para public/assets/fonts/)
+_fonts/
+.claude/
 
 # Configuração local da IDE
 .vscode/
+
+# Astro / Node
+node_modules/
+dist/
+.astro/

@@ -1,0 +1,32 @@
+{
+  "entrada": [
+    ["%c ACESSO INICIADO ", "color: #ff0037; font-weight: bold;"],
+    " [!] Aviso: Este projeto foi pensado exclusivamente para desktop.",
+    " A experiência em dispositivos móveis é bem limitada e não é recomendada.",
+    " "
+  ],
+  "recepcao": [
+    " Oi! Vi que você abriu o console.",
+    " Este site não foi feito para funcionar em celulares ou tablets.",
+    " A navegação, os efeitos e o layout dependem de uma tela grande e mouse para fazerem sentido.",
+    " ",
+    " Espero que tenha um bom momento percorrendo o corredor.",
+    " Nos vemos por aí!",
+    " "
+  ],
+  "transmissoes": [
+    " Você está bisbilhotando demais, não acha?",
+    " Se olhar a fundo, vai acabar encontrando o que não quer!",
+    " Ou talvez seja exatamente isso o que você procura.",
+    " ",
+    " Não vou importuná-lo; sinta-se livre para vasculhar cada canto.",
+    " Como eu disse antes: seremos cúmplices da minha autópsia. Boa leitura!",
+    " "
+  ],
+  "juramento": [
+    ["%c JURAMENTO ABERTO", "color: #ff0037; font-weight: bold;"],
+    " Para retornar, conclua o termo.",
+    " Também tive que assinar para poder sair daqui."
+  ],
+  "cicloDaSerpente": "A serpente morde sua própria cauda. A roda gira mais uma vez."
+}

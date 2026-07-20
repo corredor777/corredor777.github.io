@@ -1,0 +1,45 @@
+# Deploy do site Astro para o GitHub Pages.
+#
+# ATIVO desde a F5 (o switch): dispara a cada push na main, faz o build estático
+# do Astro e publica o dist/ no Pages. Fonte do Pages = "GitHub Actions".
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Um deploy por vez; não cancela o que estiver em andamento (evita publicar
+# pela metade se dois pushes chegarem juntos).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Astro
+        uses: withastro/action@v3
+        with:
+          # Astro 7 exige Node >= 20.19 / 22.12 — fixado para não depender do
+          # default (que pode mudar entre versões da action).
+          node-version: 22
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
